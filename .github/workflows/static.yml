@@ -39,12 +39,14 @@ jobs:
           deno-version: v2.x
 
       - name: Run Bundle
-        run: deno bundle browser_main.ts -o browser_bundled.js
+        run: deno bundle browser_main.ts -o browser_bundled.js --minify --sourcemap=linked
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          path: |
+            browser_bundled.js
+            browser_bundled.js.map
+            index.html
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
