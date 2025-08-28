@@ -1,9 +1,11 @@
 // console_io.js
-import { game } from "./game.ts";
+import { Game } from "./game.ts";
 import { DisplayState } from "./interfaces.ts";
 import { ITEMS } from "./items.ts";
 import readline from "node:readline";
 import process from "node:process"; // Use import for readline
+
+const game = new Game();
 
 let rl: readline.Interface; // For Node.js readline interface
 

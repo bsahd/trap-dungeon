@@ -1,4 +1,4 @@
-import { Cell, Game, GameLoopResult, GameWithMethod, Item } from "./interfaces.ts";
+import { Cell, GameI, GameLoopResult, Item } from "./interfaces.ts";
 import { ITEMS } from "./items.ts";
 import {
   forEachCell,
@@ -8,49 +8,47 @@ import {
   isValidCell,
 } from "./utils.ts";
 
-function getInitialGameState(): Game {
-  return {
-    grid: [],
-    rows: 8,
-    cols: 8,
-    player: { r: 0, c: 0, items: [] },
-    exit: { r: 0, c: 0 },
-    floorNumber: 1,
-    turn: 0,
-    gameState: "playing",
-    exitRevealedThisFloor: false,
-    justAcquiredItem: null,
-    currentItemChoices: [],
-    floorRevelationRates: [],
-    finalFloorNumber: 0,
-    finalItems: [],
-    lastActionMessage: "",
-    tutorialToShow: null,
-  };
-}
+export class Game implements GameI {
+  grid: GameI["grid"] = [];
+  rows: GameI["rows"] = 8;
+  cols: GameI["cols"] = 8;
+  player: GameI["player"] = { r: 0, c: 0, items: [] };
+  exit: GameI["exit"] = { r: 0, c: 0 };
+  floorNumber: GameI["floorNumber"] = 1;
+  turn: GameI["turn"] = 0;
+  gameState: GameI["gameState"] = "playing"; // playing, confirm_next_floor, choosing_item, jumping_direction, recon_direction, gameover
+  exitRevealedThisFloor: GameI["exitRevealedThisFloor"] = false;
+  REVELATION_THRESHOLD = 0.5; // 開示率のしきい値 (50%)
+  uiEffect: string | null = null;
+  justAcquiredItem: GameI["justAcquiredItem"] = null;
 
-export const game: GameWithMethod = {
-  grid: [],
-  rows: 8,
-  cols: 8,
-  player: { r: 0, c: 0, items: [] },
-  exit: { r: 0, c: 0 },
-  floorNumber: 1,
-  turn: 0,
-  gameState: "playing", // playing, confirm_next_floor, choosing_item, jumping_direction, recon_direction, gameover
-  exitRevealedThisFloor: false,
-  REVELATION_THRESHOLD: 0.5, // 開示率のしきい値 (50%)
-  uiEffect: null,
-  justAcquiredItem: null,
+  currentItemChoices: GameI["currentItemChoices"] = [];
 
-  currentItemChoices: [],
+  floorRevelationRates: GameI["floorRevelationRates"] = [];
+  finalFloorNumber: GameI["finalFloorNumber"] = 0;
+  finalItems: GameI["finalItems"] = [];
+  lastActionMessage = "";
+  tutorialToShow: { title: string; content: string } | null = null;
 
-  // リザルト画面用のプロパティを復元
-  floorRevelationRates: [],
-  finalFloorNumber: 0,
-  finalItems: [],
-
-  getAvailableItems: function () {
+  resetGame() {
+    this.grid = [];
+    this.rows = 8;
+    this.cols = 8;
+    this.player = { r: 0, c: 0, items: [] };
+    this.exit = { r: 0, c: 0 };
+    this.floorNumber = 1;
+    this.turn = 0;
+    this.gameState = "playing";
+    this.exitRevealedThisFloor = false;
+    this.justAcquiredItem = null;
+    this.currentItemChoices = [];
+    this.floorRevelationRates = [];
+    this.finalFloorNumber = 0;
+    this.finalItems = [];
+    this.lastActionMessage = "";
+    this.tutorialToShow = null;
+  }
+  getAvailableItems() {
     const currentFloor = this.floorNumber;
     return Object.keys(ITEMS).filter((id) => {
       const item = ITEMS[id];
@@ -58,13 +56,13 @@ export const game: GameWithMethod = {
       const maxFloor = item.maxFloor || Infinity;
       return currentFloor >= minFloor && currentFloor <= maxFloor;
     });
-  },
+  }
 
-  hasItem: function (itemId: string) {
+  hasItem(itemId: string) {
     return this.player.items.includes(itemId);
-  },
+  }
 
-  setupFloor: function () {
+  setupFloor() {
     this.player.r = Math.floor(Math.random() * this.rows);
     this.player.c = Math.floor(Math.random() * this.cols);
 
@@ -222,9 +220,9 @@ export const game: GameWithMethod = {
     }
 
     this.revealFrom(this.player.r, this.player.c);
-  },
+  }
 
-  generateGrid: function () {
+  generateGrid() {
     this.grid = Array.from(
       { length: this.rows },
       () =>
@@ -236,9 +234,9 @@ export const game: GameWithMethod = {
           isObscured: false,
         })),
     );
-  },
+  }
 
-  placeTraps: function (trapCount: number) {
+  placeTraps(trapCount: number) {
     const forbiddenTrapZones = getEightDirectionsNeighbors(
       this.player.r,
       this.player.c,
@@ -262,9 +260,9 @@ export const game: GameWithMethod = {
         trapsPlaced++;
       }
     }
-  },
+  }
 
-  calculateNumbers: function () {
+  calculateNumbers() {
     forEachCell(this.grid, (cell, r, c) => {
       if (cell.isTrap) return;
       let trapCount = 0;
@@ -288,9 +286,9 @@ export const game: GameWithMethod = {
       }
       cell.adjacentTraps = trapCount;
     });
-  },
+  }
 
-  revealFrom: function (r: number, c: number) {
+  revealFrom(r: number, c: number) {
     if (
       !isValidCell(r, c, this.rows, this.cols) || this.grid[r][c].isRevealed
     ) return;
@@ -320,18 +318,18 @@ export const game: GameWithMethod = {
         this.revealFrom(neighbor.r, neighbor.c);
       }
     }
-  },
+  }
 
-  toggleFlag: function (r: number, c: number) {
+  toggleFlag(r: number, c: number) {
     if (isValidCell(r, c, this.rows, this.cols)) {
       const cell = this.grid[r][c];
       if (!cell.isRevealed) {
         cell.isFlagged = !cell.isFlagged;
       }
     }
-  },
+  }
 
-  calculateRevelationRate: function () {
+  calculateRevelationRate() {
     let revealedCount = 0;
     forEachCell(this.grid, (cell) => {
       if (cell.isRevealed) {
@@ -339,9 +337,9 @@ export const game: GameWithMethod = {
       }
     });
     return revealedCount / (this.rows * this.cols);
-  },
+  }
 
-  getDisplayState: function () {
+  getDisplayState() {
     return {
       grid: this.grid,
       player: { r: this.player.r, c: this.player.c },
@@ -353,9 +351,9 @@ export const game: GameWithMethod = {
       currentItemChoices: this.currentItemChoices,
       exitRevealedThisFloor: this.exitRevealedThisFloor,
     };
-  },
+  }
 
-  handleInput: function (key: string) {
+  handleInput(key: string) {
     key = key.toLowerCase();
 
     if (this.gameState === "confirm_next_floor") {
@@ -526,9 +524,9 @@ export const game: GameWithMethod = {
       }
     }
     return this.gameLoop();
-  },
+  }
 
-  processPlayerLocation: function () {
+  processPlayerLocation() {
     const currentCell = this.grid[this.player.r][this.player.c];
     if (this.player.r === this.exit.r && this.player.c === this.exit.c) {
       this.gameState = "confirm_next_floor";
@@ -557,9 +555,9 @@ export const game: GameWithMethod = {
     if (this.gameState !== "gameover") {
       this.revealFrom(this.player.r, this.player.c);
     }
-  },
+  }
 
-  showItemChoiceScreen: function () {
+  showItemChoiceScreen() {
     const choices: string[] = [];
     const itemIds = this.getAvailableItems();
     while (choices.length < 3 && choices.length < itemIds.length) {
@@ -569,9 +567,9 @@ export const game: GameWithMethod = {
       }
     }
     this.currentItemChoices = choices;
-  },
+  }
 
-  gameLoop: function () {
+  gameLoop(): GameLoopResult {
     if (this.gameState === "gameover") {
       this.finalFloorNumber = this.floorNumber;
       this.finalItems = [...this.player.items];
@@ -629,25 +627,21 @@ export const game: GameWithMethod = {
       result.tutorialToShow = this.tutorialToShow;
     }
     return result;
-  },
+  }
 
   clearLastActionMessage() {
     this.lastActionMessage = "";
-  },
+  }
 
   clearUiEffect() {
     this.uiEffect = null;
-  },
+  }
 
   clearJustAcquiredItem() {
     this.justAcquiredItem = null;
-  },
+  }
 
   clearTutorial() {
     this.tutorialToShow = null;
-  },
-};
-
-export function initializeGame() {
-  Object.assign(game, getInitialGameState());
+  }
 }

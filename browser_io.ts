@@ -1,34 +1,35 @@
 /// <reference lib="dom" />
-import { DisplayState, Game, GameLoopResult, GameWithMethod, Item } from "./interfaces.ts";
+import { Game } from "./game.ts";
+import { DisplayState, GameI, GameLoopResult, Item } from "./interfaces.ts";
 import { ITEMS } from "./items.ts";
 
 let selectedChoiceIndex = 0; // For keyboard selection on item choice screen
 let selectedConfirmIndex = 0; // For keyboard selection on next floor confirmation
 const INPUT_DEBOUNCE_MS = 100; // Cooldown in ms to prevent double taps
-const lastInput: { key: string|null, time: number } = { key: null, time: 0 };
+const lastInput: { key: string | null; time: number } = { key: null, time: 0 };
 let isInputLocked = false; // Flag to prevent input race conditions
 let resizeTimeout: number; // For debouncing resize events
 
 // このモジュールで共有されるゲームインスタンス
-let gameInstance: GameWithMethod;
+let gameInstance: Game;
 
 // DOM要素を保持するオブジェクト。initDomCacheで初期化する。
 let dom: {
-    gameGrid:HTMLElement
-    controls:HTMLElement
-    itemSelectionScreen:HTMLElement
-    gameStatus:HTMLElement
-    inventoryScreen:HTMLElement
-    actionPrompt:HTMLElement
-    resultScreen:HTMLElement
-    confirmDialogScreen:HTMLElement
-    itemList:HTMLElement
-    floorNumber:HTMLElement
-    revelationStatus:HTMLElement
-    gameContainer:HTMLElement
-    resetButton:HTMLElement
-    h1:HTMLElement
-  }
+  gameGrid: HTMLElement;
+  controls: HTMLElement;
+  itemSelectionScreen: HTMLElement;
+  gameStatus: HTMLElement;
+  inventoryScreen: HTMLElement;
+  actionPrompt: HTMLElement;
+  resultScreen: HTMLElement;
+  confirmDialogScreen: HTMLElement;
+  itemList: HTMLElement;
+  floorNumber: HTMLElement;
+  revelationStatus: HTMLElement;
+  gameContainer: HTMLElement;
+  resetButton: HTMLElement;
+  h1: HTMLElement;
+};
 
 function initDomCache() {
   dom = {
@@ -69,7 +70,9 @@ function showItemDetailModal(itemId: string) {
   const existingModal = document.querySelector(".modal-overlay");
   if (existingModal) existingModal.remove();
 
-  const template = document.getElementById("template-modal-dialog") as HTMLTemplateElement;
+  const template = document.getElementById(
+    "template-modal-dialog",
+  ) as HTMLTemplateElement;
   const modal = template.content.cloneNode(true) as HTMLElement;
   const overlay = modal.querySelector(".modal-overlay");
   const button = modal.querySelector("button");
@@ -98,8 +101,10 @@ function showTutorialModal(title: string, contentText: string) {
   const existingModal = document.querySelector(".modal-overlay");
   if (existingModal) existingModal.remove();
 
-  const template = document.getElementById("template-modal-dialog") as HTMLTemplateElement;
-  const modal = template.content.cloneNode(true)as HTMLElement;
+  const template = document.getElementById(
+    "template-modal-dialog",
+  ) as HTMLTemplateElement;
+  const modal = template.content.cloneNode(true) as HTMLElement;
   const overlay = modal.querySelector(".modal-overlay")!;
   const button = modal.querySelector("button")!;
   const descriptionP = modal.querySelector("p")!;
@@ -397,7 +402,9 @@ function handleGlobalKeyboardInput(event: KeyboardEvent) {
 function processBrowserInput(input: string) {
   const actionResult = gameInstance.handleInput(input);
 
-  if ("action" in actionResult && actionResult.action === "next_floor_after_delay") {
+  if (
+    "action" in actionResult && actionResult.action === "next_floor_after_delay"
+  ) {
     gameInstance.floorNumber++;
     gameInstance.setupFloor();
   }
@@ -408,7 +415,7 @@ function updateStatusUI(displayState: DisplayState) {
   const itemCounts = (displayState.items || []).reduce((counts, id) => {
     counts[id] = (counts[id] || 0) + 1;
     return counts;
-  }, {} as ({[x: string]:number}));
+  }, {} as ({ [x: string]: number }));
 
   const itemEntries = Object.entries(itemCounts);
 
@@ -450,17 +457,19 @@ function renderConfirmDialog(message: string) {
   const screen = dom.confirmDialogScreen;
   screen.innerHTML = ""; // Clear previous content
 
-  const template = document.getElementById("template-confirm-dialog") as HTMLTemplateElement;
+  const template = document.getElementById(
+    "template-confirm-dialog",
+  ) as HTMLTemplateElement;
   const content = template.content.cloneNode(true) as HTMLElement;
 
   // Set the message
   content.querySelector(".confirm-prompt-message")!.textContent = message;
 
   // Set button actions
-  (content.querySelector('[data-choice="yes"]') as HTMLButtonElement).onclick = () =>
-    processBrowserInput("yes");
-  (content.querySelector('[data-choice="no"]') as HTMLButtonElement).onclick = () =>
-    processBrowserInput("no");
+  (content.querySelector('[data-choice="yes"]') as HTMLButtonElement).onclick =
+    () => processBrowserInput("yes");
+  (content.querySelector('[data-choice="no"]') as HTMLButtonElement).onclick =
+    () => processBrowserInput("no");
 
   // Append the template content to the screen
   screen.appendChild(content);
@@ -524,7 +533,9 @@ function runBrowserGameLoop() {
     showNotification(gameResult.message);
   }
 
-  if (gameResult.gameState != "gameover" && gameResult.uiEffect === "flash_red") {
+  if (
+    gameResult.gameState != "gameover" && gameResult.uiEffect === "flash_red"
+  ) {
     flashScreenRed();
     gameInstance.clearUiEffect();
   }
@@ -545,10 +556,10 @@ function flashScreenRed() {
 }
 
 function renderResultScreen(result: {
-        floorRevelationRates: Game["floorRevelationRates"];
-        finalFloorNumber: number;
-        finalItems: { [x: string]: number };
-      }) {
+  floorRevelationRates: GameI["floorRevelationRates"];
+  finalFloorNumber: number;
+  finalItems: { [x: string]: number };
+}) {
   document.getElementById("final-floor")!.textContent =
     `最終到達フロア: ${result.finalFloorNumber}`;
 
@@ -590,7 +601,9 @@ function renderItemSelectionScreen(choices: string[]) {
   selectedChoiceIndex = 0;
 
   if (choices) {
-    const template = document.getElementById("template-item-choice") as HTMLTemplateElement;
+    const template = document.getElementById(
+      "template-item-choice",
+    ) as HTMLTemplateElement;
     choices.forEach((id, index) => {
       const item = ITEMS[id];
       if (item) {
@@ -757,15 +770,17 @@ function handleResize() {
   }, 250); // Debounce resize events for 250ms
 }
 
-export function initBrowserGame(game: GameWithMethod, initializeGame: ()=>void) {
+export function initBrowserGame() {
   initDomCache();
-  gameInstance = game;
+  gameInstance = new Game();
   document.addEventListener("keydown", handleGlobalKeyboardInput);
   globalThis.addEventListener("resize", handleResize); // Add resize listener
   setupControlButtons();
 
   dom.itemList.addEventListener("click", (event: MouseEvent) => {
-    const itemLink = (event.target as HTMLElement).closest(".item-link") as HTMLElement;
+    const itemLink = (event.target as HTMLElement).closest(
+      ".item-link",
+    ) as HTMLElement;
     if (itemLink) {
       const itemId = itemLink.dataset.itemId;
       if (itemId) {
@@ -775,7 +790,7 @@ export function initBrowserGame(game: GameWithMethod, initializeGame: ()=>void) 
   });
 
   dom.resetButton.addEventListener("click", () => {
-    initializeGame();
+    gameInstance.resetGame();
     gameInstance.setupFloor();
     runBrowserGameLoop();
     document.querySelectorAll(".control-btn").forEach((b) => {

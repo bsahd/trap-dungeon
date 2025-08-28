@@ -1,3 +1,5 @@
+import { Game } from "./game.ts";
+
 export interface Cell {
   isTrap: boolean;
   isRevealed: boolean;
@@ -6,7 +8,7 @@ export interface Cell {
   isObscured: boolean;
   itemId?: string;
 }
-export interface Game {
+export interface GameI {
   player: { r: number; c: number; items: string[] };
   rows: number;
   cols: number;
@@ -36,7 +38,7 @@ export interface Game {
 
 export interface DisplayState {
   grid: Cell[][];
-  gameState: Game["gameState"];
+  gameState: GameI["gameState"];
   player: { r: number; c: number };
   exit: { r: number; c: number };
   floorNumber: number;
@@ -53,7 +55,7 @@ export interface Item {
   minFloor: number;
   maxFloor: number;
   use?: (
-    game: Game | GameWithMethod,
+    game: Game,
   ) => { consumed: boolean; message?: string };
 }
 export type GameLoopResult =
@@ -77,7 +79,7 @@ export type GameLoopResult =
     } | {
       gameState: "gameover";
       result: {
-        floorRevelationRates: Game["floorRevelationRates"];
+        floorRevelationRates: GameI["floorRevelationRates"];
         finalFloorNumber: number;
         finalItems: { [x: string]: number };
       };
@@ -85,27 +87,4 @@ export type GameLoopResult =
   );
 export interface Items {
   [itemname: string]: Item;
-}
-
-export interface GameWithMethod extends Game {
-  uiEffect: string | null;
-  getAvailableItems(): string[];
-  generateGrid(): void;
-  placeTraps(trapCount: number): void;
-  calculateNumbers(): void;
-  revealFrom(r: number, c: number): void;
-  toggleFlag(r: number, c: number): void;
-  setupFloor(): void;
-  showItemChoiceScreen(): void;
-  hasItem(itemToUseId: string): boolean;
-  gameLoop(): GameLoopResult;
-  processPlayerLocation(): void;
-  getDisplayState(): DisplayState;
-  clearLastActionMessage(): void;
-  clearUiEffect(): void;
-  clearJustAcquiredItem(): void;
-  clearTutorial(): void;
-  calculateRevelationRate(): number;
-  handleInput(key: string): {action:string}|GameLoopResult;
-  REVELATION_THRESHOLD: number;
 }

@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { ITEMS } from "./items.ts";
-import { Game } from "./interfaces.ts";
+import { GameI } from "./interfaces.ts";
 
 describe("items.js", () => {
-  let mockGame: Game;
+  let mockGame: GameI;
 
   // 各テストの前に、基本的なモックのgameオブジェクトを作成する
   beforeEach(() => {
