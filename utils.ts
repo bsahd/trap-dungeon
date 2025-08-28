@@ -1,4 +1,4 @@
-export function getLineCells(r0, c0, r1, c1) {
+export function getLineCells(r0: number, c0: number, r1: number, c1: number) {
   const cells = [];
   const dc = Math.abs(c1 - c0);
   const dr = -Math.abs(r1 - r0);
@@ -22,11 +22,11 @@ export function getLineCells(r0, c0, r1, c1) {
   return cells;
 }
 
-export function isValidCell(r, c, rows, cols) {
+export function isValidCell(r: number, c: number, rows: number, cols: number) {
   return r >= 0 && r < rows && c >= 0 && c < cols;
 }
 
-export function getEightDirectionsNeighbors(r, c, rows, cols) {
+export function getEightDirectionsNeighbors(r: number, c: number, rows: number, cols: number) {
   const neighbors = [];
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) {
@@ -41,7 +41,7 @@ export function getEightDirectionsNeighbors(r, c, rows, cols) {
   return neighbors;
 }
 
-export function forEachCell(grid, callback) {
+export function forEachCell(grid: number[][], callback: (a:number,b:number,c:number)=>any) {
   const rows = grid.length;
   if (rows === 0) return;
   const cols = grid[0].length;

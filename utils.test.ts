@@ -1,5 +1,5 @@
 
-import { jest } from '@jest/globals';
+import { jest, describe, expect, test } from '@jest/globals';
 import {
   isValidCell,
   getEightDirectionsNeighbors,
@@ -7,7 +7,7 @@ import {
   isSolvable,
   isGoalInitiallyVisible,
   getLineCells
-} from './utils.js';
+} from './utils.ts';
 
 describe('utils.js', () => {
 

@@ -1,15 +1,9 @@
-import { jest } from '@jest/globals';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { initBrowserGame } from './browser_io.js';
+import { jest, describe, beforeEach, expect, test } from '@jest/globals';
+import { initBrowserGame } from './browser_io.ts';
 
-// ESM環境で__dirnameの代わり
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // HTMLファイルを読み込み、DOMをセットアップ
-const html = fs.readFileSync(path.resolve(__dirname, './index.html'), 'utf8');
+const html = Deno.readTextFileSync(import.meta.resolve('./index.html'));
 
 describe('browser_io with Dependency Injection', () => {
   let mockGame;

@@ -1,4 +1,5 @@
-import { getEightDirectionsNeighbors, getLineCells, isValidCell, forEachCell } from './utils.js';
+import { getEightDirectionsNeighbors, getLineCells, isValidCell, forEachCell } from './utils.ts';
+import {Game} from './interfaces.ts'
 
 export const ITEMS = {
   // 通常アイテム (F1+)
@@ -8,7 +9,7 @@ export const ITEMS = {
     key: 'r',
     minFloor: 1,
     maxFloor: Infinity,
-    use: function(game) {
+    use: function(game: Game) {
       const neighborsToReveal = getEightDirectionsNeighbors(game.player.r, game.player.c, game.rows, game.cols);
       for (const neighbor of neighborsToReveal) {
         const cell = game.grid[neighbor.r][neighbor.c];
@@ -35,7 +36,7 @@ export const ITEMS = {
     key: 't',
     minFloor: 1,
     maxFloor: 10,
-    use: function(game) {
+    use: function(game: Game) {
       const neighborsForTrapCheck = getEightDirectionsNeighbors(game.player.r, game.player.c, game.rows, game.cols);
       const trapsInVicinity = neighborsForTrapCheck.filter(cellPos => game.grid[cellPos.r][cellPos.c].isTrap);
 
@@ -55,7 +56,7 @@ export const ITEMS = {
     key: 'e',
     minFloor: 1,
     maxFloor: 8,
-    use: function(game) {
+    use: function(game: Game) {
       if (!game.exitRevealedThisFloor) {
         game.exitRevealedThisFloor = true;
         return { consumed: true };
@@ -69,7 +70,7 @@ export const ITEMS = {
     key: 'j',
     minFloor: 1,
     maxFloor: Infinity,
-    use: function(game) {
+    use: function(game: Game) {
       game.gameState = 'jumping_direction';
       return { consumed: false };
     }
@@ -81,7 +82,7 @@ export const ITEMS = {
     key: 'c',
     minFloor: 5,
     maxFloor: Infinity,
-    use: function(game) {
+    use: function(game: Game) {
       game.gameState = 'recon_direction';
       return { consumed: false };
     }
@@ -92,7 +93,7 @@ export const ITEMS = {
     key: 'g',
     minFloor: 5,
     maxFloor: Infinity,
-    use: function(game) {
+    use: function(game: Game) {
       const path = getLineCells(game.player.r, game.player.c, game.exit.r, game.exit.c);
       if (path && path.length > 0) {
         path.forEach(pos => {
@@ -114,7 +115,7 @@ export const ITEMS = {
     key: 'x',
     minFloor: 5,
     maxFloor: Infinity,
-    use: function(game) {
+    use: function(game: Game) {
       const cellsToReveal = getEightDirectionsNeighbors(game.exit.r, game.exit.c, game.rows, game.cols);
       cellsToReveal.push({ r: game.exit.r, c: game.exit.c });
 
@@ -146,7 +147,7 @@ export const ITEMS = {
     key: 'p',
     minFloor: 10,
     maxFloor: Infinity,
-    use: function(game) {
+    use: function(game: Game) {
       for (let i = -2; i <= 2; i++) {
         for (let j = -2; j <= 2; j++) {
           const nR = game.player.r + i;
@@ -165,7 +166,7 @@ export const ITEMS = {
     key: 'k',
     minFloor: 10,
     maxFloor: Infinity,
-    use: function(game) {
+    use: function(game: Game) {
       // 1. 出口とアイテムマスの隣接マスを「罠配置禁止ゾーン」として定義
       const protectedCells = [];
       forEachCell(game.grid, (cell, r, c) => {

@@ -1,11 +1,11 @@
-import { ITEMS } from './items.js';
+import { ITEMS } from './items.ts';
 import {
   isValidCell,
   getEightDirectionsNeighbors,
   forEachCell,
   isSolvable,
   isGoalInitiallyVisible
-} from './utils.js';
+} from './utils.ts';
 
 const getInitialGameState = () => ({
   grid: [],
