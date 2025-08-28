@@ -1,11 +1,10 @@
-import { jest, describe, beforeEach, expect, test } from '@jest/globals';
-import { initBrowserGame } from './browser_io.ts';
-
+import { beforeEach, describe, expect, jest, test } from "@jest/globals";
+import { initBrowserGame } from "./browser_io.ts";
 
 // HTMLファイルを読み込み、DOMをセットアップ
-const html = Deno.readTextFileSync(import.meta.resolve('./index.html'));
+const html = Deno.readTextFileSync(import.meta.resolve("./index.html"));
 
-describe('browser_io with Dependency Injection', () => {
+describe("browser_io with Dependency Injection", () => {
   let mockGame;
   let mockInitializeGame;
   let mockDisplayState;
@@ -27,15 +26,29 @@ describe('browser_io with Dependency Injection', () => {
       calculateRevelationRate: jest.fn(),
       setupFloor: jest.fn(),
       player: { items: [] },
-      gameState: 'playing',
+      gameState: "playing",
       REVELATION_THRESHOLD: 0.5,
     };
 
     // モックのデフォルトの戻り値を設定
     mockDisplayState = {
       grid: [
-        [{ isRevealed: true, adjacentTraps: 1, isTrap: false, hasItem: false, isFlagged: false }, { isRevealed: false, isFlagged: false, isTrap: false, hasItem: false }],
-        [{ isRevealed: false, isFlagged: true, isTrap: false, hasItem: false }, { isRevealed: true, adjacentTraps: 0, isTrap: false, hasItem: false }],
+        [{
+          isRevealed: true,
+          adjacentTraps: 1,
+          isTrap: false,
+          hasItem: false,
+          isFlagged: false,
+        }, {
+          isRevealed: false,
+          isFlagged: false,
+          isTrap: false,
+          hasItem: false,
+        }],
+        [
+          { isRevealed: false, isFlagged: true, isTrap: false, hasItem: false },
+          { isRevealed: true, adjacentTraps: 0, isTrap: false, hasItem: false },
+        ],
       ],
       player: { r: 0, c: 0 },
       exit: { r: 1, c: 1 },
@@ -44,14 +57,14 @@ describe('browser_io with Dependency Injection', () => {
       exitRevealedThisFloor: false,
     };
     mockGame.getDisplayState.mockReturnValue(mockDisplayState);
-    mockGame.gameLoop.mockReturnValue({ 
-        displayState: mockDisplayState, 
-        gameState: 'playing' 
+    mockGame.gameLoop.mockReturnValue({
+      displayState: mockDisplayState,
+      gameState: "playing",
     });
     mockGame.calculateRevelationRate.mockReturnValue(0.6);
   });
 
-  test('initBrowserGame should set up the game and event listeners', () => {
+  test("initBrowserGame should set up the game and event listeners", () => {
     // Act: モックを注入してゲームを初期化
     initBrowserGame(mockGame, mockInitializeGame);
 
@@ -59,7 +72,7 @@ describe('browser_io with Dependency Injection', () => {
     expect(mockGame.setupFloor).toHaveBeenCalledTimes(1);
 
     // Assert: リセットボタンをクリックすると、モック関数が呼ばれるか
-    const resetButton = document.getElementById('btn-reset');
+    const resetButton = document.getElementById("btn-reset");
     expect(resetButton).not.toBeNull();
     resetButton.click();
 
@@ -68,26 +81,29 @@ describe('browser_io with Dependency Injection', () => {
     expect(mockGame.setupFloor).toHaveBeenCalledTimes(2);
   });
 
-  test('keyboard input should call handleInput on the game instance', () => {
+  test("keyboard input should call handleInput on the game instance", () => {
     // Arrange
     initBrowserGame(mockGame, mockInitializeGame);
 
     // Act: 'd'キーの押下をシミュレート
-    const event = new KeyboardEvent('keydown', { key: 'd' });
+    const event = new KeyboardEvent("keydown", { key: "d" });
     document.dispatchEvent(event);
 
     // Assert: 対応するゲーム入力関数が呼ばれたか
-    expect(mockGame.handleInput).toHaveBeenCalledWith('d');
+    expect(mockGame.handleInput).toHaveBeenCalledWith("d");
   });
 
-  test('grid cell click should call toggleFlag', () => {
+  test("grid cell click should call toggleFlag", () => {
     // Arrange
     // runBrowserGameLoopを一度実行してグリッドを描画させる
-    mockGame.gameLoop.mockReturnValueOnce({ displayState: mockDisplayState, gameState: 'playing' });
+    mockGame.gameLoop.mockReturnValueOnce({
+      displayState: mockDisplayState,
+      gameState: "playing",
+    });
     initBrowserGame(mockGame, mockInitializeGame);
 
     // Act: 2番目のセル（フラグが立っていない）をクリック
-    const cell = document.querySelectorAll('.game-cell')[1];
+    const cell = document.querySelectorAll(".game-cell")[1];
     cell.click();
 
     // Assert: toggleFlagが正しい座標(r=0, c=1)で呼ばれたか

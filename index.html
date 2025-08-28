@@ -1,66 +1,66 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trap Dungeon</title>
     <link rel="stylesheet" href="style.css">
-</head>
-<body data-game-state="playing">
+  </head>
+  <body data-game-state="playing">
     <div id="game-wrapper">
-        <h1>Trap Dungeon</h1>
-        <div id="game-container">
-            <div id="game-status">
-                <div id="status-main">
-                    <span id="floor-number"></span>
-                    <span id="revelation-status"></span>
-                </div>
-                <div id="item-list"></div>
-            </div>
-            <div id="game-grid"></div>
-            <div id="action-prompt"></div>
-            <div id="controls"></div>
+      <h1>Trap Dungeon</h1>
+      <div id="game-container">
+        <div id="game-status">
+          <div id="status-main">
+            <span id="floor-number"></span>
+            <span id="revelation-status"></span>
+          </div>
+          <div id="item-list"></div>
         </div>
+        <div id="game-grid"></div>
+        <div id="action-prompt"></div>
+        <div id="controls"></div>
+      </div>
 
-        <!-- Full-screen overlays -->
-        <div id="item-selection-screen" class="screen"></div>
-        <div id="inventory-screen" class="screen"></div>
-        <div id="confirm-dialog-screen" class="screen"></div>
-        <div id="result-screen" class="screen">
-            <h2>Game Over</h2>
-            <div id="final-floor"></div>
-            <div id="final-items"></div>
-            <div id="floor-revelation-rates"></div>
-            <button id="btn-reset">もう一度プレイ</button>
-        </div>
+      <!-- Full-screen overlays -->
+      <div id="item-selection-screen" class="screen"></div>
+      <div id="inventory-screen" class="screen"></div>
+      <div id="confirm-dialog-screen" class="screen"></div>
+      <div id="result-screen" class="screen">
+        <h2>Game Over</h2>
+        <div id="final-floor"></div>
+        <div id="final-items"></div>
+        <div id="floor-revelation-rates"></div>
+        <button id="btn-reset">もう一度プレイ</button>
+      </div>
     </div>
 
     <!-- Templates for dynamic content -->
     <template id="template-confirm-dialog">
-    <div class="confirm-prompt-message"></div>
-    <div class="confirm-buttons">
+      <div class="confirm-prompt-message"></div>
+      <div class="confirm-buttons">
         <button class="confirm-btn" data-choice="yes">はい</button>
         <button class="confirm-btn" data-choice="no">いいえ</button>
-    </div>
-</template>
+      </div>
+    </template>
 
     <template id="template-item-choice">
-        <button class="item-choice-btn">
-            <strong></strong>
-            <span></span>
-        </button>
+      <button class="item-choice-btn">
+        <strong></strong>
+        <span></span>
+      </button>
     </template>
 
     <template id="template-modal-dialog">
-        <div class="modal-overlay">
-            <div class="modal-content">
-                <h3></h3>
-                <p></p>
-                <button>閉じる</button>
-            </div>
+      <div class="modal-overlay">
+        <div class="modal-content">
+          <h3></h3>
+          <p></p>
+          <button>閉じる</button>
         </div>
+      </div>
     </template>
 
-    <script type="module" src="browser_main.js"></script>
-</body>
+    <script type="module" src="browser_bundled.js"></script>
+  </body>
 </html>

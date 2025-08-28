@@ -1,2 +1,2 @@
-import { initConsoleGame } from './console_io.ts';
+import { initConsoleGame } from "./console_io.ts";
 initConsoleGame();

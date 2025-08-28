@@ -1,3 +1,5 @@
+import { Cell } from "./interfaces.ts";
+
 export function getLineCells(r0: number, c0: number, r1: number, c1: number) {
   const cells = [];
   const dc = Math.abs(c1 - c0);
@@ -26,7 +28,12 @@ export function isValidCell(r: number, c: number, rows: number, cols: number) {
   return r >= 0 && r < rows && c >= 0 && c < cols;
 }
 
-export function getEightDirectionsNeighbors(r: number, c: number, rows: number, cols: number) {
+export function getEightDirectionsNeighbors(
+  r: number,
+  c: number,
+  rows: number,
+  cols: number,
+) {
   const neighbors = [];
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) {
@@ -41,7 +48,10 @@ export function getEightDirectionsNeighbors(r: number, c: number, rows: number, 
   return neighbors;
 }
 
-export function forEachCell(grid: number[][], callback: (a:number,b:number,c:number)=>any) {
+export function forEachCell<T>(
+  grid: T[][],
+  callback: (a: T, b: number, c: number) => void,
+) {
   const rows = grid.length;
   if (rows === 0) return;
   const cols = grid[0].length;
@@ -52,14 +62,24 @@ export function forEachCell(grid: number[][], callback: (a:number,b:number,c:num
   }
 }
 
-export function isSolvable(grid, startR, startC, endR, endC) {
+export function isSolvable(
+  grid: Cell[][],
+  startR: number,
+  startC: number,
+  endR: number,
+  endC: number,
+) {
   const rows = grid.length;
   const cols = grid[0].length;
   const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
   const queue = [{ r: startR, c: startC }];
 
-  if (!isValidCell(startR, startC, rows, cols) || grid[startR][startC].isTrap) return false;
-  if (!isValidCell(endR, endC, rows, cols) || grid[endR][endC].isTrap) return false;
+  if (!isValidCell(startR, startC, rows, cols) || grid[startR][startC].isTrap) {
+    return false;
+  }
+  if (!isValidCell(endR, endC, rows, cols) || grid[endR][endC].isTrap) {
+    return false;
+  }
 
   visited[startR][startC] = true;
 
@@ -67,7 +87,7 @@ export function isSolvable(grid, startR, startC, endR, endC) {
   const dc = [0, 0, -1, 1];
 
   while (queue.length > 0) {
-    const { r, c } = queue.shift();
+    const { r, c } = queue.shift() as { r: number; c: number };
 
     if (r === endR && c === endC) {
       return true;
@@ -77,7 +97,10 @@ export function isSolvable(grid, startR, startC, endR, endC) {
       const nr = r + dr[i];
       const nc = c + dc[i];
 
-      if (isValidCell(nr, nc, rows, cols) && !visited[nr][nc] && !grid[nr][nc].isTrap) {
+      if (
+        isValidCell(nr, nc, rows, cols) && !visited[nr][nc] &&
+        !grid[nr][nc].isTrap
+      ) {
         visited[nr][nc] = true;
         queue.push({ r: nr, c: nc });
       }
@@ -86,40 +109,49 @@ export function isSolvable(grid, startR, startC, endR, endC) {
   return false;
 }
 
-export function isGoalInitiallyVisible(grid, startR, startC, exitR, exitC) {
-    const rows = grid.length;
-    const cols = grid[0].length;
-    const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
-    const queue = [{ r: startR, c: startC }];
+export function isGoalInitiallyVisible(
+  grid: Cell[][],
+  startR: number,
+  startC: number,
+  exitR: number,
+  exitC: number,
+) {
+  const rows = grid.length;
+  const cols = grid[0].length;
+  const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
+  const queue = [{ r: startR, c: startC }];
 
-    if (startR === exitR && startC === exitC) return true; // Player starts on exit
+  if (startR === exitR && startC === exitC) return true; // Player starts on exit
 
-    visited[startR][startC] = true;
+  visited[startR][startC] = true;
 
-    const dr = [-1, -1, -1, 0, 0, 1, 1, 1]; // 8 directions
-    const dc = [-1, 0, 1, -1, 1, -1, 0, 1];
+  const dr = [-1, -1, -1, 0, 0, 1, 1, 1]; // 8 directions
+  const dc = [-1, 0, 1, -1, 1, -1, 0, 1];
 
-    while (queue.length > 0) {
-        const { r, c } = queue.shift();
+  while (queue.length > 0) {
+    const { r, c } = queue.shift() as { r: number; c: number };
 
-        const neighbors = getEightDirectionsNeighbors(r, c, rows, cols);
-        if (neighbors.some(n => n.r === exitR && n.c === exitC)) {
-            return true; // Exit is visible!
-        }
-
-        if (grid[r][c].adjacentTraps > 0 && !(r === startR && c === startC)) {
-            continue;
-        }
-
-        for (let i = 0; i < 8; i++) { // Check all 8 neighbors for cascade
-            const nr = r + dr[i];
-            const nc = c + dc[i];
-
-            if (isValidCell(nr, nc, rows, cols) && !visited[nr][nc] && !grid[nr][nc].isTrap) {
-                visited[nr][nc] = true;
-                queue.push({ r: nr, c: nc });
-            }
-        }
+    const neighbors = getEightDirectionsNeighbors(r, c, rows, cols);
+    if (neighbors.some((n) => n.r === exitR && n.c === exitC)) {
+      return true; // Exit is visible!
     }
-    return false; // Exit is not visible
+
+    if (grid[r][c].adjacentTraps > 0 && !(r === startR && c === startC)) {
+      continue;
+    }
+
+    for (let i = 0; i < 8; i++) { // Check all 8 neighbors for cascade
+      const nr = r + dr[i];
+      const nc = c + dc[i];
+
+      if (
+        isValidCell(nr, nc, rows, cols) && !visited[nr][nc] &&
+        !grid[nr][nc].isTrap
+      ) {
+        visited[nr][nc] = true;
+        queue.push({ r: nr, c: nc });
+      }
+    }
+  }
+  return false; // Exit is not visible
 }
