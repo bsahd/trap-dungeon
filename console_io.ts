@@ -17,7 +17,7 @@ function clear() {
   console.clear();
 }
 
-function prompt(promptText: string, callback:(answer: string) => void) {
+function prompt(promptText: string, callback: (answer: string) => void) {
   rl.question(promptText, callback);
 }
 
