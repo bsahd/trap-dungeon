@@ -342,8 +342,6 @@ function handleGlobalKeyboardInput(event: KeyboardEvent) {
     case "ArrowRight":
       key = "d";
       break;
-    default:
-      return;
   }
 
   let handled = true;
