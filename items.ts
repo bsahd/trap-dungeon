@@ -9,8 +9,11 @@ import { Cell, Items } from "./interfaces.ts";
 export const ITEMS: Items = {
   // 通常アイテム (F1+)
   reveal_one_trap: {
-    name: "千里眼の巻物",
-    description: "プレイヤーの周囲8マスにある罠をすべて明らかにする。",
+    name: { ja: "千里眼の巻物", en: "Scroll of Clairvoyance" },
+    description: {
+      ja: "プレイヤーの周囲8マスにある罠をすべて明らかにする。",
+      en: "Reveals all traps within 8 squares of the player.",
+    },
     key: "r",
     minFloor: 1,
     maxFloor: Infinity,
@@ -36,15 +39,22 @@ export const ITEMS: Items = {
     },
   },
   trap_shield: {
-    name: "鉄の心臓",
-    description: "罠を踏んだ時に1度だけ身代わりになる。(パッシブ)",
+    name: { ja: "鉄の心臓", en: "Heart of Iron" },
+    description: {
+      ja: "罠を踏んだ時に1度だけ身代わりになる。(パッシブ)",
+      en:
+        "When stepping on a trap, you can become a substitute once. (Passive)",
+    },
     key: null,
     minFloor: 1,
     maxFloor: Infinity,
   },
   reduce_traps: {
-    name: "解体の手引き",
-    description: "ランダムな罠1つを無効化する。",
+    name: { ja: "解体の手引き", en: "Disassembly Guide" },
+    description: {
+      ja: "ランダムな罠1つを無効化する。",
+      en: "Disables one random trap.",
+    },
     key: "t",
     minFloor: 1,
     maxFloor: 10,
@@ -73,8 +83,11 @@ export const ITEMS: Items = {
     },
   },
   reveal_exit: {
-    name: "出口の地図",
-    description: "現在のフロアの出口(E)の位置を明らかにする。",
+    name: { ja: "出口の地図", en: "Map of Exit" },
+    description: {
+      ja: "現在のフロアの出口(E)の位置を明らかにする。",
+      en: "Reveal the location of exit(E) on the current floor.",
+    },
     key: "e",
     minFloor: 1,
     maxFloor: 8,
@@ -87,8 +100,12 @@ export const ITEMS: Items = {
     },
   },
   long_jump: {
-    name: "跳躍のブーツ",
-    description: "指定した方向に1マス飛び越えて、2マス先に進む。",
+    name: { ja: "跳躍のブーツ", en: "Jumping Boots" },
+    description: {
+      ja: "指定した方向に1マス飛び越えて、2マス先に進む。",
+      en:
+        "Jump one square in the specified direction and move two squares forward.",
+    },
     key: "j",
     minFloor: 1,
     maxFloor: Infinity,
@@ -99,9 +116,13 @@ export const ITEMS: Items = {
   },
   // 拡張アイテム (F5+)
   recon_drone: {
-    name: "偵察ドローン",
-    description:
-      "使用時、上下左右のいずれかの方向を指定する。ドローンがその方向へ一直線に飛び、通路（数字が書かれたマス）を次々と開示していく。もし進路上に罠があった場合、その罠を開示して停止する。",
+    name: { ja: "偵察ドローン", en: "Reconnaissance Drone" },
+    description: {
+      ja:
+        "使用時、上下左右のいずれかの方向を指定する。ドローンがその方向へ一直線に飛び、通路（数字が書かれたマス）を次々と開示していく。もし進路上に罠があった場合、その罠を開示して停止する。",
+      en:
+        "When used, you can choose a direction: up, down, left, or right. The drone will fly in a straight line in that direction, revealing passages (squares with numbers written on them) one after another. If there is a trap in its path, it will reveal the trap and stop.",
+    },
     key: "c",
     minFloor: 5,
     maxFloor: Infinity,
@@ -111,9 +132,13 @@ export const ITEMS: Items = {
     },
   },
   ariadnes_thread: {
-    name: "アリアドネの糸",
-    description:
-      "使用すると、プレイヤーから出口までの「最短経路」がマップ上に示される。経路上のマスはすべて開示されるが、そこにある罠もすべて表示される。",
+    name: { ja: "アリアドネの糸", en: "Ariadne's Thread" },
+    description: {
+      ja:
+        "使用すると、プレイヤーから出口までの「最短経路」がマップ上に示される。経路上のマスはすべて開示されるが、そこにある罠もすべて表示される。",
+      en:
+        'When used, the "shortest path" from the player to the exit is displayed on the map, revealing all squares along the path, including any traps.',
+    },
     key: "g",
     minFloor: 5,
     maxFloor: Infinity,
@@ -139,9 +164,13 @@ export const ITEMS: Items = {
     },
   },
   detailed_map_of_exit: {
-    name: "詳細な出口の地図",
-    description:
-      "出口の位置を明らかにすると同時に、出口に隣接する周囲8マスの状態もすべて開示する。",
+    name: { ja: "詳細な出口の地図", en: "Detailed exit map" },
+    description: {
+      ja:
+        "出口の位置を明らかにすると同時に、出口に隣接する周囲8マスの状態もすべて開示する。",
+      en:
+        "When revealing the location of the exit, the state of all eight squares surrounding the exit is also revealed.",
+    },
     key: "x",
     minFloor: 5,
     maxFloor: Infinity,
@@ -181,9 +210,11 @@ export const ITEMS: Items = {
   },
   // 上位アイテム (F10+)
   philosophers_stone: {
-    name: "賢者の石",
-    description:
-      "使用すると、プレイヤーの周囲5x5の広大な範囲を一度に開示する。",
+    name: { ja: "賢者の石", en: "Philosopher's Stone" },
+    description: {
+      ja: "使用すると、プレイヤーの周囲5x5の広大な範囲を一度に開示する。",
+      en: "When used, it reveals a vast 5x5 area around the player at once.",
+    },
     key: "p",
     minFloor: 10,
     maxFloor: Infinity,
@@ -203,9 +234,13 @@ export const ITEMS: Items = {
     },
   },
   scroll_of_chaos: {
-    name: "無秩序の巻物",
-    description:
-      "使用すると、まだ開示もフラグもされていない全てのマスで、罠の配置をシャッフル（再配置）する。罠の総数は変わらない。",
+    name: { ja: "無秩序の巻物", en: "Scroll of Chaos" },
+    description: {
+      ja:
+        "使用すると、まだ開示もフラグもされていない全てのマスで、罠の配置をシャッフル（再配置）する。罠の総数は変わらない。",
+      en:
+        "When used, it shuffles (rearranges) trap placements on all squares that have not yet been revealed or flagged, but the total number of traps remains the same.",
+    },
     key: "k",
     minFloor: 10,
     maxFloor: Infinity,

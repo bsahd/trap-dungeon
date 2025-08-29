@@ -49,8 +49,8 @@ export interface DisplayState {
 }
 
 export interface Item {
-  name: string;
-  description: string;
+  name: { ja: string; en: string };
+  description: { ja: string; en: string };
   key: string | null;
   minFloor: number;
   maxFloor: number;
