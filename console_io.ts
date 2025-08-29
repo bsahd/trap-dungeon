@@ -105,7 +105,7 @@ function runConsoleGameLoop() {
     print(gameResult.message);
   }
   if (gameResult.lastActionMessage) {
-    print(gameResult.lastActionMessage);
+    print(gameResult.lastActionMessage.en);
     game.clearLastActionMessage();
   }
 
