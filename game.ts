@@ -616,7 +616,7 @@ export class Game implements GameI {
     } else if (this.gameState === "recon_direction") {
       message = "Recon direction (w/a/s/d):";
     } else if (this.gameState === "confirm_next_floor") {
-      message = "次のフロアに進みますか？";
+      message = "Go next floor?";
     }
     const result: GameLoopResult = {
       displayState: this.getDisplayState(),
