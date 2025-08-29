@@ -48,9 +48,9 @@ export interface DisplayState {
   exitRevealedThisFloor: boolean;
 }
 
-export interface MultilingualText{
-  ja:string,
-  en:string
+export interface MultilingualText {
+  ja: string;
+  en: string;
 }
 
 export interface Item {

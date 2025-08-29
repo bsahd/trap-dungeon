@@ -10,7 +10,10 @@
     <div id="game-wrapper">
       <h1>bsahd/trap-dungeon</h1>
       <div id="game-container">
-        <div id="game-language">Language: <button type="button" id="lang-choose-ja">日本語</button><button type="button" id="lang-choose-en">English</button></div>
+        <div id="game-language">
+          Language: <button type="button" id="lang-choose-ja">日本語</button>
+          <button type="button" id="lang-choose-en">English</button>
+        </div>
         <div id="game-status">
           <div id="status-main">
             <span id="floor-number"></span>
@@ -40,8 +43,12 @@
     <template id="template-confirm-dialog">
       <div class="confirm-prompt-message"></div>
       <div class="confirm-buttons">
-        <button class="confirm-btn i18n-target-yes" data-choice="yes">[i18n target: yes]</button>
-        <button class="confirm-btn i18n-target-no" data-choice="no">[i18n target: no]</button>
+        <button class="confirm-btn i18n-target-yes" data-choice="yes">
+          [i18n target: yes]
+        </button>
+        <button class="confirm-btn i18n-target-no" data-choice="no">
+          [i18n target: no]
+        </button>
       </div>
     </template>
 

@@ -19,52 +19,52 @@ export const UI_TEXT = {
     ja: "所持アイテム",
     en: "Possessed items",
   },
-  floorDisclosureRate:{
-    ja:"各フロアの開示率",
-    en:"Disclosure rate for each floor"
+  floorDisclosureRate: {
+    ja: "各フロアの開示率",
+    en: "Disclosure rate for each floor",
   },
-  floor:{
-    ja:"フロア",
-    en:"Floor"
+  floor: {
+    ja: "フロア",
+    en: "Floor",
   },
-  chooseReward:{
-    ja:"フロアをクリアしました!報酬を選択してください",
-    en:"Floor Cleared! Choose a reward"
+  chooseReward: {
+    ja: "フロアをクリアしました!報酬を選択してください",
+    en: "Floor Cleared! Choose a reward",
   },
-  none:{
-    ja:"なし",
-    en:"None"
+  none: {
+    ja: "なし",
+    en: "None",
   },
-  noUsableItem:{
-    ja:"使用できるアイテムがありません。",
-    en:"No Usable Items."
+  noUsableItem: {
+    ja: "使用できるアイテムがありません。",
+    en: "No Usable Items.",
   },
-  useItem:{
-    ja:"アイテムを使用する",
-    en:"Use Item"
+  useItem: {
+    ja: "アイテムを使用する",
+    en: "Use Item",
   },
-  viewDetail:{
-    ja:(itemName:string)=>itemName+"の詳細を見る",
-    en:(itemName:string)=>"View details of "+itemName
+  viewDetail: {
+    ja: (itemName: string) => itemName + "の詳細を見る",
+    en: (itemName: string) => "View details of " + itemName,
   },
-  close:{
-    ja:"閉じる",
-    en:"Close"
+  close: {
+    ja: "閉じる",
+    en: "Close",
   },
-  yes:{
-    ja:"はい",
-    en:"Yes"
+  yes: {
+    ja: "はい",
+    en: "Yes",
   },
-  no:{
-    ja:"いいえ",
-    en:"No"
+  no: {
+    ja: "いいえ",
+    en: "No",
   },
-  playAgain:{
-    ja:"もう一度プレイする",
-    en:"Play Again"
+  playAgain: {
+    ja: "もう一度プレイする",
+    en: "Play Again",
   },
-  gameOver:{
-    ja:"ゲームオーバー",
-    en:"Game Over"
-  }
+  gameOver: {
+    ja: "ゲームオーバー",
+    en: "Game Over",
+  },
 };

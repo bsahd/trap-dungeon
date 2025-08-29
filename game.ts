@@ -420,7 +420,10 @@ export class Game implements GameI {
           break;
         default:
           this.gameState = "playing";
-          this.lastActionMessage = {ja:"偵察ドローンの使用をキャンセルしました。",en:"Cancelled the use of the recon drone."};
+          this.lastActionMessage = {
+            ja: "偵察ドローンの使用をキャンセルしました。",
+            en: "Cancelled the use of the recon drone.",
+          };
           return this.gameLoop();
       }
       if (directionChosen) {
@@ -465,7 +468,10 @@ export class Game implements GameI {
           break;
         default:
           this.gameState = "playing";
-          this.lastActionMessage = {ja:"跳躍のブーツの使用をキャンセルしました。",en:"Cancelled use of Jumping Boots."};
+          this.lastActionMessage = {
+            ja: "跳躍のブーツの使用をキャンセルしました。",
+            en: "Cancelled use of Jumping Boots.",
+          };
           return this.gameLoop();
       }
       if (jumped && isValidCell(jumpRow, jumpCol, this.rows, this.cols)) {
@@ -521,7 +527,10 @@ export class Game implements GameI {
       if (moved) {
         if (isValidCell(newRow, newCol, this.rows, this.cols)) {
           if (this.grid[newRow][newCol].isFlagged) {
-            this.lastActionMessage = {ja:"チェックしたマスには移動できません。",en:"You cannot move to a checked square."};
+            this.lastActionMessage = {
+              ja: "チェックしたマスには移動できません。",
+              en: "You cannot move to a checked square.",
+            };
             return this.gameLoop();
           }
           this.player.r = newRow;
@@ -551,11 +560,17 @@ export class Game implements GameI {
         this.calculateNumbers();
         this.revealFrom(this.player.r, this.player.c);
         this.uiEffect = "flash_red";
-        this.lastActionMessage = {ja:"鉄の心臓が身代わりになった！",en:"The Iron Heart has taken its place!"};
+        this.lastActionMessage = {
+          ja: "鉄の心臓が身代わりになった！",
+          en: "The Iron Heart has taken its place!",
+        };
       } else {
         currentCell.isRevealed = true;
         this.gameState = "gameover";
-        this.lastActionMessage = {ja:"罠を踏んでしまった！",en:"I stepped into a trap!"};
+        this.lastActionMessage = {
+          ja: "罠を踏んでしまった！",
+          en: "I stepped into a trap!",
+        };
       }
     }
     if (currentCell.itemId) {

@@ -27,7 +27,7 @@ document.getElementById("lang-choose-en")?.addEventListener("click", (e) => {
 });
 
 const searchparams = new URLSearchParams(location.search);
-const original__lang = searchparams.get("lang");
+const original__lang = searchparams.get("lang") ?? "en";
 let LANG: "ja" | "en";
 if (original__lang != "en" && original__lang != "ja") {
   alert("not supported language. continue in english.");
