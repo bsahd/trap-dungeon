@@ -342,6 +342,8 @@ function handleGlobalKeyboardInput(event: KeyboardEvent) {
     case "ArrowRight":
       key = "d";
       break;
+    default:
+      return;
   }
 
   let handled = true;
@@ -477,11 +479,10 @@ function updateStatusUI(displayState: DisplayState) {
     "status-achieved",
     "status-not-achieved",
   );
+  dom.revelationStatus.textContent = currentRevelationRate.toString();
   if (currentRevelationRate >= gameInstance.REVELATION_THRESHOLD) {
-    dom.revelationStatus.textContent = UI_TEXT.disclosureRateAchieved[LANG];
     dom.revelationStatus.classList.add("status-achieved");
   } else {
-    dom.revelationStatus.textContent = UI_TEXT.disclosureRateNotAchieved[LANG];
     dom.revelationStatus.classList.add("status-not-achieved");
   }
 }
