@@ -96,7 +96,7 @@ export const ITEMS: Items = {
         game.exitRevealedThisFloor = true;
         return { consumed: true };
       }
-      return { consumed: false, message: "出口はすでに判明している。" };
+      return { consumed: false, message: {ja:"出口はすでに判明している。",en:"The exit is already revealed."} };
     },
   },
   long_jump: {
@@ -204,7 +204,7 @@ export const ITEMS: Items = {
         return { consumed: true };
       } else {
         // 開示する新しいマスが何もない場合
-        return { consumed: false, message: "出口の周囲はすべて判明している。" };
+        return { consumed: false, message: {ja:"出口の周囲はすべて判明している。",en:"The entire area surrounding the exit is revealed."} };
       }
     },
   },

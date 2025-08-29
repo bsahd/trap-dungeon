@@ -1,4 +1,10 @@
-import { Cell, GameI, GameLoopResult, Item } from "./interfaces.ts";
+import {
+  Cell,
+  GameI,
+  GameLoopResult,
+  Item,
+  MultilingualText,
+} from "./interfaces.ts";
 import { ITEMS } from "./items.ts";
 import {
   forEachCell,
@@ -27,7 +33,7 @@ export class Game implements GameI {
   floorRevelationRates: GameI["floorRevelationRates"] = [];
   finalFloorNumber: GameI["finalFloorNumber"] = 0;
   finalItems: GameI["finalItems"] = [];
-  lastActionMessage = "";
+  lastActionMessage?: MultilingualText;
   tutorialToShow: { title: string; content: string } | null = null;
 
   resetGame() {
@@ -45,7 +51,7 @@ export class Game implements GameI {
     this.floorRevelationRates = [];
     this.finalFloorNumber = 0;
     this.finalItems = [];
-    this.lastActionMessage = "";
+    this.lastActionMessage = undefined;
     this.tutorialToShow = null;
   }
   getAvailableItems() {
@@ -364,11 +370,17 @@ export class Game implements GameI {
           rate: currentRevelationRate,
         });
         if (currentRevelationRate < this.REVELATION_THRESHOLD) {
-          this.lastActionMessage = `フロア開示率が${
-            (this.REVELATION_THRESHOLD * 100).toFixed(0)
-          }%未満のため、アイテムボーナスはありませんでした。（${
-            (currentRevelationRate * 100).toFixed(0)
-          }%）`;
+          this.lastActionMessage = {
+            ja: `フロア開示率が${
+              (this.REVELATION_THRESHOLD * 100).toFixed(0)
+            }%未満のため、アイテムボーナスはありませんでした。（${
+              (currentRevelationRate * 100).toFixed(0)
+            }%)`,
+            en:
+              `There were no item bonuses as the floor disclosure rate was less than ${
+                (this.REVELATION_THRESHOLD * 100).toFixed(0)
+              }%.${(currentRevelationRate * 100).toFixed(0)}%)`,
+          };
           this.floorNumber++;
           this.setupFloor();
         } else {
@@ -408,7 +420,7 @@ export class Game implements GameI {
           break;
         default:
           this.gameState = "playing";
-          this.lastActionMessage = "偵察ドローンの使用をキャンセルしました。";
+          this.lastActionMessage = {ja:"偵察ドローンの使用をキャンセルしました。",en:"Cancelled the use of the recon drone."};
           return this.gameLoop();
       }
       if (directionChosen) {
@@ -453,7 +465,7 @@ export class Game implements GameI {
           break;
         default:
           this.gameState = "playing";
-          this.lastActionMessage = "跳躍のブーツの使用をキャンセルしました。";
+          this.lastActionMessage = {ja:"跳躍のブーツの使用をキャンセルしました。",en:"Cancelled use of Jumping Boots."};
           return this.gameLoop();
       }
       if (jumped && isValidCell(jumpRow, jumpCol, this.rows, this.cols)) {
@@ -509,7 +521,7 @@ export class Game implements GameI {
       if (moved) {
         if (isValidCell(newRow, newCol, this.rows, this.cols)) {
           if (this.grid[newRow][newCol].isFlagged) {
-            this.lastActionMessage = "チェックしたマスには移動できません。";
+            this.lastActionMessage = {ja:"チェックしたマスには移動できません。",en:"You cannot move to a checked square."};
             return this.gameLoop();
           }
           this.player.r = newRow;
@@ -539,11 +551,11 @@ export class Game implements GameI {
         this.calculateNumbers();
         this.revealFrom(this.player.r, this.player.c);
         this.uiEffect = "flash_red";
-        this.lastActionMessage = "鉄の心臓が身代わりになった！";
+        this.lastActionMessage = {ja:"鉄の心臓が身代わりになった！",en:"The Iron Heart has taken its place!"};
       } else {
         currentCell.isRevealed = true;
         this.gameState = "gameover";
-        this.lastActionMessage = "罠を踏んでしまった！";
+        this.lastActionMessage = {ja:"罠を踏んでしまった！",en:"I stepped into a trap!"};
       }
     }
     if (currentCell.itemId) {
@@ -630,7 +642,7 @@ export class Game implements GameI {
   }
 
   clearLastActionMessage() {
-    this.lastActionMessage = "";
+    this.lastActionMessage = undefined;
   }
 
   clearUiEffect() {

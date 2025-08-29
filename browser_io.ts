@@ -545,7 +545,7 @@ function runBrowserGameLoop() {
   }
 
   if (gameResult.gameState != "gameover" && gameResult.lastActionMessage) {
-    showNotification(gameResult.lastActionMessage);
+    showNotification(gameResult.lastActionMessage[LANG]);
     gameInstance.clearLastActionMessage();
   }
 

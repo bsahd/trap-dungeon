@@ -25,7 +25,7 @@ export interface GameI {
   finalFloorNumber: number;
   finalItems: string[];
   tutorialToShow?: { title: string; content: string } | null;
-  lastActionMessage?: string;
+  lastActionMessage?: MultilingualText;
   exitRevealedThisFloor: boolean;
   gameState:
     | "playing"
@@ -48,15 +48,20 @@ export interface DisplayState {
   exitRevealedThisFloor: boolean;
 }
 
+export interface MultilingualText{
+  ja:string,
+  en:string
+}
+
 export interface Item {
-  name: { ja: string; en: string };
-  description: { ja: string; en: string };
+  name: MultilingualText;
+  description: MultilingualText;
   key: string | null;
   minFloor: number;
   maxFloor: number;
   use?: (
     game: Game,
-  ) => { consumed: boolean; message?: string };
+  ) => { consumed: boolean; message?: MultilingualText };
 }
 export type GameLoopResult =
   & {
@@ -72,7 +77,7 @@ export type GameLoopResult =
         | "recon_direction"
         | "jumping_direction";
       prompt: string;
-      lastActionMessage?: string;
+      lastActionMessage?: MultilingualText;
       uiEffect: string | null;
       newItemAcquired: (Item & { id: string }) | null;
       tutorialToShow: { title: string; content: string } | undefined;
