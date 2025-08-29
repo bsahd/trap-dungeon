@@ -46,5 +46,25 @@ export const UI_TEXT = {
   viewDetail:{
     ja:(itemName:string)=>itemName+"の詳細を見る",
     en:(itemName:string)=>"View details of "+itemName
+  },
+  close:{
+    ja:"閉じる",
+    en:"Close"
+  },
+  yes:{
+    ja:"はい",
+    en:"Yes"
+  },
+  no:{
+    ja:"いいえ",
+    en:"No"
+  },
+  playAgain:{
+    ja:"もう一度プレイする",
+    en:"Play Again"
+  },
+  gameOver:{
+    ja:"ゲームオーバー",
+    en:"Game Over"
   }
 };

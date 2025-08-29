@@ -102,6 +102,8 @@ function showItemDetailModal(itemId: string) {
   const modal = template.content.cloneNode(true) as HTMLElement;
   const overlay = modal.querySelector(".modal-overlay");
   const button = modal.querySelector("button");
+  modal.querySelector(".i18n-target-close-btn")!.textContent =
+    UI_TEXT.close[LANG];
 
   modal.querySelector("h3")!.textContent = item.name[LANG];
   modal.querySelector("p")!.textContent = item.description[LANG];
@@ -134,6 +136,8 @@ function showTutorialModal(title: string, contentText: string) {
   const overlay = modal.querySelector(".modal-overlay")!;
   const button = modal.querySelector("button")!;
   const descriptionP = modal.querySelector("p")!;
+  modal.querySelector(".i18n-target-close-btn")!.textContent =
+    UI_TEXT.close[LANG];
 
   modal.querySelector("h3")!.textContent = title;
   descriptionP.textContent = contentText;
@@ -490,6 +494,8 @@ function renderConfirmDialog(message: string) {
     "template-confirm-dialog",
   ) as HTMLTemplateElement;
   const content = template.content.cloneNode(true) as HTMLElement;
+  content.querySelector(".i18n-target-yes")!.textContent = UI_TEXT.yes[LANG];
+  content.querySelector(".i18n-target-no")!.textContent = UI_TEXT.no[LANG];
 
   // Set the message
   content.querySelector(".confirm-prompt-message")!.textContent = message;
@@ -823,6 +829,10 @@ export function initBrowserGame() {
     }
   });
 
+  document.querySelector(".i18n-target-gameOver")!.textContent =
+    UI_TEXT.gameOver[LANG];
+
+  dom.resetButton.textContent = UI_TEXT.playAgain[LANG];
   dom.resetButton.addEventListener("click", () => {
     gameInstance.resetGame();
     gameInstance.setupFloor();

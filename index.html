@@ -28,11 +28,11 @@
       <div id="inventory-screen" class="screen"></div>
       <div id="confirm-dialog-screen" class="screen"></div>
       <div id="result-screen" class="screen">
-        <h2>Game Over</h2>
+        <h2 class="i18n-target-gameOver">[i18n target: gameOver]</h2>
         <div id="final-floor"></div>
         <div id="final-items"></div>
         <div id="floor-revelation-rates"></div>
-        <button id="btn-reset">もう一度プレイ</button>
+        <button id="btn-reset">[i18n target: playAgain]</button>
       </div>
     </div>
 
@@ -40,8 +40,8 @@
     <template id="template-confirm-dialog">
       <div class="confirm-prompt-message"></div>
       <div class="confirm-buttons">
-        <button class="confirm-btn" data-choice="yes">はい</button>
-        <button class="confirm-btn" data-choice="no">いいえ</button>
+        <button class="confirm-btn i18n-target-yes" data-choice="yes">[i18n target: yes]</button>
+        <button class="confirm-btn i18n-target-no" data-choice="no">[i18n target: no]</button>
       </div>
     </template>
 
@@ -57,7 +57,7 @@
         <div class="modal-content">
           <h3></h3>
           <p></p>
-          <button>閉じる</button>
+          <button class="i18n-target-close-btn">[i18n target: close]</button>
         </div>
       </div>
     </template>
