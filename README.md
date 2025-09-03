@@ -29,4 +29,5 @@ configuration.
 2. Change current directory to repo root.
 3. Bundle script for browser:
    `deno bundle browser_main.ts -o browser_bundled.js --minify --sourcemap=linked`
+   `deno bundle preact_main.tsx -o preact_bundled.js --minify --sourcemap=linked`
 4. Start local server(static http server) and open local server's address.

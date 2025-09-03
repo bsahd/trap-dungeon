@@ -6,7 +6,8 @@
     "jsr:@std/expect@*": "1.0.17",
     "jsr:@std/internal@^1.0.10": "1.0.10",
     "npm:@jest/globals@^30.1.1": "30.1.1",
-    "npm:@types/node@*": "22.15.15"
+    "npm:@types/node@*": "22.15.15",
+    "npm:preact@^10.27.1": "10.27.1"
   },
   "jsr": {
     "@std/assert@1.0.14": {
@@ -910,6 +911,9 @@
     "pirates@4.0.7": {
       "integrity": "sha512-TfySrs/5nm8fQJDcBDuUng3VOUKsd7S+zqvbOTiGXHfxX4wK31ard+hoNuvkicM/2YFzlpDgABOevKSsB4G/FA=="
     },
+    "preact@10.27.1": {
+      "integrity": "sha512-V79raXEWch/rbqoNc7nT9E4ep7lu+mI3+sBmfRD4i1M73R3WLYcCtdI0ibxGVf4eQL8ZIz2nFacqEC+rmnOORQ=="
+    },
     "pretty-format@30.0.5": {
       "integrity": "sha512-D1tKtYvByrBkFLe2wHJl2bwMJIiT8rW+XA+TiataH79/FszLQMrpGEvzUVkzPau7OCO0Qnrhpe87PqtOAIB8Yw==",
       "dependencies": [
@@ -1020,7 +1024,8 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/assert@1",
-      "npm:@jest/globals@^30.1.1"
+      "npm:@jest/globals@^30.1.1",
+      "npm:preact@^10.27.1"
     ]
   }
 }
