@@ -36,12 +36,24 @@ export function GameStatus(
     },
     {} as ({ [x: string]: number }),
   );
+  const revelationRate = gameInstance.calculateRevelationRate();
   return (
     <div class="game-status">
-      <p class="floor-number">
-        Floor: {latestGameResult.displayState.floorNumber}
-      </p>
-      Items:
+      <div class="status-main">
+        <span class="floor-number">
+          Floor: {latestGameResult.displayState.floorNumber}
+        </span>{" "}
+        <span
+          class={revelationRate > 0.5
+            ? "status-achieved"
+            : "status-not-achieved"}
+        >
+          {revelationRate > 0.5
+            ? UI_TEXT.disclosureRateAchieved[language]
+            : UI_TEXT.disclosureRateNotAchieved[language]}
+          ({(revelationRate * 100).toFixed(0)}%)
+        </span>
+      </div>
       <ul class="item-list">
         {Object.entries(itemCounts).map((itemCount) => {
           const item = ITEMS[itemCount[0]];
