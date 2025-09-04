@@ -312,8 +312,13 @@ export function showModalDialog(
   });
 }
 
-export function GameMain() {
+export function GameMain({ debugInterface }: { debugInterface: boolean }) {
   const { current: gameInstance } = useRef(new Game());
+  useEffect(() => {
+    if (debugInterface) {
+      (globalThis as any).debugGame = gameInstance;
+    }
+  }, []);
   useEffect(() => {
     gameInstance.setupFloor();
   }, []);

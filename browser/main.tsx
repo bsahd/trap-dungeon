@@ -5,5 +5,5 @@ export type Language = "ja" | "en";
 
 globalThis.onload = () => {
   document.getElementById("root")!.innerHTML = "";
-  render(<GameMain />, document.getElementById("root")!);
+  render(<GameMain debugInterface />, document.getElementById("root")!);
 };
