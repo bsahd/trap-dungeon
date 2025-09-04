@@ -133,7 +133,7 @@ export class Game implements GameI {
       const placeableItems = allPlaceableAvailable.filter((
         id: string | number,
       ) => ITEMS[id].key !== null);
-      const numberOfItemsToPlace = 2;
+      const numberOfItemsToPlace = 2 + this.floorNumber;
 
       for (let i = 0; i < numberOfItemsToPlace; i++) {
         if (placeableItems.length > 0 && validCells.length > 0) {
