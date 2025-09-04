@@ -287,6 +287,7 @@ export function showModalDialog(
   }
   return new Promise((resolve) => {
     const modalElem = document.createElement("dialog");
+    modalElem.returnValue = "0";
     modalElem.classList.add("modal-content");
     const headingElem = document.createElement("h3");
     modalElem.appendChild(headingElem);
