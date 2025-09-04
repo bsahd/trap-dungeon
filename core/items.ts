@@ -240,6 +240,8 @@ export const ITEMS: Items = {
     minFloor: 10,
     maxFloor: Infinity,
     use: function (game) {
+      let cellRevealed = false;
+
       for (let i = -2; i <= 2; i++) {
         for (let j = -2; j <= 2; j++) {
           const nR = game.player.r + i;
@@ -247,11 +249,22 @@ export const ITEMS: Items = {
           if (
             isValidCell(nR, nC, game.rows, game.cols)
           ) {
-            game.revealFrom(nR, nC);
+            const cell = game.grid[nR][nC];
+            if (!cell.isRevealed) cellRevealed = true;
+            if (cell.isTrap) {
+              cell.isRevealed = true;
+              cell.isFlagged = true; // Mark revealed trap
+            } else {
+              game.revealFrom(nR, nC);
+            }
           }
         }
       }
-      return { consumed: true };
+      if (cellRevealed) {
+        return { consumed: true };
+      } else {
+        return { consumed: false };
+      }
     },
   },
   scroll_of_chaos: {
