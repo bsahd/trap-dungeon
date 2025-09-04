@@ -24,9 +24,10 @@ export const ITEMS: Items = {
         game.rows,
         game.cols,
       );
-
+      let cellRevealed = false;
       for (const neighbor of neighborsToReveal) {
         const cell = game.grid[neighbor.r][neighbor.c];
+        if (!cell.isRevealed) cellRevealed = true;
         if (cell.isTrap) {
           cell.isRevealed = true;
           cell.isFlagged = true; // Mark revealed trap
@@ -34,7 +35,11 @@ export const ITEMS: Items = {
           game.revealFrom(neighbor.r, neighbor.c);
         }
       }
-      return { consumed: true };
+      if (cellRevealed) {
+        return { consumed: true };
+      } else {
+        return { consumed: false };
+      }
     },
   },
   trap_shield: {
