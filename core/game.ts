@@ -25,8 +25,6 @@ export class Game implements GameI {
   currentItemChoices: GameI["currentItemChoices"] = [];
 
   floorRevelationRates: GameI["floorRevelationRates"] = [];
-  finalFloorNumber: GameI["finalFloorNumber"] = 0;
-  finalItems: GameI["finalItems"] = [];
   lastActionMessage?: MultilingualText;
   tutorialToShow: { title: string; content: string } | null = null;
 
@@ -43,8 +41,6 @@ export class Game implements GameI {
     this.justAcquiredItem = null;
     this.currentItemChoices = [];
     this.floorRevelationRates = [];
-    this.finalFloorNumber = 0;
-    this.finalItems = [];
     this.lastActionMessage = undefined;
     this.tutorialToShow = null;
   }
@@ -74,8 +70,6 @@ export class Game implements GameI {
 
     if (this.floorNumber === 1) {
       this.floorRevelationRates = [];
-      this.finalFloorNumber = 0;
-      this.finalItems = [];
     }
 
     this.rows = 8 + Math.floor(this.floorNumber / 3);
@@ -515,27 +509,25 @@ export class Game implements GameI {
 
   gameLoop(): GameLoopResult {
     if (this.gameState === "gameover") {
-      this.finalFloorNumber = this.floorNumber;
-      this.finalItems = [...this.player.items];
       return {
         displayState: this.getDisplayState(),
         message: "!!! GAME OVER !!!",
         gameState: "gameover",
         result: {
           floorRevelationRates: this.floorRevelationRates,
-          finalFloorNumber: this.finalFloorNumber,
-          finalItems: this.finalItems.reduce((counts, id) => {
+          finalFloorNumber: this.floorNumber,
+          finalItems: this.player.items.reduce((counts, id) => {
             counts[id] = (counts[id] || 0) + 1;
             return counts;
           }, {} as { [x: string]: number }),
         },
       };
     }
-    let promptText = "Move (w/a/s/d)";
+    let promptText = "Move (up/down/left/right)";
     const itemActions = this.player.items
       .map((id) => ITEMS[id])
       .filter((item) => item.key)
-      .map((item) => `${item.key}: ${item.name}`);
+      .map((item) => `${item.key}: ${item.name.en}`);
     if (itemActions.length > 0) {
       promptText += ` | Use Item (${itemActions.join(", ")})`;
     }
@@ -544,9 +536,9 @@ export class Game implements GameI {
     if (this.gameState === "choosing_item") {
       message = "Floor Cleared! Choose your reward:";
     } else if (this.gameState === "jumping_direction") {
-      message = "Jump direction (w/a/s/d):";
+      message = "Jump direction (up/down/left/right):";
     } else if (this.gameState === "recon_direction") {
-      message = "Recon direction (w/a/s/d):";
+      message = "Recon direction (up/down/left/right):";
     } else if (this.gameState === "confirm_next_floor") {
       message = "Go next floor?";
     }
@@ -557,9 +549,8 @@ export class Game implements GameI {
       lastActionMessage: this.lastActionMessage,
       uiEffect: this.uiEffect,
       gameState: this.gameState,
-      newItemAcquired: null as (Item & { id: string }) | null,
-      tutorialToShow:
-        undefined as ({ title: string; content: string } | undefined),
+      newItemAcquired: null,
+      tutorialToShow: undefined,
     };
     if (this.justAcquiredItem) {
       result.newItemAcquired = {

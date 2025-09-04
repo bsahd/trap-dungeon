@@ -21,8 +21,6 @@ export interface GameI {
     floor: number;
     rate: number;
   }[];
-  finalFloorNumber: number;
-  finalItems: string[];
   tutorialToShow?: { title: string; content: string } | null;
   lastActionMessage?: MultilingualText;
   exitRevealedThisFloor: boolean;
