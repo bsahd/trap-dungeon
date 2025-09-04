@@ -283,8 +283,6 @@ export function GameMain() {
     }
     const gameResult = gameInstance.gameLoop();
 
-    document.body.dataset.gameState = gameResult.gameState;
-
     if (gameResult.gameState != "gameover" && gameResult.newItemAcquired) {
       const item = gameResult.newItemAcquired;
       const message = `${UI_TEXT.itemAcquisition[language]}: ${
