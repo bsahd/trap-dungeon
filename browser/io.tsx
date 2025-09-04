@@ -76,6 +76,7 @@ export function GameStatus(
               {item.key !== null && (
                 <button
                   type="button"
+                  class="app-btn"
                   onClick={() => runGameLoop(item.key!)}
                 >
                   {UI_TEXT.use[language]}
