@@ -5,7 +5,6 @@ import { DisplayState, GameLoopResult } from "../core/interfaces.ts";
 import { ITEMS } from "../core/items.ts";
 import { UI_TEXT } from "../core/ui_text.ts";
 import { Language } from "./main.tsx";
-import { resolve } from "node:path";
 
 export function NotifyArea(
   { notifications }: { notifications: string[] },
