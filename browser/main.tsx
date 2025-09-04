@@ -1,7 +1,9 @@
 import { h, render } from "preact";
 import { GameMain } from "./io.tsx";
 
-window.onload = () => {
+export type Language = "ja" | "en";
+
+globalThis.onload = () => {
   document.getElementById("root")!.innerHTML = "";
   render(<GameMain />, document.getElementById("root")!);
 };

@@ -1,14 +1,14 @@
-/// <reference lib="dom" />
 import { Game } from "../game.ts";
 import { Fragment, h } from "preact";
 import { useEffect, useState } from "preact/hooks";
-import { DisplayState, GameI, GameLoopResult, Item } from "../interfaces.ts";
+import { DisplayState, GameLoopResult } from "../interfaces.ts";
 import { ITEMS } from "../items.ts";
 import { UI_TEXT } from "../ui_text.ts";
+import { Language } from "./main.tsx";
 
-export type Language = "ja" | "en";
-
-export function NotifyArea(props: { notifications: string[] }) {
+export function NotifyArea(
+  props: { notifications: string[] },
+) {
   return (
     <>
       {props.notifications.map((notify) => (
@@ -23,6 +23,7 @@ export function GameStatus(
     latestGameResult?: GameLoopResult;
     language: Language;
     runGameLoop: (key?: string) => void;
+    gameInstance: Game;
   },
 ) {
   const lang = props.language;
@@ -44,6 +45,7 @@ export function GameStatus(
           return (
             <li key={itemCount[0]}>
               <button
+                type="button"
                 class="item-link"
                 onClick={() => alert(item.description[lang])}
               >
@@ -51,7 +53,10 @@ export function GameStatus(
                 {item.key && `(${item.key})`} x{itemCount[1]}
               </button>
               {item.key !== null && (
-                <button onClick={() => props.runGameLoop(item.key!)}>
+                <button
+                  type="button"
+                  onClick={() => props.runGameLoop(item.key!)}
+                >
                   {UI_TEXT.use[lang]}
                 </button>
               )}
@@ -73,10 +78,11 @@ export function GameStatus(
             ))}
           </ul>
           <button
+            type="button"
             id="btn-reset"
             onClick={() => {
-              gameInstance.resetGame();
-              gameInstance.setupFloor();
+              props.gameInstance.resetGame();
+              props.gameInstance.setupFloor();
               props.runGameLoop();
             }}
           >
@@ -89,7 +95,11 @@ export function GameStatus(
 }
 
 export function GameGrid(
-  props: { displayState?: DisplayState; runGameLoop: () => void },
+  props: {
+    displayState?: DisplayState;
+    runGameLoop: () => void;
+    gameInstance: Game;
+  },
 ) {
   if (!props.displayState) {
     return <>Error: No DisplayState for GameGrid</>;
@@ -97,104 +107,158 @@ export function GameGrid(
   const displayState = props.displayState;
   return (
     <table class="game-table" style={{ "--dynamic-cell-size": "32px" }}>
-      {displayState.grid.map((row, r) => (
-        <tr key={r}>
-          {row.map((gridCell, c) => {
-            const cellClasses = ["game-cell"];
+      <tbody>
+        {displayState.grid.map((row, r) => (
+          <tr key={r}>
+            {row.map((gridCell, c) => {
+              const cellClasses = ["game-cell"];
 
-            const isPlayer = r === displayState.player.r &&
-              c === displayState.player.c;
-            const isExit = r === displayState.exit.r &&
-              c === displayState.exit.c;
-            const isRevealed = displayState.gameState == "gameover" ||
-              gridCell.isRevealed ||
-              (isExit && displayState.exitRevealedThisFloor);
+              const isPlayer = r === displayState.player.r &&
+                c === displayState.player.c;
+              const isExit = r === displayState.exit.r &&
+                c === displayState.exit.c;
+              const isRevealed = displayState.gameState == "gameover" ||
+                gridCell.isRevealed ||
+                (isExit && displayState.exitRevealedThisFloor);
 
-            // 開示されていて、かつ見通しの悪いマスの場合にのみスタイルを適用
-            if (gridCell.isObscured && isRevealed) {
-              cellClasses.push("game-cell--obscured");
-            }
-
-            const flagAction = (event: Event) => {
-              if (isRevealed) return;
-              event.preventDefault();
-              gameInstance.toggleFlag(r, c);
-              props.runGameLoop();
-            };
-
-            let numberContent = "";
-            let entityContent = "";
-            let playerContent = "";
-
-            if (isPlayer) {
-              playerContent = "@";
-
-              if (gridCell.isTrap) {
-                cellClasses.push("game-cell--trap");
-                numberContent = "X";
-              } else {
-                cellClasses.push("game-cell--player");
-                numberContent = gridCell.adjacentTraps === 0
-                  ? ""
-                  : gridCell.adjacentTraps.toString();
+              // 開示されていて、かつ見通しの悪いマスの場合にのみスタイルを適用
+              if (gridCell.isObscured && isRevealed) {
+                cellClasses.push("game-cell--obscured");
               }
-              if (gridCell.itemId) entityContent = "I";
-              if (isExit) entityContent = "E";
-            } else if (isRevealed) {
-              if (isExit) {
-                cellClasses.push("game-cell--exit");
-                numberContent = "E";
-              } else if (gridCell.itemId) {
-                cellClasses.push("game-cell--item");
-                numberContent = "I";
-              } else if (gridCell.isTrap) {
-                cellClasses.push("game-cell--trap");
-                numberContent = "X";
-              } else {
-                cellClasses.push("game-cell--revealed");
-                numberContent = gridCell.adjacentTraps === 0
-                  ? ""
-                  : gridCell.adjacentTraps.toString();
-              }
-            } else if (gridCell.isFlagged) {
-              cellClasses.push("game-cell--flagged");
-              numberContent = "⚑";
-            } else {
-              cellClasses.push("game-cell--hidden");
-            }
 
-            return (
-              <td
-                class={cellClasses.join(" ")}
-                onClick={flagAction}
-                onContextMenu={flagAction}
-                key={c}
-              >
-                <span
-                  class={"cell-number" +
-                    (isPlayer ? " cell-number--player-present" : "")}
+              const flagAction = (event: Event) => {
+                if (isRevealed) return;
+                event.preventDefault();
+                props.gameInstance.toggleFlag(r, c);
+                props.runGameLoop();
+              };
+
+              let numberContent = "";
+              let entityContent = "";
+              let playerContent = "";
+
+              if (isPlayer) {
+                playerContent = "@";
+
+                if (gridCell.isTrap) {
+                  cellClasses.push("game-cell--trap");
+                  numberContent = "X";
+                } else {
+                  cellClasses.push("game-cell--player");
+                  numberContent = gridCell.adjacentTraps === 0
+                    ? ""
+                    : gridCell.adjacentTraps.toString();
+                }
+                if (gridCell.itemId) entityContent = "I";
+                if (isExit) entityContent = "E";
+              } else if (isRevealed) {
+                if (isExit) {
+                  cellClasses.push("game-cell--exit");
+                  numberContent = "E";
+                } else if (gridCell.itemId) {
+                  cellClasses.push("game-cell--item");
+                  numberContent = "I";
+                } else if (gridCell.isTrap) {
+                  cellClasses.push("game-cell--trap");
+                  numberContent = "X";
+                } else {
+                  cellClasses.push("game-cell--revealed");
+                  numberContent = gridCell.adjacentTraps === 0
+                    ? ""
+                    : gridCell.adjacentTraps.toString();
+                }
+              } else if (gridCell.isFlagged) {
+                cellClasses.push("game-cell--flagged");
+                numberContent = "⚑";
+              } else {
+                cellClasses.push("game-cell--hidden");
+              }
+
+              return (
+                <td
+                  class={cellClasses.join(" ")}
+                  onClick={flagAction}
+                  onContextMenu={flagAction}
+                  key={c}
                 >
-                  {numberContent}
-                </span>
-                {entityContent && (
-                  <span class="cell-entity">{entityContent}</span>
-                )}
-                {playerContent && (
-                  <span class="cell-player-icon">{playerContent}</span>
-                )}
-              </td>
-            );
-          })}
-        </tr>
-      ))}
+                  <span
+                    class={"cell-number" +
+                      (isPlayer ? " cell-number--player-present" : "")}
+                  >
+                    {numberContent}
+                  </span>
+                  {entityContent && (
+                    <span class="cell-entity">{entityContent}</span>
+                  )}
+                  {playerContent && (
+                    <span class="cell-player-icon">{playerContent}</span>
+                  )}
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
     </table>
   );
 }
 
-const gameInstance = new Game();
-gameInstance.setupFloor();
+export function Controls(
+  props: { runGameLoop: (key?: string) => void; message?: string },
+) {
+  const runGameLoop = props.runGameLoop;
+  return (
+    <>
+      {props.message && <div id="action-prompt">{props.message}</div>}
+      <div id="controls">
+        <button
+          id="btn-up"
+          class="control-btn"
+          type="button"
+          onClick={() => {
+            runGameLoop("w");
+          }}
+        >
+          ↑
+        </button>
+        <button
+          id="btn-down"
+          class="control-btn"
+          type="button"
+          onClick={() => {
+            runGameLoop("s");
+          }}
+        >
+          ↓
+        </button>
+        <button
+          id="btn-left"
+          class="control-btn"
+          type="button"
+          onClick={() => {
+            runGameLoop("a");
+          }}
+        >
+          ←
+        </button>
+        <button
+          id="btn-right"
+          class="control-btn"
+          type="button"
+          onClick={() => {
+            runGameLoop("d");
+          }}
+        >
+          →
+        </button>
+      </div>
+    </>
+  );
+}
 
 export function GameMain() {
+  const [gameInstance, _setGameInstance] = useState(new Game());
+  useEffect(() => gameInstance.setupFloor(), []);
   const [displayState, setDisplayState] = useState<DisplayState>();
   const [latestGameResult, setLatestGameResult] = useState<GameLoopResult>();
   const [notifications, setNotifications] = useState<string[]>([]);
@@ -258,24 +322,11 @@ export function GameMain() {
           alert("Invalid choice, try again.");
         }
       }
-    } else if (gameState === "gameover") {
-      // notify(JSON.stringify(gameResult.result));
-    } else if (
-      ["playing", "jumping_direction", "recon_direction"].includes(gameState)
-    ) {
-      // setupControlButtons();
     }
 
     if (gameResult.gameState != "gameover" && gameResult.lastActionMessage) {
       notify(gameResult.lastActionMessage[language]);
       gameInstance.clearLastActionMessage();
-    }
-
-    if (
-      ["jumping_direction", "recon_direction"].includes(gameState) &&
-      gameResult.message
-    ) {
-      // dom.actionPrompt.textContent = gameResult.message;
     }
 
     if (
@@ -288,13 +339,6 @@ export function GameMain() {
       ].includes(gameState)
     ) {
       notify(gameResult.message);
-    }
-
-    if (
-      gameResult.gameState != "gameover" && gameResult.uiEffect === "flash_red"
-    ) {
-      // flashScreenRed();
-      // gameInstance.clearUiEffect();
     }
 
     if (gameResult.gameState != "gameover" && gameResult.tutorialToShow) {
@@ -334,59 +378,9 @@ export function GameMain() {
       let handled = true;
 
       if (gameInstance.gameState === "confirm_next_floor") {
-        // event.preventDefault();
-        // const choices = ["yes", "no"];
-        // switch (key) {
-        //   case "w":
-        //     selectedConfirmIndex = (selectedConfirmIndex > 0)
-        //       ? selectedConfirmIndex - 1
-        //       : choices.length - 1;
-        //     updateConfirmHighlight();
-        //     break;
-        //   case "s":
-        //     selectedConfirmIndex = (selectedConfirmIndex < choices.length - 1)
-        //       ? selectedConfirmIndex + 1
-        //       : 0;
-        //     updateConfirmHighlight();
-        //     break;
-        //   case "enter":
-        //     processBrowserInput(choices[selectedConfirmIndex]);
-        //     break;
-        //   default:
-        //     break;
-        // }
+        // pass
       } else if (gameInstance.gameState === "choosing_item") {
-        // event.preventDefault();
-        // const choices = document.querySelectorAll(".item-choice-btn");
-        // if (!choices.length) return;
-
-        // if (isInputDebounced(key)) return;
-
-        // switch (key) {
-        //   case "w":
-        //     selectedChoiceIndex = (selectedChoiceIndex > 0)
-        //       ? selectedChoiceIndex - 1
-        //       : choices.length - 1;
-        //     updateChoiceHighlight();
-        //     break;
-        //   case "s":
-        //     selectedChoiceIndex = (selectedChoiceIndex < choices.length - 1)
-        //       ? selectedChoiceIndex + 1
-        //       : 0;
-        //     updateChoiceHighlight();
-        //     break;
-        //   case "enter":
-        //     {
-        //       const selectedButton = choices[selectedChoiceIndex];
-        //       if (selectedButton) {
-        //         (selectedButton as HTMLButtonElement).click();
-        //       }
-        //     }
-        //     break;
-        //   default:
-        //     handled = false;
-        //     break;
-        // }
+        // pass
       } else if (
         ["jumping_direction", "recon_direction"].includes(
           gameInstance.gameState,
@@ -451,53 +445,17 @@ export function GameMain() {
         latestGameResult={latestGameResult}
         language={language}
         runGameLoop={runGameLoop}
+        gameInstance={gameInstance}
       />
       <div id="game-grid">
-        <GameGrid displayState={displayState} runGameLoop={runGameLoop} />
+        <GameGrid
+          displayState={displayState}
+          runGameLoop={runGameLoop}
+          gameInstance={gameInstance}
+        />
       </div>
-      <div id="action-prompt">{latestGameResult?.message}</div>
-      <div id="controls">
-        <button
-          id="btn-up"
-          class="control-btn"
-          type="button"
-          onClick={() => {
-            runGameLoop("w");
-          }}
-        >
-          ↑
-        </button>
-        <button
-          id="btn-down"
-          class="control-btn"
-          type="button"
-          onClick={() => {
-            runGameLoop("s");
-          }}
-        >
-          ↓
-        </button>
-        <button
-          id="btn-left"
-          class="control-btn"
-          type="button"
-          onClick={() => {
-            runGameLoop("a");
-          }}
-        >
-          ←
-        </button>
-        <button
-          id="btn-right"
-          class="control-btn"
-          type="button"
-          onClick={() => {
-            runGameLoop("d");
-          }}
-        >
-          →
-        </button>
-      </div>
+
+      <Controls runGameLoop={runGameLoop} message={latestGameResult?.message} />
     </div>
   );
 }
