@@ -7,7 +7,7 @@
   --grid-gap: 2px;
 }
 body {
-  font-family: monospace;
+  font-family: sans-serif;
   background-color: #1a1a1a;
   color: #eee;
   display: flex;
