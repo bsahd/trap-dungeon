@@ -1,6 +1,6 @@
 import { Game } from "../core/game.ts";
 import { Fragment, h } from "preact";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { DisplayState, GameLoopResult } from "../core/interfaces.ts";
 import { ITEMS } from "../core/items.ts";
 import { UI_TEXT } from "../core/ui_text.ts";
@@ -257,7 +257,7 @@ export function Controls(
 }
 
 export function GameMain() {
-  const [gameInstance, _setGameInstance] = useState(new Game());
+  const { current: gameInstance } = useRef(new Game());
   useEffect(() => gameInstance.setupFloor(), []);
   const [displayState, setDisplayState] = useState<DisplayState>();
   const [latestGameResult, setLatestGameResult] = useState<GameLoopResult>();
