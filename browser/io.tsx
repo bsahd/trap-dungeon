@@ -402,6 +402,7 @@ export function GameMain() {
   useEffect(() => {
     runGameLoop();
     const handleGlobalKeyboardInput = (event: KeyboardEvent) => {
+      if (event.target !== document.body) return;
       if (modalShowing || displayState?.gameState == "gameover") return;
 
       let key = event.key.toLowerCase();
