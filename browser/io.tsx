@@ -444,7 +444,7 @@ export function GameMain() {
           gameInstance.gameState,
         )
       ) {
-        if ("wasd".includes(key)) {
+        if (["up", "down", "left", "right"].includes(key)) {
           runGameLoop(key);
         } else {
           handled = false;
