@@ -1,9 +1,9 @@
-import { Game } from "../game.ts";
+import { Game } from "../core/game.ts";
 import { Fragment, h } from "preact";
 import { useEffect, useState } from "preact/hooks";
-import { DisplayState, GameLoopResult } from "../interfaces.ts";
-import { ITEMS } from "../items.ts";
-import { UI_TEXT } from "../ui_text.ts";
+import { DisplayState, GameLoopResult } from "../core/interfaces.ts";
+import { ITEMS } from "../core/items.ts";
+import { UI_TEXT } from "../core/ui_text.ts";
 import { Language } from "./main.tsx";
 
 export function NotifyArea(
