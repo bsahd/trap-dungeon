@@ -89,7 +89,13 @@ export function isSolvable(
   while (queue.length > 0) {
     const { r, c } = queue.shift() as { r: number; c: number };
 
-    if (r === endR && c === endC) {
+    const fullSolved = grid.map((x, nr) =>
+      x.map((cell, nc) => {
+        return cell.isTrap || visited[nr][nc];
+      })
+    );
+
+    if (fullSolved) {
       return true;
     }
 

@@ -1,4 +1,4 @@
-import { GameI, GameLoopResult, Item, MultilingualText } from "./interfaces.ts";
+import { GameI, GameLoopResult, MultilingualText } from "./interfaces.ts";
 import { ITEMS } from "./items.ts";
 import {
   forEachCell,
