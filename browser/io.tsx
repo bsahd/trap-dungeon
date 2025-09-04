@@ -455,7 +455,7 @@ export function GameMain() {
       <div id="game-grid">
         <GameGrid displayState={displayState} runGameLoop={runGameLoop} />
       </div>
-
+      <div id="action-prompt">{latestGameResult?.message}</div>
       <div id="controls">
         <button
           id="btn-up"
