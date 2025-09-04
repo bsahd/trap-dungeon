@@ -142,9 +142,7 @@ export function GameGrid(
                 (isExit && displayState.exitRevealedThisFloor);
 
               // 開示されていて、かつ見通しの悪いマスの場合にのみスタイルを適用
-              if (gridCell.isObscured && isRevealed) {
-                cellClasses.push("game-cell--obscured");
-              }
+              
 
               const flagAction = (event: Event) => {
                 if (isRevealed) return;

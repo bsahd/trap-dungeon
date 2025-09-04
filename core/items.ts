@@ -52,8 +52,8 @@ export const ITEMS: Items = {
   reduce_traps: {
     name: { ja: "解体の手引き", en: "Disassembly Guide" },
     description: {
-      ja: "ランダムな罠1つを無効化する。",
-      en: "Disables one random trap.",
+      ja: "プレイヤーから周囲8マスのランダムな罠1つを無効化する。",
+      en: "Disables one random trap within 8 squares of the player.",
     },
     key: "t",
     minFloor: 1,

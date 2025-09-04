@@ -1,5 +1,4 @@
 import {
-  Cell,
   GameI,
   GameLoopResult,
   Item,
@@ -84,16 +83,6 @@ export class Game implements GameI {
       this.finalItems = [];
     }
 
-    if (this.floorNumber === 5) {
-      this.tutorialToShow = {
-        title: "新ギミック：見通しの悪いマス",
-        content: `このフロアから、ひび割れた「見通しの悪いマス」が登場します。
-
-このマスに表示される数字は、そのマスの「上下左右」4方向にある罠の数のみを示しており、「斜め」方向の罠はカウントしません。
-
-開示して初めて判明するため、注意深く探索しましょう。`,
-      };
-    }
 
     this.rows = 8 + Math.floor(this.floorNumber / 3);
     this.cols = 8 + Math.floor(this.floorNumber / 3);
@@ -184,45 +173,6 @@ export class Game implements GameI {
       );
     } while (!solvable || goalInitiallyVisible);
 
-    // --- 「見通しの悪いマス」の配置と数字の再計算 ---
-    // ループで盤面が確定した後に、ギミックを適用する
-    if (this.floorNumber >= 5) {
-      const safeCells: Cell[] = [];
-      // プレイヤーの周囲9マスは安全地帯とする
-      const playerArea = new Set();
-      const playerNeighbors = getEightDirectionsNeighbors(
-        this.player.r,
-        this.player.c,
-        this.rows,
-        this.cols,
-      );
-      playerArea.add(`${this.player.r},${this.player.c}`);
-      playerNeighbors.forEach((pos) => playerArea.add(`${pos.r},${pos.c}`));
-
-      forEachCell(this.grid, (cell, r, c) => {
-        const isExit = r === this.exit.r && c === this.exit.c;
-        // 罠でもなく、プレイヤーの周囲でもなく、アイテムマスでもなく、出口でもないマスを候補とする
-        if (
-          !cell.isTrap && !playerArea.has(`${r},${c}`) && !cell.itemId &&
-          !isExit
-        ) {
-          safeCells.push(cell);
-        }
-      });
-
-      // 安全なマスの15%を「見通しの悪いマス」にする
-      const obscureCount = Math.floor(safeCells.length * 0.15);
-      for (let i = 0; i < obscureCount; i++) {
-        if (safeCells.length === 0) break;
-        const randomIndex = Math.floor(Math.random() * safeCells.length);
-        const selectedCell = safeCells.splice(randomIndex, 1)[0];
-        selectedCell.isObscured = true;
-      }
-
-      // 「見通しの悪いマス」を適用したことで数字が変わるため、再計算する
-      this.calculateNumbers();
-    }
-
     this.revealFrom(this.player.r, this.player.c);
   }
 
@@ -235,7 +185,6 @@ export class Game implements GameI {
           isRevealed: false,
           adjacentTraps: 0,
           isFlagged: false,
-          isObscured: false,
         })),
     );
   }
@@ -272,22 +221,11 @@ export class Game implements GameI {
       let trapCount = 0;
       const neighbors = getEightDirectionsNeighbors(r, c, this.rows, this.cols);
 
-      if (cell.isObscured) {
-        // 「見通しの悪いマス」は上下左右4方向のみチェック
-        const crossNeighbors = neighbors.filter((n) => n.r === r || n.c === c);
-        for (const neighbor of crossNeighbors) {
-          if (this.grid[neighbor.r][neighbor.c].isTrap) {
-            trapCount++;
-          }
-        }
-      } else {
-        // 通常のマスは8方向をチェック
         for (const neighbor of neighbors) {
           if (this.grid[neighbor.r][neighbor.c].isTrap) {
             trapCount++;
           }
         }
-      }
       cell.adjacentTraps = trapCount;
     });
   }
@@ -303,20 +241,8 @@ export class Game implements GameI {
 
     // 罠のマスでは再帰しない、かつ、隣接する罠が0のマスでのみ再帰する
     if (!cell.isTrap && cell.adjacentTraps === 0) {
-      let neighbors;
-      if (cell.isObscured) {
-        // 「見通しの悪いマス」からは4方向にのみ再帰
-        const allNeighbors = getEightDirectionsNeighbors(
-          r,
-          c,
-          this.rows,
-          this.cols,
-        );
-        neighbors = allNeighbors.filter((n) => n.r === r || n.c === c);
-      } else {
-        // 通常のマスからは8方向に再帰
-        neighbors = getEightDirectionsNeighbors(r, c, this.rows, this.cols);
-      }
+      const neighbors = getEightDirectionsNeighbors(r, c, this.rows, this.cols);
+      
 
       for (const neighbor of neighbors) {
         this.revealFrom(neighbor.r, neighbor.c);

@@ -226,11 +226,6 @@ export function renderGridToDom(displayState: DisplayState) {
       const isRevealed = gridCell.isRevealed ||
         (isExit && displayState.exitRevealedThisFloor);
 
-      // 開示されていて、かつ見通しの悪いマスの場合にのみスタイルを適用
-      if (gridCell.isObscured && isRevealed) {
-        cell.classList.add("game-cell--obscured");
-      }
-
       if (!isRevealed) {
         const flagAction = (event: Event) => {
           if (isInputLocked) return;

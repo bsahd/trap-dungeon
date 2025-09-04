@@ -5,7 +5,6 @@ export interface Cell {
   isRevealed: boolean;
   isFlagged: boolean;
   adjacentTraps: number;
-  isObscured: boolean;
   itemId?: string;
 }
 export interface GameI {
