@@ -453,9 +453,11 @@ export function GameMain() {
         const itemKeys = Object.values(ITEMS).map((item) => item.key).filter((
           k,
         ) => k).join("");
-        const validKeys = "wasd" + itemKeys;
 
-        if (validKeys.includes(key)) {
+        if (
+          itemKeys.includes(key) ||
+          ["up", "down", "left", "right"].includes(key)
+        ) {
           runGameLoop(key);
         } else {
           handled = false;
