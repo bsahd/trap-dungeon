@@ -43,6 +43,10 @@ export const UI_TEXT = {
     ja: "アイテムを使用する",
     en: "Use Item",
   },
+  use: {
+    ja: "使用",
+    en: "Use",
+  },
   viewDetail: {
     ja: (itemName: string) => itemName + "の詳細を見る",
     en: (itemName: string) => "View details of " + itemName,

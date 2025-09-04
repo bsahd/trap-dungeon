@@ -19,9 +19,13 @@ export function NotifyArea(props: { notifications: string[] }) {
 }
 
 export function GameStatus(
-  props: { latestGameResult?: GameLoopResult; LANG: Language },
+  props: {
+    latestGameResult?: GameLoopResult;
+    language: Language;
+    runGameLoop: (key?: string) => void;
+  },
 ) {
-  const LANG = props.LANG;
+  const lang = props.language;
   if (!props.latestGameResult) {
     return <>Error: No DisplayState for GameStatus</>;
   }
@@ -35,25 +39,32 @@ export function GameStatus(
       <p id="floor-number">Floor: {d.displayState.floorNumber}</p>
       Items:
       <ul id="item-list">
-        {Object.entries(itemCounts).map((item) => {
+        {Object.entries(itemCounts).map((itemCount) => {
+          const item = ITEMS[itemCount[0]];
           return (
-            <li key={item[0]}>
+            <li key={itemCount[0]}>
               <button
                 class="item-link"
-                onClick={() => alert(ITEMS[item[0]].description[LANG])}
+                onClick={() => alert(item.description[lang])}
               >
-                {ITEMS[item[0]].name[LANG]}({ITEMS[item[0]].key}) x{item[1]}
+                {item.name[lang]}
+                {item.key && `(${item.key})`} x{itemCount[1]}
               </button>
+              {item.key !== null && (
+                <button onClick={() => props.runGameLoop(item.key!)}>
+                  {UI_TEXT.use[lang]}
+                </button>
+              )}
             </li>
           );
         })}
       </ul>
       {d.gameState == "gameover" && (
         <>
-          {UI_TEXT.floorDisclosureRate[LANG]}
+          {UI_TEXT.floorDisclosureRate[lang]}
           <ul>
             {d.result.floorRevelationRates.length == 0 && (
-              <li>{UI_TEXT.none[LANG]}</li>
+              <li>{UI_TEXT.none[lang]}</li>
             )}
             {d.result.floorRevelationRates.map((revRate) => (
               <li key={revRate.floor}>
@@ -61,6 +72,16 @@ export function GameStatus(
               </li>
             ))}
           </ul>
+          <button
+            id="btn-reset"
+            onClick={() => {
+              gameInstance.resetGame();
+              gameInstance.setupFloor();
+              props.runGameLoop();
+            }}
+          >
+            {UI_TEXT.playAgain[lang]}
+          </button>
         </>
       )}
     </div>
@@ -224,13 +245,10 @@ export function GameMain() {
       while (chosen === null) {
         const input = prompt(
           UI_TEXT.chooseReward[language] + "\n" +
-            choices.map((id) => ITEMS[id].name[language]).join("\n"),
+            choices.map((id, n) => `${n + 1}: ${ITEMS[id].name[language]}`)
+              .join("\n"),
         );
-        if (input === null) {
-          // キャンセル押されたら抜ける（ゲーム仕様次第）
-          break;
-        }
-        const num = parseInt(input);
+        const num = parseInt(input ?? "");
         console.log(input, num);
         if (!isNaN(num) && num > 0 && num <= choices.length) {
           chosen = num;
@@ -428,7 +446,11 @@ export function GameMain() {
         </label>
       </form>
       <NotifyArea notifications={notifications} />
-      <GameStatus latestGameResult={latestGameResult} LANG={language} />
+      <GameStatus
+        latestGameResult={latestGameResult}
+        language={language}
+        runGameLoop={runGameLoop}
+      />
       <GameGrid displayState={displayState} runGameLoop={runGameLoop} />
 
       <div id="controls">

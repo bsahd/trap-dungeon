@@ -98,9 +98,7 @@ export class Game implements GameI {
     this.rows = 8 + Math.floor(this.floorNumber / 3);
     this.cols = 8 + Math.floor(this.floorNumber / 3);
 
-    const baseTrapCount = 8 + this.floorNumber * 2;
-    const areaBasedTrapCount = Math.floor((this.rows * this.cols) * 0.15);
-    const trapCount = Math.max(baseTrapCount, areaBasedTrapCount);
+    const trapCount = 6 + this.floorNumber * 2;
 
     if (this.floorNumber === 1) {
       const allAvailableItemIds = this.getAvailableItems();
