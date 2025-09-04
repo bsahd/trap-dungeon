@@ -5,6 +5,7 @@ import { DisplayState, GameLoopResult } from "../core/interfaces.ts";
 import { ITEMS } from "../core/items.ts";
 import { UI_TEXT } from "../core/ui_text.ts";
 import { Language } from "./main.tsx";
+import { resolve } from "node:path";
 
 export function NotifyArea(
   { notifications }: { notifications: string[] },
@@ -62,7 +63,12 @@ export function GameStatus(
               <button
                 type="button"
                 class="item-link"
-                onClick={() => alert(item.description[language])}
+                onClick={() =>
+                  showModalDialog(
+                    item.name[language],
+                    item.description[language],
+                    ["OK"],
+                  )}
               >
                 {item.name[language]}
                 {item.key && `(${item.key})`} x{itemCount[1]}
@@ -217,6 +223,8 @@ export function GameGrid(
   );
 }
 
+let modalShowing = false;
+
 export function Controls(
   { runGameLoop, message }: {
     runGameLoop: (key?: string) => void;
@@ -268,6 +276,44 @@ export function Controls(
   );
 }
 
+export function showModalDialog(
+  heading: string,
+  content: string,
+  buttons: string[],
+): Promise<number> {
+  if (modalShowing) {
+    throw new Error("other modal exists");
+  }
+  return new Promise((resolve) => {
+    const modalElem = document.createElement("dialog");
+    modalElem.classList.add("modal-content");
+    const headingElem = document.createElement("h3");
+    modalElem.appendChild(headingElem);
+    headingElem.innerText = heading;
+    const contentElem = document.createElement("p");
+    modalElem.appendChild(contentElem);
+    contentElem.innerText = content;
+    buttons.map((btn, i) => {
+      const btnElem = document.createElement("button");
+      modalElem.appendChild(btnElem);
+      btnElem.type = "button";
+      btnElem.innerText = btn;
+      btnElem.addEventListener("click", () => {
+        modalElem.close();
+        resolve(i);
+      });
+    });
+    modalElem.addEventListener("close", () => {
+      modalShowing = false;
+      modalElem.remove();
+      resolve(0);
+    });
+    document.body.appendChild(modalElem);
+    modalShowing = true;
+    modalElem.showModal();
+  });
+}
+
 export function GameMain() {
   const { current: gameInstance } = useRef(new Game());
   useEffect(() => gameInstance.setupFloor(), []);
@@ -311,27 +357,22 @@ export function GameMain() {
 
     if (gameState === "confirm_next_floor") {
       // renderConfirmDialog(gameResult.message);
-      runGameLoop(confirm(gameResult.message) ? "yes" : "no");
+      showModalDialog(gameResult.message, "", [
+        UI_TEXT.no[language],
+        UI_TEXT.yes[language],
+      ]).then((num) => {
+        setTimeout(() => runGameLoop(num == 1 ? "yes" : "no"), 100);
+      });
     } else if (gameState === "choosing_item") {
-      let chosen: number | null = null;
-      const choices = gameResult.displayState.currentItemChoices;
-
-      while (chosen === null) {
-        const input = prompt(
-          UI_TEXT.chooseReward[language] + "\n" +
-            choices.map((id, n) => `${n + 1}: ${ITEMS[id].name[language]}`)
-              .join("\n"),
-        );
-        const num = parseInt(input ?? "");
-        console.log(input, num);
-        if (!isNaN(num) && num > 0 && num <= choices.length) {
-          chosen = num;
-          runGameLoop(num.toString());
-          break;
-        } else {
-          alert("Invalid choice, try again.");
-        }
-      }
+      showModalDialog(
+        UI_TEXT.chooseReward[language],
+        "",
+        gameResult.displayState.currentItemChoices.map((id, n) =>
+          `${n + 1}: ${ITEMS[id].name[language]}`
+        ),
+      ).then((num) => {
+        runGameLoop((num + 1).toString());
+      });
     }
 
     if (gameResult.gameState != "gameover" && gameResult.lastActionMessage) {
@@ -352,23 +393,18 @@ export function GameMain() {
     }
 
     if (gameResult.gameState != "gameover" && gameResult.tutorialToShow) {
-      alert(
-        gameResult.tutorialToShow.title + "\n" +
-          gameResult.tutorialToShow.content,
-      );
-      gameInstance.clearTutorial();
+      showModalDialog(
+        gameResult.tutorialToShow.title,
+        gameResult.tutorialToShow.content,
+        ["OK"],
+      ).then(() => gameInstance.clearTutorial());
     }
   };
 
   useEffect(() => {
     runGameLoop();
     const handleGlobalKeyboardInput = (event: KeyboardEvent) => {
-      const modal = document.querySelector(".modal-overlay");
-      if (event.key === "Escape" && modal) {
-        modal.remove();
-        return;
-      }
-      if (modal) return;
+      if (modalShowing || displayState?.gameState == "gameover") return;
 
       let key = event.key.toLowerCase();
       switch (event.key) {

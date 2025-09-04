@@ -367,7 +367,7 @@ h1 {
 }
 
 /* Modal Dialog Styles */
-.modal-overlay {
+.modal-content::backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -398,6 +398,7 @@ h1 {
 
 .modal-content p {
   margin-bottom: 20px;
+  color: #eee;
 }
 
 .modal-content button {
