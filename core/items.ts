@@ -78,8 +78,16 @@ export const ITEMS: Items = {
         if ("calculateNumbers" in game) {
           game.calculateNumbers();
         }
+        return { consumed: true };
+      } else {
+        return {
+          consumed: false,
+          message: {
+            ja: "解除対象の罠は存在しない。",
+            en: "No trap within 8 squares of the player.",
+          },
+        };
       }
-      return { consumed: true };
     },
   },
   reveal_exit: {
