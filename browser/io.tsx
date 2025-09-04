@@ -224,8 +224,6 @@ export function GameGrid(
   );
 }
 
-let modalShowing = false;
-
 export function Controls(
   { runGameLoop, message }: {
     runGameLoop: (key?: string) => void;
@@ -277,6 +275,8 @@ export function Controls(
   );
 }
 
+let modalShowing = false;
+
 export function showModalDialog(
   heading: string,
   content: string,
@@ -300,14 +300,14 @@ export function showModalDialog(
       btnElem.type = "button";
       btnElem.innerText = btn;
       btnElem.addEventListener("click", () => {
+        modalElem.returnValue = i.toString();
         modalElem.close();
-        resolve(i);
       });
     });
     modalElem.addEventListener("close", () => {
       modalShowing = false;
       modalElem.remove();
-      resolve(0);
+      resolve(parseInt(modalElem.returnValue));
     });
     document.body.appendChild(modalElem);
     modalShowing = true;
