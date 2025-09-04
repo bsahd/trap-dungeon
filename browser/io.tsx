@@ -346,10 +346,11 @@ export function GameMain() {
     }
 
     if (gameResult.gameState != "gameover" && gameResult.tutorialToShow) {
-      notify(
+      alert(
         gameResult.tutorialToShow.title + "\n" +
           gameResult.tutorialToShow.content,
       );
+      gameInstance.clearTutorial();
     }
   };
 
