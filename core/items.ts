@@ -24,15 +24,14 @@ export const ITEMS: Items = {
         game.rows,
         game.cols,
       );
+
       for (const neighbor of neighborsToReveal) {
         const cell = game.grid[neighbor.r][neighbor.c];
         if (cell.isTrap) {
           cell.isRevealed = true;
           cell.isFlagged = true; // Mark revealed trap
         } else {
-          if ("revealFrom" in game) {
-            game.revealFrom(neighbor.r, neighbor.c);
-          }
+          game.revealFrom(neighbor.r, neighbor.c);
         }
       }
       return { consumed: true };
@@ -75,9 +74,7 @@ export const ITEMS: Items = {
         const cellToClear = game.grid[trapToDemolish.r][trapToDemolish.c];
         cellToClear.isTrap = false;
         cellToClear.isFlagged = false; // 罠と同時にフラグも解除
-        if ("calculateNumbers" in game) {
-          game.calculateNumbers();
-        }
+        game.calculateNumbers();
         return { consumed: true };
       } else {
         return {
@@ -209,8 +206,7 @@ export const ITEMS: Items = {
           // revealFromは内部でisRevealedチェックをするので、そのまま呼んでもOK
           //念のためisValidCellも実行
           if (
-            isValidCell(pos.r, pos.c, game.rows, game.cols) &&
-            "revealFrom" in game
+            isValidCell(pos.r, pos.c, game.rows, game.cols)
           ) {
             game.revealFrom(pos.r, pos.c);
           }
@@ -244,7 +240,7 @@ export const ITEMS: Items = {
           const nR = game.player.r + i;
           const nC = game.player.c + j;
           if (
-            isValidCell(nR, nC, game.rows, game.cols) && "revealFrom" in game
+            isValidCell(nR, nC, game.rows, game.cols)
           ) {
             game.revealFrom(nR, nC);
           }
@@ -318,9 +314,7 @@ export const ITEMS: Items = {
       }
 
       // 5. 盤面を更新
-      if ("calculateNumbers" in game) {
-        game.calculateNumbers();
-      }
+      game.calculateNumbers();
       return { consumed: true };
     },
   },
