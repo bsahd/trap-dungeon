@@ -1,10 +1,10 @@
 /// <reference lib="dom" />
-import { Game } from "./game.ts";
+import { Game } from "../game.ts";
 import { Fragment, h } from "preact";
 import { useEffect, useState } from "preact/hooks";
-import { DisplayState, GameI, GameLoopResult, Item } from "./interfaces.ts";
-import { ITEMS } from "./items.ts";
-import { UI_TEXT } from "./ui_text.ts";
+import { DisplayState, GameI, GameLoopResult, Item } from "../interfaces.ts";
+import { ITEMS } from "../items.ts";
+import { UI_TEXT } from "../ui_text.ts";
 
 export type Language = "ja" | "en";
 
@@ -422,8 +422,9 @@ export function GameMain() {
     };
   }, []);
   return (
-    <div>
-      <form action="#">
+    <div id="game-container">
+      <h1>bsahd/trap-dungeon</h1>
+      <div id="game-language">
         <label>
           <input
             type="radio"
@@ -444,14 +445,16 @@ export function GameMain() {
             }}
           />English
         </label>
-      </form>
+      </div>
       <NotifyArea notifications={notifications} />
       <GameStatus
         latestGameResult={latestGameResult}
         language={language}
         runGameLoop={runGameLoop}
       />
-      <GameGrid displayState={displayState} runGameLoop={runGameLoop} />
+      <div id="game-grid">
+        <GameGrid displayState={displayState} runGameLoop={runGameLoop} />
+      </div>
 
       <div id="controls">
         <button

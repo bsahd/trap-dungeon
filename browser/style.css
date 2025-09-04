@@ -18,7 +18,7 @@ body {
   touch-action: manipulation; /* Disable double-tap to zoom */
   overflow-y: auto; /* Allow vertical scrolling if content overflows */
 }
-#game-wrapper {
+#game-wrapper, #root {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -624,9 +624,9 @@ body[data-game-state="inventory"] #inventory-screen {
   display: flex;
 }
 
-p,ul{
+p, ul {
   margin: 0;
 }
-ul{
+ul {
   padding-left: 16px;
 }

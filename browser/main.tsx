@@ -1,5 +1,5 @@
 import { h, render } from "preact";
-import { GameMain } from "./preact_io.tsx";
+import { GameMain } from "./io.tsx";
 
 window.onload = () => {
   document.getElementById("root")!.innerHTML = "";

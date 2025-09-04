@@ -4,71 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bsahd/trap-dungeon</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="browser/style.css">
   </head>
   <body data-game-state="playing">
-    <div id="game-wrapper">
-      <h1>bsahd/trap-dungeon</h1>
-      <div id="game-container">
-        <div id="game-language">
-          Language: <button type="button" id="lang-choose-ja">日本語</button>
-          <button type="button" id="lang-choose-en">English</button>
-        </div>
-        <div id="game-status">
-          <div id="status-main">
-            <span id="floor-number"></span>
-            <span id="revelation-status"></span>
-          </div>
-          <div id="item-list"></div>
-        </div>
-        <div id="game-grid"></div>
-        <div id="action-prompt"></div>
-        <div id="controls"></div>
-      </div>
-
-      <!-- Full-screen overlays -->
-      <div id="item-selection-screen" class="screen"></div>
-      <div id="inventory-screen" class="screen"></div>
-      <div id="confirm-dialog-screen" class="screen"></div>
-      <div id="result-screen" class="screen">
-        <h2 class="i18n-target-gameOver">[i18n target: gameOver]</h2>
-        <div id="final-floor"></div>
-        <div id="final-items"></div>
-        <div id="floor-revelation-rates"></div>
-        <button id="btn-reset">[i18n target: playAgain]</button>
-      </div>
-    </div>
-
-    <!-- Templates for dynamic content -->
-    <template id="template-confirm-dialog">
-      <div class="confirm-prompt-message"></div>
-      <div class="confirm-buttons">
-        <button class="confirm-btn i18n-target-yes" data-choice="yes">
-          [i18n target: yes]
-        </button>
-        <button class="confirm-btn i18n-target-no" data-choice="no">
-          [i18n target: no]
-        </button>
-      </div>
-    </template>
-
-    <template id="template-item-choice">
-      <button class="item-choice-btn">
-        <strong></strong>
-        <span></span>
-      </button>
-    </template>
-
-    <template id="template-modal-dialog">
-      <div class="modal-overlay">
-        <div class="modal-content">
-          <h3></h3>
-          <p></p>
-          <button class="i18n-target-close-btn">[i18n target: close]</button>
-        </div>
-      </div>
-    </template>
-
-    <script type="module" src="browser_bundled.js"></script>
+    <div id="root">Loading...</div>
+    <script type="module" src="browser/bundled.js"></script>
   </body>
 </html>

@@ -1,8 +1,8 @@
 /// <reference lib="dom" />
-import { Game } from "./game.ts";
-import { DisplayState, GameI, Item } from "./interfaces.ts";
-import { ITEMS } from "./items.ts";
-import { UI_TEXT } from "./ui_text.ts";
+import { Game } from "../game.ts";
+import { DisplayState, GameI, Item } from "../interfaces.ts";
+import { ITEMS } from "../items.ts";
+import { UI_TEXT } from "../ui_text.ts";
 
 let selectedChoiceIndex = 0; // For keyboard selection on item choice screen
 let selectedConfirmIndex = 0; // For keyboard selection on next floor confirmation
