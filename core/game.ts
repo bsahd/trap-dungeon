@@ -1,9 +1,4 @@
-import {
-  GameI,
-  GameLoopResult,
-  Item,
-  MultilingualText,
-} from "./interfaces.ts";
+import { GameI, GameLoopResult, Item, MultilingualText } from "./interfaces.ts";
 import { ITEMS } from "./items.ts";
 import {
   forEachCell,
@@ -82,7 +77,6 @@ export class Game implements GameI {
       this.finalFloorNumber = 0;
       this.finalItems = [];
     }
-
 
     this.rows = 8 + Math.floor(this.floorNumber / 3);
     this.cols = 8 + Math.floor(this.floorNumber / 3);
@@ -221,11 +215,11 @@ export class Game implements GameI {
       let trapCount = 0;
       const neighbors = getEightDirectionsNeighbors(r, c, this.rows, this.cols);
 
-        for (const neighbor of neighbors) {
-          if (this.grid[neighbor.r][neighbor.c].isTrap) {
-            trapCount++;
-          }
+      for (const neighbor of neighbors) {
+        if (this.grid[neighbor.r][neighbor.c].isTrap) {
+          trapCount++;
         }
+      }
       cell.adjacentTraps = trapCount;
     });
   }
@@ -242,7 +236,6 @@ export class Game implements GameI {
     // 罠のマスでは再帰しない、かつ、隣接する罠が0のマスでのみ再帰する
     if (!cell.isTrap && cell.adjacentTraps === 0) {
       const neighbors = getEightDirectionsNeighbors(r, c, this.rows, this.cols);
-      
 
       for (const neighbor of neighbors) {
         this.revealFrom(neighbor.r, neighbor.c);
@@ -326,19 +319,19 @@ export class Game implements GameI {
     } else if (this.gameState === "recon_direction") {
       let dr = 0, dc = 0, directionChosen = false;
       switch (key) {
-        case "w":
+        case "up":
           dr = -1;
           directionChosen = true;
           break;
-        case "a":
+        case "left":
           dc = -1;
           directionChosen = true;
           break;
-        case "s":
+        case "down":
           dr = 1;
           directionChosen = true;
           break;
-        case "d":
+        case "right":
           dc = 1;
           directionChosen = true;
           break;
@@ -374,19 +367,19 @@ export class Game implements GameI {
     } else if (this.gameState === "jumping_direction") {
       let jumpRow = this.player.r, jumpCol = this.player.c, jumped = false;
       switch (key) {
-        case "w":
+        case "up":
           jumpRow -= 2;
           jumped = true;
           break;
-        case "a":
+        case "left":
           jumpCol -= 2;
           jumped = true;
           break;
-        case "s":
+        case "down":
           jumpRow += 2;
           jumped = true;
           break;
-        case "d":
+        case "right":
           jumpCol += 2;
           jumped = true;
           break;
@@ -430,19 +423,19 @@ export class Game implements GameI {
         }
       } else {
         switch (key) {
-          case "w":
+          case "up":
             newRow--;
             moved = true;
             break;
-          case "a":
+          case "left":
             newCol--;
             moved = true;
             break;
-          case "s":
+          case "down":
             newRow++;
             moved = true;
             break;
-          case "d":
+          case "right":
             newCol++;
             moved = true;
             break;

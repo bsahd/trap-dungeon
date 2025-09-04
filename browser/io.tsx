@@ -142,7 +142,6 @@ export function GameGrid(
                 (isExit && displayState.exitRevealedThisFloor);
 
               // 開示されていて、かつ見通しの悪いマスの場合にのみスタイルを適用
-              
 
               const flagAction = (event: Event) => {
                 if (isRevealed) return;
@@ -235,7 +234,7 @@ export function Controls(
           class="control-btn btn-up"
           type="button"
           onClick={() => {
-            runGameLoop("w");
+            runGameLoop("up");
           }}
         >
           ↑
@@ -244,7 +243,7 @@ export function Controls(
           class="control-btn btn-down"
           type="button"
           onClick={() => {
-            runGameLoop("s");
+            runGameLoop("down");
           }}
         >
           ↓
@@ -253,7 +252,7 @@ export function Controls(
           class="control-btn btn-left"
           type="button"
           onClick={() => {
-            runGameLoop("a");
+            runGameLoop("left");
           }}
         >
           ←
@@ -262,7 +261,7 @@ export function Controls(
           class="control-btn btn-right"
           type="button"
           onClick={() => {
-            runGameLoop("d");
+            runGameLoop("right");
           }}
         >
           →
@@ -407,17 +406,30 @@ export function GameMain() {
 
       let key = event.key.toLowerCase();
       switch (event.key) {
+        case "w":
+          key = "up";
+          break;
+        case "a":
+          key = "left";
+          break;
+        case "s":
+          key = "down";
+          break;
+        case "d":
+          key = "right";
+          break;
+
         case "ArrowUp":
-          key = "w";
+          key = "up";
           break;
         case "ArrowDown":
-          key = "s";
+          key = "down";
           break;
         case "ArrowLeft":
-          key = "a";
+          key = "left";
           break;
         case "ArrowRight":
-          key = "d";
+          key = "right";
           break;
       }
 
