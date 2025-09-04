@@ -1,0 +1,623 @@
+/* General Styles from index.html */
+:root {
+  --cell-size: var(
+    --dynamic-cell-size,
+    40px
+  ); /* Fallback to 40px if JS not loaded */
+  --grid-gap: 2px;
+}
+body {
+  font-family: monospace;
+  background-color: #1a1a1a;
+  color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Changed from center to flex-start */
+  min-height: 100vh; /* Changed from height to min-height */
+  margin: 0;
+  touch-action: manipulation; /* Disable double-tap to zoom */
+  overflow-y: auto; /* Allow vertical scrolling if content overflows */
+}
+#game-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#game-container {
+  width: 100%;
+  border: 1px solid #555;
+  padding: 10px;
+  background-color: #222;
+  box-sizing: border-box;
+  /* position: relative; */ /* REMOVED */
+  display: flex; /* NEW: 子要素をflexboxで配置 */
+  flex-direction: column; /* NEW: 子要素を縦に並べる */
+  align-items: center; /* NEW: 子要素を中央揃え */
+}
+h1 {
+  font-size: 1.5em;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+#game-status {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px; /* 行間のスペース */
+  margin-bottom: 10px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #444;
+  font-size: 0.9em;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+}
+
+#status-main {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#item-list {
+  line-height: 1.4;
+  text-align: left;
+}
+
+.item-link {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #a9d7ff; /* A lighter blue to indicate interactivity */
+}
+
+.item-link:hover {
+  color: #ffffff;
+}
+
+#game-grid {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+#controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+.control-btn {
+  padding: 15px 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  background-color: #444;
+  color: #eee;
+  border: 1px solid #666;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none; /* Prevent text selection on tap */
+  text-align: center;
+}
+.control-btn:active {
+  background-color: #555;
+}
+
+#btn-up {
+  grid-column: 2;
+  grid-row: 1;
+}
+#btn-left {
+  grid-column: 1;
+  grid-row: 2;
+}
+#btn-inventory {
+  grid-column: 2;
+  grid-row: 2;
+}
+#btn-right {
+  grid-column: 3;
+  grid-row: 2;
+}
+#btn-down {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+/* Item Selection Screen Styles */
+#item-selection-screen {
+  padding: 10px;
+  text-align: center;
+}
+#item-selection-screen h2 {
+  margin-top: 0;
+  font-size: 1.2em;
+}
+.item-choice-btn {
+  display: block;
+  width: 100%;
+  padding: 15px 10px;
+  margin-bottom: 10px;
+  font-size: 1em;
+  background-color: #3a3a3a;
+  color: #eee;
+  border: 1px solid #666;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: left;
+  box-sizing: border-box;
+}
+.item-choice-btn:hover {
+  background-color: #4a4a4a;
+}
+.item-choice-btn.selected {
+  border-color: #ffc107;
+  background-color: #5a5a5a;
+}
+.item-choice-btn strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1.1em;
+}
+
+/* Inventory Screen */
+#inventory-screen {
+  padding: 10px;
+  text-align: center;
+}
+#inventory-screen h2 {
+  margin-top: 0;
+  font-size: 1.2em;
+}
+.inventory-item-btn {
+  display: block;
+  width: 100%;
+  padding: 15px 10px;
+  margin-bottom: 10px;
+  font-size: 1em;
+  background-color: #3a3a3a;
+  color: #eee;
+  border: 1px solid #666;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: left;
+  box-sizing: border-box;
+}
+.inventory-item-btn:hover {
+  background-color: #4a4a4a;
+}
+#inventory-cancel-btn {
+  background-color: #6c757d;
+}
+
+/* Grid styles previously in browser_io.js */
+.game-table {
+  border-collapse: separate;
+  border-spacing: var(--grid-gap);
+}
+
+.game-cell {
+  width: var(--dynamic-cell-size);
+  height: var(--dynamic-cell-size);
+  text-align: center;
+  vertical-align: middle;
+  cursor: default;
+  border-radius: 3px;
+  position: relative;
+  font-weight: bold;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+/* Cell background colors by state */
+.game-cell--hidden {
+  background-color: #616161;
+}
+.game-cell--flagged {
+  background-color: #616161;
+  color: #beb4b4;
+} /* Same bg as hidden, reddish-grey for symbol */
+.game-cell--revealed {
+  background-color: #9e9e9e;
+}
+.game-cell--trap {
+  background-color: #f44336;
+}
+.game-cell--item {
+  background-color: #ffc107;
+} /* Yellow */
+.game-cell--exit {
+  background-color: #4caf50;
+} /* Green */
+.game-cell--player {
+  background-color: #f48fb1;
+} /* Light Pink */
+
+.game-cell--obscured {
+  /* ベースとなる背景色 */
+  background-color: #a1887f; /* 明るい茶色に変更 */
+
+  /* ひび割れ模様の描画 */
+  background-image: /* 細いひび（白） */
+    linear-gradient(
+      105deg,
+      transparent 49.5%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 50.5%
+    ),
+    linear-gradient(
+    65deg,
+    transparent 49.5%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 50.5%
+  ),
+     /* 太いひび（黒） */linear-gradient(
+    35deg,
+    transparent 49%,
+    rgba(0, 0, 0, 0.5) 50%,
+    transparent 51%
+  ),
+    linear-gradient(
+    -65deg,
+    transparent 48%,
+    rgba(0, 0, 0, 0.5) 50%,
+    transparent 52%
+  );
+
+  /* 数字の色も変えて見やすくする */
+  color: #ffffff;
+}
+
+/* Spans inside the cell */
+.cell-number, .cell-entity, .cell-player-icon {
+  position: absolute;
+  font-weight: bold;
+}
+
+/* Number styling (default is centered) */
+.cell-number {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--dynamic-cell-size) * 0.6);
+}
+
+/* Number when player is on the same tile (moves to top-left) */
+.cell-number.cell-number--player-present {
+  top: 1px;
+  left: 3px;
+  width: auto;
+  height: auto;
+  display: inline;
+  font-size: calc(var(--dynamic-cell-size) * 0.4);
+}
+
+/* Entity (I, E) in corner */
+.cell-entity {
+  top: 1px;
+  right: 3px;
+  font-size: calc(var(--dynamic-cell-size) * 0.4);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Player icon (@) centered */
+.cell-player-icon {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--dynamic-cell-size) * 0.7);
+}
+
+/* Pop-up Notification Styles */
+.game-popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(26, 26, 26, 0.9);
+  color: #eee;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+  text-align: center;
+  max-width: 90%;
+}
+
+.game-popup.fade-out {
+  opacity: 0;
+}
+
+/* Action Prompt Styles */
+#action-prompt {
+  padding: 8px;
+  margin-bottom: 10px;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+  /* display: none; is now handled in View Management */
+}
+
+/* Flash Red Effect */
+.flash-red {
+  animation: flashRed 0.2s ease-out;
+}
+
+@keyframes flashRed {
+  0% {
+    background-color: #1a1a1a;
+  }
+  50% {
+    background-color: rgba(255, 0, 0, 0.5);
+  }
+  100% {
+    background-color: #1a1a1a;
+  }
+}
+
+/* Result Screen Styles */
+#result-screen {
+  padding: 10px;
+  text-align: center;
+  display: flex; /* NEW: Flexコンテナとして扱う */
+  flex-direction: column; /* NEW: 子要素を縦に並べる */
+  align-items: center; /* NEW: 子要素を中央揃えにする (任意) */
+  background-color: transparent; /* 半透明の背景を透明に */
+  margin-top: 20px; /* 盤面との間にスペースを設ける */
+}
+
+#result-screen h2 {
+  margin-top: 0;
+  font-size: 1.5em;
+  margin-bottom: 15px;
+}
+
+#result-screen div {
+  margin-bottom: 8px;
+}
+
+#floor-revelation-rates {
+  margin-top: 15px; /* 上の要素との間にスペースを設ける */
+}
+
+#result-screen ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#result-screen li {
+  margin-bottom: 4px;
+}
+
+#btn-reset {
+  padding: 10px 20px;
+  font-size: 1.2em;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+#btn-reset:hover {
+  background-color: #45a049;
+}
+
+/* Confirmation Dialog Styles */
+/* This rule is now merged into the body[data-game-state] selector below */
+
+.confirm-prompt-message {
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  color: #ffc107; /* Yellow to stand out */
+  text-align: center;
+}
+
+.confirm-btn {
+  width: 80%;
+  padding: 12px;
+  font-size: 1.1em;
+  border: 1px solid #666;
+  background-color: #3a3a3a;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.confirm-btn.selected {
+  background-color: #5a5a5a;
+  border-color: #ffc107;
+}
+
+/* Modal Dialog Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background-color: #2c2c2c;
+  padding: 25px;
+  border-radius: 8px;
+  border: 1px solid #777;
+  text-align: center;
+  max-width: 80%;
+  max-width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #ffc107; /* Yellow to match item color */
+}
+
+.modal-content p {
+  margin-bottom: 20px;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: #45a049;
+}
+.status-achieved {
+  color: #4caf50;
+}
+
+.status-not-achieved {
+  color: #f44336;
+}
+
+/* --- View Management based on Game State --- */
+
+/* Hide all major UI containers by default */
+#game-container,
+#item-selection-screen,
+#inventory-screen,
+#result-screen,
+#confirm-dialog-screen {
+  display: none;
+}
+
+/* Show the relevant container based on the body's data attribute */
+body[data-game-state="playing"] #game-container,
+body[data-game-state="jumping_direction"] #game-container,
+body[data-game-state="recon_direction"] #game-container,
+body[data-game-state="confirm_next_floor"] #game-container,
+body[data-game-state="gameover"] #game-container,
+body[data-game-state="choosing_item"] #game-container {
+  display: flex;
+}
+
+body[data-game-state="choosing_item"] #item-selection-screen {
+  display: block;
+}
+
+body[data-game-state="gameover"] #result-screen {
+  display: flex;
+}
+
+body[data-game-state="inventory"] #inventory-screen {
+  display: block;
+}
+
+body[data-game-state="confirm_next_floor"] #confirm-dialog-screen {
+  display: flex;
+}
+
+/* Special handling for controls inside game-container */
+#controls {
+  display: none; /* Hide controls by default */
+}
+
+body[data-game-state="playing"] #controls,
+body[data-game-state="jumping_direction"] #controls,
+body[data-game-state="recon_direction"] #controls {
+  display: grid;
+}
+
+body[data-game-state="confirm_next_floor"] #controls {
+  display: none;
+}
+
+/* アイテム選択中は、盤面と操作ボタンを非表示にする */
+body[data-game-state="choosing_item"] #game-grid,
+body[data-game-state="choosing_item"] #controls {
+  display: none;
+}
+
+/* --- Action Prompt Visibility --- */
+#action-prompt {
+  display: none;
+}
+body[data-game-state="jumping_direction"] #action-prompt,
+body[data-game-state="recon_direction"] #action-prompt {
+  display: block;
+}
+
+/* --- Confirmation Dialog Overlay --- */
+#confirm-dialog-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 150;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#confirm-dialog-screen .confirm-prompt-message {
+  font-size: 1.2em;
+  color: #ffc107;
+  margin-bottom: 25px;
+}
+
+#confirm-dialog-screen .confirm-buttons {
+  display: flex;
+  flex-direction: column; /* Arrange buttons vertically */
+  gap: 15px; /* Adjust gap for vertical layout */
+  width: 60%;
+  max-width: 200px;
+}
+
+/* --- Inventory Screen as an Overlay --- */
+#inventory-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  display: none; /* Initially hidden */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+body[data-game-state="inventory"] #inventory-screen {
+  display: flex;
+}
