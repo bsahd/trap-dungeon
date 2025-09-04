@@ -70,6 +70,8 @@ h1 {
 }
 
 .item-link {
+  background: transparent;
+  border: none;
   cursor: pointer;
   text-decoration: underline;
   color: #a9d7ff; /* A lighter blue to indicate interactivity */
@@ -620,4 +622,11 @@ body[data-game-state="recon_direction"] #action-prompt {
 
 body[data-game-state="inventory"] #inventory-screen {
   display: flex;
+}
+
+p,ul{
+  margin: 0;
+}
+ul{
+  padding-left: 16px;
 }
