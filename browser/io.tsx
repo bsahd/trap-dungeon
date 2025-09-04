@@ -37,12 +37,12 @@ export function GameStatus(
     {} as ({ [x: string]: number }),
   );
   return (
-    <div id="game-status">
-      <p id="floor-number">
+    <div class="game-status">
+      <p class="floor-number">
         Floor: {latestGameResult.displayState.floorNumber}
       </p>
       Items:
-      <ul id="item-list">
+      <ul class="item-list">
         {Object.entries(itemCounts).map((itemCount) => {
           const item = ITEMS[itemCount[0]];
           return (
@@ -82,7 +82,7 @@ export function GameStatus(
           </ul>
           <button
             type="button"
-            id="btn-reset"
+            class="btn-reset"
             onClick={() => {
               gameInstance.resetGame();
               gameInstance.setupFloor();
@@ -213,11 +213,10 @@ export function Controls(
 ) {
   return (
     <>
-      {message && <div id="action-prompt">{message}</div>}
-      <div id="controls">
+      {message && <div class="action-prompt">{message}</div>}
+      <div class="controls">
         <button
-          id="btn-up"
-          class="control-btn"
+          class="control-btn btn-up"
           type="button"
           onClick={() => {
             runGameLoop("w");
@@ -226,8 +225,7 @@ export function Controls(
           ↑
         </button>
         <button
-          id="btn-down"
-          class="control-btn"
+          class="control-btn btn-down"
           type="button"
           onClick={() => {
             runGameLoop("s");
@@ -236,8 +234,7 @@ export function Controls(
           ↓
         </button>
         <button
-          id="btn-left"
-          class="control-btn"
+          class="control-btn btn-left"
           type="button"
           onClick={() => {
             runGameLoop("a");
@@ -246,8 +243,7 @@ export function Controls(
           ←
         </button>
         <button
-          id="btn-right"
-          class="control-btn"
+          class="control-btn btn-right"
           type="button"
           onClick={() => {
             runGameLoop("d");
@@ -421,9 +417,9 @@ export function GameMain() {
     };
   }, []);
   return (
-    <div id="game-container">
+    <div class="game-container">
       <h1>bsahd/trap-dungeon</h1>
-      <div id="game-language">
+      <div class="game-language">
         <label>
           <input
             type="radio"
@@ -452,7 +448,7 @@ export function GameMain() {
         runGameLoop={runGameLoop}
         gameInstance={gameInstance}
       />
-      <div id="game-grid">
+      <div class="game-grid">
         <GameGrid
           displayState={displayState}
           runGameLoop={runGameLoop}
@@ -460,7 +456,12 @@ export function GameMain() {
         />
       </div>
 
-      <Controls runGameLoop={runGameLoop} message={latestGameResult?.message} />
+      {displayState?.gameState != "gameover" && (
+        <Controls
+          runGameLoop={runGameLoop}
+          message={latestGameResult?.message}
+        />
+      )}
     </div>
   );
 }

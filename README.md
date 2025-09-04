@@ -3,8 +3,8 @@
 inajobさんの[Trap Dungeon](https://github.com/inajob/trap-dungeon)を、TypeScript+Deno+Preact構成に置き換えるプロジェクトです。
 
 This project replaces inajob's
-[Trap Dungeon](https://github.com/inajob/trap-dungeon) with a TypeScript + Deno + Preact
-configuration.
+[Trap Dungeon](https://github.com/inajob/trap-dungeon) with a TypeScript +
+Deno + Preact configuration.
 
 ## Play Requirements
 

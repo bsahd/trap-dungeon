@@ -18,7 +18,7 @@ body {
   touch-action: manipulation; /* Disable double-tap to zoom */
   overflow-y: auto; /* Allow vertical scrolling if content overflows */
 }
-#game-wrapper, #root {
+.game-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +27,7 @@ body {
   padding: 10px;
   box-sizing: border-box;
 }
-#game-container {
+.game-container {
   width: 100%;
   border: 1px solid #555;
   padding: 10px;
@@ -44,7 +44,7 @@ h1 {
   margin-top: 0;
   margin-bottom: 10px;
 }
-#game-status {
+.game-status {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -58,13 +58,13 @@ h1 {
   border-radius: 5px;
 }
 
-#status-main {
+.status-main {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-#item-list {
+.item-list {
   line-height: 1.4;
   text-align: left;
 }
@@ -81,17 +81,26 @@ h1 {
   color: #ffffff;
 }
 
-#game-grid {
+.game-grid {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
 }
-#controls {
+.controls {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   gap: 10px;
   width: 100%;
+}
+.app-btn {
+  background-color: #444;
+  color: #eee;
+  border: 1px solid #666;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none; /* Prevent text selection on tap */
+  text-align: center;
 }
 .control-btn {
   padding: 15px 10px;
@@ -109,91 +118,25 @@ h1 {
   background-color: #555;
 }
 
-#btn-up {
+.btn-up {
   grid-column: 2;
   grid-row: 1;
 }
-#btn-left {
+.btn-left {
   grid-column: 1;
   grid-row: 2;
 }
-#btn-inventory {
+.btn-inventory {
   grid-column: 2;
   grid-row: 2;
 }
-#btn-right {
+.btn-right {
   grid-column: 3;
   grid-row: 2;
 }
-#btn-down {
+.btn-down {
   grid-column: 2;
   grid-row: 3;
-}
-
-/* Item Selection Screen Styles */
-#item-selection-screen {
-  padding: 10px;
-  text-align: center;
-}
-#item-selection-screen h2 {
-  margin-top: 0;
-  font-size: 1.2em;
-}
-.item-choice-btn {
-  display: block;
-  width: 100%;
-  padding: 15px 10px;
-  margin-bottom: 10px;
-  font-size: 1em;
-  background-color: #3a3a3a;
-  color: #eee;
-  border: 1px solid #666;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: left;
-  box-sizing: border-box;
-}
-.item-choice-btn:hover {
-  background-color: #4a4a4a;
-}
-.item-choice-btn.selected {
-  border-color: #ffc107;
-  background-color: #5a5a5a;
-}
-.item-choice-btn strong {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 1.1em;
-}
-
-/* Inventory Screen */
-#inventory-screen {
-  padding: 10px;
-  text-align: center;
-}
-#inventory-screen h2 {
-  margin-top: 0;
-  font-size: 1.2em;
-}
-.inventory-item-btn {
-  display: block;
-  width: 100%;
-  padding: 15px 10px;
-  margin-bottom: 10px;
-  font-size: 1em;
-  background-color: #3a3a3a;
-  color: #eee;
-  border: 1px solid #666;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: left;
-  box-sizing: border-box;
-}
-.inventory-item-btn:hover {
-  background-color: #4a4a4a;
-}
-#inventory-cancel-btn {
-  background-color: #6c757d;
 }
 
 /* Grid styles previously in browser_io.js */
@@ -345,7 +288,7 @@ h1 {
 }
 
 /* Action Prompt Styles */
-#action-prompt {
+.action-prompt {
   padding: 8px;
   margin-bottom: 10px;
   background-color: #333;
@@ -374,7 +317,7 @@ h1 {
 }
 
 /* Result Screen Styles */
-#result-screen {
+.result-screen {
   padding: 10px;
   text-align: center;
   display: flex; /* NEW: Flexコンテナとして扱う */
@@ -384,31 +327,31 @@ h1 {
   margin-top: 20px; /* 盤面との間にスペースを設ける */
 }
 
-#result-screen h2 {
+.result-screen h2 {
   margin-top: 0;
   font-size: 1.5em;
   margin-bottom: 15px;
 }
 
-#result-screen div {
+.result-screen div {
   margin-bottom: 8px;
 }
 
-#floor-revelation-rates {
+.floor-revelation-rates {
   margin-top: 15px; /* 上の要素との間にスペースを設ける */
 }
 
-#result-screen ul {
+.result-screen ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-#result-screen li {
+.result-screen li {
   margin-bottom: 4px;
 }
 
-#btn-reset {
+.btn-reset {
   padding: 10px 20px;
   font-size: 1.2em;
   background-color: #4caf50;
@@ -419,34 +362,8 @@ h1 {
   margin-top: 20px;
 }
 
-#btn-reset:hover {
+.btn-reset:hover {
   background-color: #45a049;
-}
-
-/* Confirmation Dialog Styles */
-/* This rule is now merged into the body[data-game-state] selector below */
-
-.confirm-prompt-message {
-  font-size: 1.1em;
-  margin-bottom: 5px;
-  color: #ffc107; /* Yellow to stand out */
-  text-align: center;
-}
-
-.confirm-btn {
-  width: 80%;
-  padding: 12px;
-  font-size: 1.1em;
-  border: 1px solid #666;
-  background-color: #3a3a3a;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.confirm-btn.selected {
-  background-color: #5a5a5a;
-  border-color: #ffc107;
 }
 
 /* Modal Dialog Styles */
@@ -504,75 +421,8 @@ h1 {
   color: #f44336;
 }
 
-/* --- View Management based on Game State --- */
-
-/* Hide all major UI containers by default */
-#game-container,
-#item-selection-screen,
-#inventory-screen,
-#result-screen,
-#confirm-dialog-screen {
-  display: none;
-}
-
-/* Show the relevant container based on the body's data attribute */
-body[data-game-state="playing"] #game-container,
-body[data-game-state="jumping_direction"] #game-container,
-body[data-game-state="recon_direction"] #game-container,
-body[data-game-state="confirm_next_floor"] #game-container,
-body[data-game-state="gameover"] #game-container,
-body[data-game-state="choosing_item"] #game-container {
-  display: flex;
-}
-
-body[data-game-state="choosing_item"] #item-selection-screen {
-  display: block;
-}
-
-body[data-game-state="gameover"] #result-screen {
-  display: flex;
-}
-
-body[data-game-state="inventory"] #inventory-screen {
-  display: block;
-}
-
-body[data-game-state="confirm_next_floor"] #confirm-dialog-screen {
-  display: flex;
-}
-
-/* Special handling for controls inside game-container */
-#controls {
-  display: none; /* Hide controls by default */
-}
-
-body[data-game-state="playing"] #controls,
-body[data-game-state="jumping_direction"] #controls,
-body[data-game-state="recon_direction"] #controls {
-  display: grid;
-}
-
-body[data-game-state="confirm_next_floor"] #controls {
-  display: none;
-}
-
-/* アイテム選択中は、盤面と操作ボタンを非表示にする */
-body[data-game-state="choosing_item"] #game-grid,
-body[data-game-state="choosing_item"] #controls {
-  display: none;
-}
-
-/* --- Action Prompt Visibility --- */
-#action-prompt {
-  display: none;
-}
-body[data-game-state="jumping_direction"] #action-prompt,
-body[data-game-state="recon_direction"] #action-prompt {
-  display: block;
-}
-
 /* --- Confirmation Dialog Overlay --- */
-#confirm-dialog-screen {
+.confirm-dialog-screen {
   position: fixed;
   top: 0;
   left: 0;
@@ -589,13 +439,13 @@ body[data-game-state="recon_direction"] #action-prompt {
   text-align: center;
 }
 
-#confirm-dialog-screen .confirm-prompt-message {
+.confirm-dialog-screen .confirm-prompt-message {
   font-size: 1.2em;
   color: #ffc107;
   margin-bottom: 25px;
 }
 
-#confirm-dialog-screen .confirm-buttons {
+.confirm-dialog-screen .confirm-buttons {
   display: flex;
   flex-direction: column; /* Arrange buttons vertically */
   gap: 15px; /* Adjust gap for vertical layout */
@@ -604,7 +454,7 @@ body[data-game-state="recon_direction"] #action-prompt {
 }
 
 /* --- Inventory Screen as an Overlay --- */
-#inventory-screen {
+.inventory-screen {
   position: fixed;
   top: 0;
   left: 0;
@@ -618,10 +468,6 @@ body[data-game-state="recon_direction"] #action-prompt {
   align-items: center;
   padding: 20px;
   box-sizing: border-box;
-}
-
-body[data-game-state="inventory"] #inventory-screen {
-  display: flex;
 }
 
 p, ul {
