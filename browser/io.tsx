@@ -314,7 +314,9 @@ export function showModalDialog(
 
 export function GameMain() {
   const { current: gameInstance } = useRef(new Game());
-  useEffect(() => gameInstance.setupFloor(), []);
+  useEffect(() => {
+    gameInstance.setupFloor();
+  }, []);
   const [displayState, setDisplayState] = useState<DisplayState>();
   const [latestGameResult, setLatestGameResult] = useState<GameLoopResult>();
   const [notifications, setNotifications] = useState<string[]>([]);

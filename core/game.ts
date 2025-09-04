@@ -162,6 +162,9 @@ export class Game implements GameI {
     } while (!solvable || goalInitiallyVisible);
 
     this.revealFrom(this.player.r, this.player.c);
+    return {
+      attempts,
+    };
   }
 
   generateGrid() {
