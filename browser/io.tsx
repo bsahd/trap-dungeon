@@ -369,8 +369,8 @@ export function GameMain() {
       showModalDialog(
         UI_TEXT.chooseReward[language],
         "",
-        gameResult.displayState.currentItemChoices.map((id, n) =>
-          `${n + 1}: ${ITEMS[id].name[language]}`
+        gameResult.displayState.currentItemChoices.map((id) =>
+          ITEMS[id].name[language]
         ),
       ).then((num) => {
         runGameLoop((num + 1).toString());
