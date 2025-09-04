@@ -5,9 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bsahd/trap-dungeon</title>
     <link rel="stylesheet" href="browser/style.css">
+    <script type="module" defer src="browser/bundled.js"></script>
   </head>
   <body>
-    <div id="root" class="game-wrapper">Loading...</div>
-    <script type="module" src="browser/bundled.js"></script>
+    <div id="root" class="game-wrapper">
+      <!-- skeleton screen -->
+      <div class="game-container">
+        <h1>bsahd/trap-dungeon</h1>
+        <div class="game-language">
+          <label><input
+              type="radio"
+              name="language"
+              checked
+            >日本語</label><label><input
+              type="radio"
+              name="language"
+            >English</label>
+        </div>
+        <div class="game-status">
+          <p class="floor-number">Floor: 1</p>Items:<ul class="item-list"></ul>
+        </div>
+        <div class="game-grid">
+          <table class="game-table" style="--dynamic-cell-size: 32px">
+            <tbody>
+              <tr>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+              </tr>
+              <tr>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+              </tr>
+              <tr>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+              </tr>
+              <tr>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+              </tr>
+              <tr>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+              </tr>
+              <tr>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+              </tr>
+              <tr>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+
+                <td class="game-cell game-cell--hidden"></td>
+              </tr>
+              <tr>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+                <td class="game-cell game-cell--hidden"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="controls">
+          <button class="control-btn btn-up" type="button">↑</button>
+          <button class="control-btn btn-down" type="button">↓</button>
+          <button class="control-btn btn-left" type="button">←</button>
+          <button class="control-btn btn-right" type="button">→</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
