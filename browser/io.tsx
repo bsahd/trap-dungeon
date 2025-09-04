@@ -478,7 +478,7 @@ export function GameMain() {
   }, []);
   return (
     <div class="game-container">
-      <h1>bsahd/trap-dungeon</h1>
+      <h1>Trap Dungeon</h1>
       <div class="game-language">
         <label>
           <input
