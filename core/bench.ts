@@ -12,5 +12,7 @@ for (const _ of range(0, 100)) {
     totalAttempts += attempts;
   }
 }
-console.log(`${totalAttempts} attempts ( ${totalAttempts/10000} attempts per setup )`);
+console.log(
+  `${totalAttempts} attempts ( ${totalAttempts / 10000} attempts per setup )`,
+);
 console.log(performance.now() - startTime, "ms");
