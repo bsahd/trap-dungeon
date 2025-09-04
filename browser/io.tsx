@@ -7,37 +7,40 @@ import { UI_TEXT } from "../core/ui_text.ts";
 import { Language } from "./main.tsx";
 
 export function NotifyArea(
-  props: { notifications: string[] },
+  { notifications }: { notifications: string[] },
 ) {
   return (
     <>
-      {props.notifications.map((notify) => (
-        <div class="game-popup">{notify}</div>
+      {notifications.map((notify, i) => (
+        <div class="game-popup" key={i}>{notify}</div>
       ))}
     </>
   );
 }
 
 export function GameStatus(
-  props: {
+  { latestGameResult, language, runGameLoop, gameInstance }: {
     latestGameResult?: GameLoopResult;
     language: Language;
     runGameLoop: (key?: string) => void;
     gameInstance: Game;
   },
 ) {
-  const lang = props.language;
-  if (!props.latestGameResult) {
+  if (!latestGameResult) {
     return <>Error: No DisplayState for GameStatus</>;
   }
-  const d = props.latestGameResult;
-  const itemCounts = (d.displayState.items || []).reduce((counts, id) => {
-    counts[id] = (counts[id] || 0) + 1;
-    return counts;
-  }, {} as ({ [x: string]: number }));
+  const itemCounts = (latestGameResult.displayState.items || []).reduce(
+    (counts, id) => {
+      counts[id] = (counts[id] || 0) + 1;
+      return counts;
+    },
+    {} as ({ [x: string]: number }),
+  );
   return (
     <div id="game-status">
-      <p id="floor-number">Floor: {d.displayState.floorNumber}</p>
+      <p id="floor-number">
+        Floor: {latestGameResult.displayState.floorNumber}
+      </p>
       Items:
       <ul id="item-list">
         {Object.entries(itemCounts).map((itemCount) => {
@@ -47,31 +50,31 @@ export function GameStatus(
               <button
                 type="button"
                 class="item-link"
-                onClick={() => alert(item.description[lang])}
+                onClick={() => alert(item.description[language])}
               >
-                {item.name[lang]}
+                {item.name[language]}
                 {item.key && `(${item.key})`} x{itemCount[1]}
               </button>
               {item.key !== null && (
                 <button
                   type="button"
-                  onClick={() => props.runGameLoop(item.key!)}
+                  onClick={() => runGameLoop(item.key!)}
                 >
-                  {UI_TEXT.use[lang]}
+                  {UI_TEXT.use[language]}
                 </button>
               )}
             </li>
           );
         })}
       </ul>
-      {d.gameState == "gameover" && (
+      {latestGameResult.gameState == "gameover" && (
         <>
-          {UI_TEXT.floorDisclosureRate[lang]}
+          {UI_TEXT.floorDisclosureRate[language]}
           <ul>
-            {d.result.floorRevelationRates.length == 0 && (
-              <li>{UI_TEXT.none[lang]}</li>
+            {latestGameResult.result.floorRevelationRates.length == 0 && (
+              <li>{UI_TEXT.none[language]}</li>
             )}
-            {d.result.floorRevelationRates.map((revRate) => (
+            {latestGameResult.result.floorRevelationRates.map((revRate) => (
               <li key={revRate.floor}>
                 {revRate.floor}: {(revRate.rate * 100).toFixed(0)}%
               </li>
@@ -81,12 +84,12 @@ export function GameStatus(
             type="button"
             id="btn-reset"
             onClick={() => {
-              props.gameInstance.resetGame();
-              props.gameInstance.setupFloor();
-              props.runGameLoop();
+              gameInstance.resetGame();
+              gameInstance.setupFloor();
+              runGameLoop();
             }}
           >
-            {UI_TEXT.playAgain[lang]}
+            {UI_TEXT.playAgain[language]}
           </button>
         </>
       )}
@@ -95,16 +98,15 @@ export function GameStatus(
 }
 
 export function GameGrid(
-  props: {
+  { displayState, runGameLoop, gameInstance }: {
     displayState?: DisplayState;
     runGameLoop: () => void;
     gameInstance: Game;
   },
 ) {
-  if (!props.displayState) {
+  if (!displayState) {
     return <>Error: No DisplayState for GameGrid</>;
   }
-  const displayState = props.displayState;
   return (
     <table class="game-table" style={{ "--dynamic-cell-size": "32px" }}>
       <tbody>
@@ -129,8 +131,8 @@ export function GameGrid(
               const flagAction = (event: Event) => {
                 if (isRevealed) return;
                 event.preventDefault();
-                props.gameInstance.toggleFlag(r, c);
-                props.runGameLoop();
+                gameInstance.toggleFlag(r, c);
+                runGameLoop();
               };
 
               let numberContent = "";
@@ -204,12 +206,14 @@ export function GameGrid(
 }
 
 export function Controls(
-  props: { runGameLoop: (key?: string) => void; message?: string },
+  { runGameLoop, message }: {
+    runGameLoop: (key?: string) => void;
+    message?: string;
+  },
 ) {
-  const runGameLoop = props.runGameLoop;
   return (
     <>
-      {props.message && <div id="action-prompt">{props.message}</div>}
+      {message && <div id="action-prompt">{message}</div>}
       <div id="controls">
         <button
           id="btn-up"
