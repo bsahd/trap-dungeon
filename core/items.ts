@@ -55,12 +55,14 @@ const ITEMS: Items = {
       let cellRevealed = false;
       for (const neighbor of neighborsToReveal) {
         const cell = game.grid[neighbor.r][neighbor.c];
-        if (!cell.isRevealed) cellRevealed = true;
-        if (cell.type == "trap") {
-          cell.isRevealed = true;
-          cell.isFlagged = true; // Mark revealed trap
-        } else {
-          game.grid[neighbor.r][neighbor.c].reveal();
+        if (!cell.isRevealed) {
+          cellRevealed = true;
+          if (cell.type == "trap") {
+            cell.isRevealed = true;
+            cell.isFlagged = true; // Mark revealed trap
+          } else {
+            game.grid[neighbor.r][neighbor.c].reveal();
+          }
         }
       }
       if (cellRevealed) {
@@ -277,12 +279,14 @@ const ITEMS: Items = {
             isValidCell(nR, nC, game.rows, game.cols)
           ) {
             const cell = game.grid[nR][nC];
-            if (!cell.isRevealed) cellRevealed = true;
-            if (cell.type == "trap") {
-              cell.isRevealed = true;
-              cell.isFlagged = true; // Mark revealed trap
-            } else {
-              game.grid[nR][nC].reveal();
+            if (!cell.isRevealed) {
+              cellRevealed = true;
+              if (cell.type == "trap") {
+                cell.isRevealed = true;
+                cell.isFlagged = true; // Mark revealed trap
+              } else {
+                game.grid[nR][nC].reveal();
+              }
             }
           }
         }

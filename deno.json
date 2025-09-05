@@ -1,6 +1,10 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.ts"
+    "build": "deno task buildBrowser; deno task buildClassic; deno task buildIndexHTML;",
+    "buildBrowser": "deno bundle browser/main.tsx -o browser/bundled.js --minify --sourcemap=linked",
+    "buildClassic": "deno bundle browser_classic/main.ts -o browser_classic/bundled.js --minify --sourcemap=linked",
+    "buildIndexHTML": "deno run -A browser/generate-index-html.tsx",
+    "fc": "deno fmt **/*.ts **/*.tsx; deno check **/*.ts **/*.tsx"
   },
   "imports": {
     "preact": "npm:preact@10",

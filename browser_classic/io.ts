@@ -488,9 +488,9 @@ function updateStatusUI(displayState: DisplayState) {
     "status-not-achieved",
   );
   if (currentRevelationRate >= gameInstance.REVELATION_THRESHOLD) {
-    dom.revelationStatus.textContent = `${
-      UI_TEXT.revealRateAchieved[LANG]
-    }(${(currentRevelationRate * 100).toFixed()}%)`;
+    dom.revelationStatus.textContent = `${UI_TEXT.revealRateAchieved[LANG]}(${
+      (currentRevelationRate * 100).toFixed()
+    }%)`;
     dom.revelationStatus.classList.add("status-achieved");
   } else {
     dom.revelationStatus.textContent = `${
