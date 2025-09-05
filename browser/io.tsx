@@ -500,52 +500,55 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
     };
   }, []);
   return (
-    <div class="game-container">
-      <h1>Trap Dungeon</h1>
-      <div class="game-language">
-        <label>
-          <input
-            type="radio"
-            name="language"
-            checked={language == "ja"}
-            onChange={(e) => {
-              e.currentTarget.checked && setLanguage("ja");
-            }}
-          />日本語
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="language"
-            checked={language == "en"}
-            onChange={(e) => {
-              e.currentTarget.checked && setLanguage("en");
-            }}
-          />English
-        </label>
-      </div>
-      <NotifyArea notifications={notifications} />
-      <GameStatus
-        latestGameResult={latestGameResult}
-        language={language}
-        runGameLoop={runGameLoop}
-        gameInstance={gameInstance}
-      />
-      <div class="game-grid">
-        <GameGrid
-          displayState={displayState}
+    <>
+      <div class="game-container">
+        <h1>Trap Dungeon</h1>
+        <div class="game-language">
+          <label>
+            <input
+              type="radio"
+              name="language"
+              checked={language == "ja"}
+              onChange={(e) => {
+                e.currentTarget.checked && setLanguage("ja");
+              }}
+            />日本語
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="language"
+              checked={language == "en"}
+              onChange={(e) => {
+                e.currentTarget.checked && setLanguage("en");
+              }}
+            />English
+          </label>
+        </div>
+        <NotifyArea notifications={notifications} />
+        <GameStatus
+          latestGameResult={latestGameResult}
+          language={language}
           runGameLoop={runGameLoop}
           gameInstance={gameInstance}
         />
-      </div>
+        <div class="game-grid">
+          <GameGrid
+            displayState={displayState}
+            runGameLoop={runGameLoop}
+            gameInstance={gameInstance}
+          />
+        </div>
 
-      {displayState?.gameState != "gameover" && (
-        <Controls
-          runGameLoop={runGameLoop}
-          message={latestGameResult?.message}
-          lastInputTime={lastInputTime}
-        />
-      )}
-    </div>
+        {displayState?.gameState != "gameover" && (
+          <Controls
+            runGameLoop={runGameLoop}
+            message={latestGameResult?.message}
+            lastInputTime={lastInputTime}
+          />
+        )}
+      </div>
+      <a href="https://github.com/bsahd/trap-dungeon">Trap Dungeon on GitHub</a>
+    </>
   );
 }
