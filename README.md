@@ -27,9 +27,5 @@ Deno + Preact configuration.
 
 1. Clone this repo.
 2. Change current directory to repo root.
-3. Bundle script for browser:
-   1. ``
-   2. ``
-4. Generate index.html:
-   - ``
-5. Start local server(static http server) and open local server's address.
+3. `deno task build`
+4. Start local server(static http server) and open local server's address.
