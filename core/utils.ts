@@ -94,7 +94,7 @@ export function isSolvable(
 
     const fullSolved = grid.map((x, nr) =>
       x.map((cell, nc) => {
-        return cell.type == "trap" || visited[nr][nc];
+        return (cell.type == "trap") || visited[nr][nc];
       })
     );
 
@@ -108,7 +108,7 @@ export function isSolvable(
 
       if (
         isValidCell(nr, nc, rows, cols) && !visited[nr][nc] &&
-        grid[nr][nc].type != "trap"
+        (grid[nr][nc].type != "trap")
       ) {
         visited[nr][nc] = true;
         queue.push({ r: nr, c: nc });

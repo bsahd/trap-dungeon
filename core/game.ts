@@ -37,8 +37,8 @@ export class Cell {
     } else if (this.type == "exit") {
       game.gameState = "confirm_next_floor";
     } else if (this.type == "trap") {
-      if (game.hasItem("trap_shield")) {
-        const index = game.player.items.indexOf("trap_shield");
+      if (game.hasItem("heart_of_iron")) {
+        const index = game.player.items.indexOf("heart_of_iron");
         game.player.items.splice(index, 1);
         this.type = "normal";
         this.reveal();
