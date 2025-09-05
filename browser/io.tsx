@@ -139,9 +139,9 @@ export function GameGrid(
         style={{ "--dynamic-cell-size": "32px" }}
       >
         <tbody>
-          {Array.from({ length: 8 }, (v, k) => k).map((r) => (
+          {Array.from({ length: 8 }, (_, k) => k).map((r) => (
             <tr key={r}>
-              {Array.from({ length: 8 }, (v, k) => k).map((c) => (
+              {Array.from({ length: 8 }, (_, k) => k).map((c) => (
                 <td key={c}></td>
               ))}
             </tr>
@@ -170,7 +170,8 @@ export function GameGrid(
               const flagAction = (event: Event) => {
                 if (isRevealed) return;
                 event.preventDefault();
-                gameInstance.toggleFlag(r, c);
+                gameInstance.grid[r][c].isFlagged =
+                  !(gameInstance.grid[r][c].isFlagged);
                 runGameLoop();
               };
 

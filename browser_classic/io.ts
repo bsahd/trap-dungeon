@@ -11,12 +11,12 @@ const lastInput: { key: string | null; time: number } = { key: null, time: 0 };
 let isInputLocked = false; // Flag to prevent input race conditions
 let resizeTimeout: number; // For debouncing resize events
 
-document.getElementById("lang-choose-ja")?.addEventListener("click", (e) => {
+document.getElementById("lang-choose-ja")?.addEventListener("click", () => {
   if (confirm("言語変更すると現在のステージ状況は破棄されます。")) {
     location.search = "?lang=ja";
   }
 });
-document.getElementById("lang-choose-en")?.addEventListener("click", (e) => {
+document.getElementById("lang-choose-en")?.addEventListener("click", () => {
   if (
     confirm(
       "If you change the language, the current stage status will be discarded.",
@@ -229,7 +229,8 @@ export function renderGridToDom(displayState: DisplayState) {
         const flagAction = (event: Event) => {
           if (isInputLocked) return;
           event.preventDefault();
-          gameInstance.toggleFlag(r, c);
+          gameInstance.grid[r][c].isFlagged =
+            !(gameInstance.grid[r][c].isFlagged);
           runBrowserGameLoop();
         };
         cell.addEventListener("click", flagAction);

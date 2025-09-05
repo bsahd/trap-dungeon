@@ -285,15 +285,6 @@ export class Game {
     }
   }
 
-  toggleFlag(r: number, c: number) {
-    if (isValidCell(r, c, this.rows, this.cols)) {
-      const cell = this.grid[r][c];
-      if (!cell.isRevealed) {
-        cell.isFlagged = !cell.isFlagged;
-      }
-    }
-  }
-
   calculateRevelationRate() {
     let revealedCount = 0;
     forEachCell(this.grid, (cell) => {
