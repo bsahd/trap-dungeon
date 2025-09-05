@@ -11,7 +11,7 @@ export function getItem(itemId: string): Item {
     return ITEMS[itemId];
   } else {
     return {
-      name: { ja: `不明なアイテム(${itemId})`, en: `Unknown Item(${itemId})` },
+      name: { ja: `不明なアイテム(ID: ${itemId})`, en: `Unknown Item(ID: ${itemId})` },
       description: {
         ja: "効果なし",
         en: "No effects",
