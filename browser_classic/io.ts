@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 import { Game } from "../core/game.ts";
 import { DisplayState, GameI, Item } from "../core/interfaces.ts";
-import { ITEMS } from "../core/items.ts";
+import { getItem, getItemList } from "../core/items.ts";
 import { UI_TEXT } from "../core/ui_text.ts";
 
 let selectedChoiceIndex = 0; // For keyboard selection on item choice screen
@@ -89,7 +89,7 @@ function showNotification(text: string, duration = 3000) {
 }
 
 function showItemDetailModal(itemId: string) {
-  const item = ITEMS[itemId];
+  const item = getItem(itemId);
   if (!item) return;
 
   // Close any existing modal first
@@ -417,9 +417,9 @@ function handleGlobalKeyboardInput(event: KeyboardEvent) {
       handled = false;
     }
   } else if (gameInstance.gameState === "playing") {
-    const itemKeys = Object.values(ITEMS).map((item) => item.key).filter((k) =>
-      k
-    ).join("");
+    const itemKeys = getItemList().map(([_itemId, item]) => item.key).filter((
+      k,
+    ) => k).join("");
 
     if (
       itemKeys.includes(key) ||
@@ -463,7 +463,7 @@ function updateStatusUI(displayState: DisplayState) {
     dom.itemList.innerHTML = "<strong>Items:</strong> None";
   } else {
     const itemHtmlElements = itemEntries.map(([id, count]) => {
-      const item = ITEMS[id];
+      const item = getItem(id);
       if (!item) return "Unknown Item";
 
       let itemName = item.name[LANG];
@@ -620,7 +620,7 @@ function renderResultScreen(result: {
     itemsHtml += UI_TEXT.none[LANG];
   } else {
     itemsHtml += itemEntries.map(([id, count]) => {
-      const item = ITEMS[id];
+      const item = getItem(id);
       if (!item) return "Unknown Item";
       return `${item.name[LANG]} x${count}`;
     }).join(", ");
@@ -658,7 +658,7 @@ function renderItemSelectionScreen(choices: string[]) {
       "template-item-choice",
     ) as HTMLTemplateElement;
     choices.forEach((id, index) => {
-      const item = ITEMS[id];
+      const item = getItem(id);
       if (item) {
         const content = template.content.cloneNode(true) as HTMLElement;
         const button = content.querySelector(".item-choice-btn")!;
@@ -754,7 +754,7 @@ function setupControlButtons() {
 function showInventoryScreen() {
   const displayState = gameInstance.getDisplayState();
   const usableItems = displayState.items
-    .map((id) => ITEMS[id])
+    .map((id) => getItem(id))
     .filter((item) => item && item.key !== null);
 
   if (usableItems.length === 0) {

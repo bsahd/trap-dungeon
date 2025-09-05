@@ -2,7 +2,7 @@ import { Game } from "../core/game.ts";
 import { Fragment, h } from "preact";
 import { MutableRef, useEffect, useRef, useState } from "preact/hooks";
 import { DisplayState, GameLoopResult } from "../core/interfaces.ts";
-import { ITEMS } from "../core/items.ts";
+import { getItem, getItemList } from "../core/items.ts";
 import { UI_TEXT } from "../core/ui_text.ts";
 import { Language } from "./main.tsx";
 
@@ -56,7 +56,7 @@ export function GameStatus(
       </div>
       <ul class="item-list">
         {Object.entries(itemCounts).map((itemCount) => {
-          const item = ITEMS[itemCount[0]];
+          const item = getItem(itemCount[0]);
           return (
             <li key={itemCount[0]}>
               <button
@@ -360,7 +360,7 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
         UI_TEXT.chooseReward[language],
         "",
         gameResult.displayState.currentItemChoices.map((id) =>
-          ITEMS[id].name[language]
+          getItem(id).name[language]
         ),
       ).then((num) => {
         runGameLoop((num + 1).toString());
@@ -447,9 +447,10 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
           handled = false;
         }
       } else if (gameInstance.gameState === "playing") {
-        const itemKeys = Object.values(ITEMS).map((item) => item.key).filter((
-          k,
-        ) => k).join("");
+        const itemKeys = getItemList().map(([_itemId, item]) => item.key)
+          .filter((
+            k,
+          ) => k).join("");
 
         if (
           itemKeys.includes(key) ||

@@ -85,6 +85,3 @@ export type GameLoopResult =
       };
     }
   );
-export interface Items {
-  [itemname: string]: Item;
-}

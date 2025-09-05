@@ -1,5 +1,5 @@
 import { GameI, GameLoopResult, MultilingualText } from "./interfaces.ts";
-import { ITEMS } from "./items.ts";
+import { getItem, getItemList } from "./items.ts";
 import {
   forEachCell,
   getEightDirectionsNeighbors,
@@ -44,8 +44,8 @@ export class Game implements GameI {
   }
   getAvailableItems() {
     const currentFloor = this.floorNumber;
-    return Object.keys(ITEMS).filter((id) => {
-      const item = ITEMS[id];
+    return getItemList().map((x) => x[0]).filter((id) => {
+      const item = getItem(id);
       const minFloor = item.minFloor || 1;
       const maxFloor = item.maxFloor || Infinity;
       return currentFloor >= minFloor && currentFloor <= maxFloor;
@@ -80,8 +80,9 @@ export class Game implements GameI {
         !this.player.items.includes(id)
       );
       if (availableItems.length > 0) {
-        const randomItemId =
-          availableItems[Math.floor(Math.random() * availableItems.length)];
+        const randomItemId = availableItems[
+          Math.floor(Math.random() * availableItems.length)
+        ];
         this.player.items.push(randomItemId);
       }
     }
@@ -128,16 +129,17 @@ export class Game implements GameI {
 
       const allPlaceableAvailable = this.getAvailableItems();
       const placeableItems = allPlaceableAvailable.filter((
-        id: string | number,
-      ) => ITEMS[id].key !== null);
+        id: string,
+      ) => getItem(id).key !== null);
       const numberOfItemsToPlace = 2 + this.floorNumber;
 
       for (let i = 0; i < numberOfItemsToPlace; i++) {
         if (placeableItems.length > 0 && validCells.length > 0) {
           const validCellIndex = Math.floor(Math.random() * validCells.length);
           const itemPos = validCells.splice(validCellIndex, 1)[0];
-          const randomItemId =
-            placeableItems[Math.floor(Math.random() * placeableItems.length)];
+          const randomItemId = placeableItems[
+            Math.floor(Math.random() * placeableItems.length)
+          ];
           this.grid[itemPos.r][itemPos.c].itemId = randomItemId;
         }
       }
@@ -400,11 +402,10 @@ export class Game implements GameI {
         newCol = this.player.c,
         moved = false,
         itemUsed = false;
-      const itemToUseId = Object.keys(ITEMS).find((id) =>
-        ITEMS[id].key === key
-      );
+      const itemToUseId = getItemList().find(([_, item]) => item.key === key)
+        ?.[0];
       if (itemToUseId && this.hasItem(itemToUseId)) {
-        const item = ITEMS[itemToUseId];
+        const item = getItem(itemToUseId);
         if (item.use) {
           const result = item.use(this);
           itemUsed = true;
@@ -524,7 +525,7 @@ export class Game implements GameI {
     }
     let promptText = "Move (up/down/left/right)";
     const itemActions = this.player.items
-      .map((id) => ITEMS[id])
+      .map((id) => getItem(id))
       .filter((item) => item.key)
       .map((item) => `${item.key}: ${item.name.en}`);
     if (itemActions.length > 0) {
@@ -554,7 +555,7 @@ export class Game implements GameI {
     if (this.justAcquiredItem) {
       result.newItemAcquired = {
         id: this.justAcquiredItem,
-        ...ITEMS[this.justAcquiredItem],
+        ...getItem(this.justAcquiredItem),
       };
     }
     if (this.tutorialToShow) {

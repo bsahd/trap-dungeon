@@ -4,9 +4,33 @@ import {
   getLineCells,
   isValidCell,
 } from "./utils.ts";
-import { Cell, Items } from "./interfaces.ts";
+import { Cell, Item } from "./interfaces.ts";
 
-export const ITEMS: Items = {
+export function getItem(itemId: string): Item {
+  if (ITEMS[itemId]) {
+    return ITEMS[itemId];
+  } else {
+    return {
+      name: { ja: `不明なアイテム(${itemId})`, en: `Unknown Item(${itemId})` },
+      description: {
+        ja: "効果なし",
+        en: "No effects",
+      },
+      key: null,
+      minFloor: 1,
+      maxFloor: Infinity,
+    };
+  }
+}
+export function getItemList() {
+  return Object.entries(ITEMS as { [itemname: string]: Item });
+}
+
+interface Items {
+  [itemname: string]: Item | undefined;
+}
+
+const ITEMS: Items = {
   // 通常アイテム (F1+)
   reveal_one_trap: {
     name: { ja: "千里眼の巻物", en: "Scroll of Clairvoyance" },
