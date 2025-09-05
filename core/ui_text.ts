@@ -1,11 +1,11 @@
 export const UI_TEXT = {
   disclosureRateAchieved: {
     ja: "開示率: 達成",
-    en: "Disclosure rate: Achieved",
+    en: "Reveal rate: Achieved",
   },
   disclosureRateNotAchieved: {
     ja: "開示率: 未達成",
-    en: "Disclosure rate: Not Achieved",
+    en: "Reveal rate: Not Achieved",
   },
   itemAcquisition: {
     ja: "アイテム獲得",
@@ -21,7 +21,7 @@ export const UI_TEXT = {
   },
   floorDisclosureRate: {
     ja: "各フロアの開示率",
-    en: "Disclosure rate for each floor",
+    en: "Reveal rate for each floor",
   },
   floor: {
     ja: "フロア",

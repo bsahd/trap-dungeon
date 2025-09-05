@@ -476,8 +476,8 @@ export class Game {
         const unchecked = this.grid[newRow][newCol].enterPlayer(this);
         if (!unchecked) {
           this.lastActionMessage = {
-            ja: "チェックしたマスには移動できません。",
-            en: "You cannot move to a checked square.",
+            ja: "旗を立てたマスには移動できません。",
+            en: "You cannot move to a flagged cell.",
           };
         } else {
           this.player.r = newRow;

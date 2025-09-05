@@ -40,7 +40,7 @@ const ITEMS: Items = {
     name: { ja: "千里眼の巻物", en: "Scroll of Clairvoyance" },
     description: {
       ja: "プレイヤーの周囲8マスにある罠をすべて明らかにする。",
-      en: "Reveals all traps within 8 squares of the player.",
+      en: "Reveals all traps within 8 cells of the player.",
     },
     key: "r",
     minFloor: 1,
@@ -85,7 +85,7 @@ const ITEMS: Items = {
     name: { ja: "解体の手引き", en: "Disassembly Guide" },
     description: {
       ja: "プレイヤーから周囲8マスのランダムな罠1つを無効化する。",
-      en: "Disables one random trap within 8 squares of the player.",
+      en: "Disables one random trap within 8 cells of the player.",
     },
     key: "t",
     minFloor: 1,
@@ -113,7 +113,7 @@ const ITEMS: Items = {
           consumed: false,
           message: {
             ja: "解除対象の罠は存在しない。",
-            en: "No trap within 8 squares of the player.",
+            en: "No trap within 8 cells of the player.",
           },
         };
       }
@@ -147,7 +147,7 @@ const ITEMS: Items = {
     description: {
       ja: "指定した方向に1マス飛び越えて、2マス先に進む。",
       en:
-        "Jump one square in the specified direction and move two squares forward.",
+        "Jump one cell in the specified direction and move two cells forward.",
     },
     key: "j",
     minFloor: 1,
@@ -164,7 +164,7 @@ const ITEMS: Items = {
       ja:
         "使用時、上下左右のいずれかの方向を指定する。ドローンがその方向へ一直線に飛び、通路（数字が書かれたマス）を次々と開示していく。もし進路上に罠があった場合、その罠を開示して停止する。",
       en:
-        "When used, you can choose a direction: up, down, left, or right. The drone will fly in a straight line in that direction, revealing passages (squares with numbers written on them) one after another. If there is a trap in its path, it will reveal the trap and stop.",
+        "When used, you can choose a direction: up, down, left, or right. The drone will fly in a straight line in that direction, revealing passages (cells with numbers written on them) one after another. If there is a trap in its path, it will reveal the trap and stop.",
     },
     key: "c",
     minFloor: 5,
@@ -180,7 +180,7 @@ const ITEMS: Items = {
       ja:
         "使用すると、プレイヤーから出口までの「最短経路」がマップ上に示される。経路上のマスはすべて開示されるが、そこにある罠もすべて表示される。",
       en:
-        'When used, the "shortest path" from the player to the exit is displayed on the map, revealing all squares along the path, including any traps.',
+        'When used, the "shortest path" from the player to the exit is displayed on the map, revealing all cells along the path, including any traps.',
     },
     key: "g",
     minFloor: 5,
@@ -212,7 +212,7 @@ const ITEMS: Items = {
       ja:
         "出口の位置を明らかにすると同時に、出口に隣接する周囲8マスの状態もすべて開示する。",
       en:
-        "When revealing the location of the exit, the state of all eight squares surrounding the exit is also revealed.",
+        "When revealing the location of the exit, the state of all eight cells surrounding the exit is also revealed.",
     },
     key: "x",
     minFloor: 5,
@@ -300,7 +300,7 @@ const ITEMS: Items = {
       ja:
         "使用すると、まだ開示もフラグもされていない全てのマスで、罠の配置をシャッフル（再配置）する。罠の総数は変わらない。",
       en:
-        "When used, it shuffles (rearranges) trap placements on all squares that have not yet been revealed or flagged, but the total number of traps remains the same.",
+        "When used, it shuffles (rearranges) trap placements on all cells that have not yet been revealed or flagged, but the total number of traps remains the same.",
     },
     key: "k",
     minFloor: 10,
