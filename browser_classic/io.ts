@@ -247,7 +247,7 @@ export function renderGridToDom(displayState: DisplayState) {
         playerContent = "@";
         numberSpan.classList.add("cell-number--player-present");
 
-        if (gridCell.isTrap) {
+        if (gridCell.type == "trap") {
           cell.classList.add("game-cell--trap");
           numberContent = "X";
         } else {
@@ -265,7 +265,7 @@ export function renderGridToDom(displayState: DisplayState) {
         } else if (gridCell.itemId) {
           cell.classList.add("game-cell--item");
           numberContent = "I";
-        } else if (gridCell.isTrap) {
+        } else if (gridCell.type == "trap") {
           cell.classList.add("game-cell--trap");
           numberContent = "X";
         } else {

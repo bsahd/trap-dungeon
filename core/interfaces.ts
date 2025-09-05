@@ -1,12 +1,12 @@
-import { Game } from "./game.ts";
+import { Cell, Game } from "./game.ts";
 
-export interface Cell {
-  isTrap: boolean;
-  isRevealed: boolean;
-  isFlagged: boolean;
-  adjacentTraps: number;
-  itemId?: string;
-}
+// export interface Cell {
+//   isTrap: boolean;
+//   isRevealed: boolean;
+//   isFlagged: boolean;
+//   adjacentTraps: number;
+//   itemId?: string;
+// }
 export interface GameI {
   player: { r: number; c: number; items: string[] };
   rows: number;

@@ -8,6 +8,61 @@ import {
   isValidCell,
 } from "./utils.ts";
 
+export class Cell {
+  type: "normal" | "trap" | "exit";
+  isRevealed: boolean;
+  isFlagged: boolean;
+  adjacentTraps: number;
+  itemId?: string;
+  constructor() {
+    this.type = "normal";
+    this.isRevealed = false;
+    this.isFlagged = false;
+    this.adjacentTraps = 0;
+  }
+  setType(type: "trap" | "exit") {
+    if (this.type != "normal") {
+      throw new Error("cannot set type twice");
+    }
+    this.type = type;
+  }
+  enterPlayer(game: Game) {
+    if (this.type == "exit") {
+      game.gameState = "confirm_next_floor";
+    }
+    if (this.type == "trap") {
+      if (game.hasItem("trap_shield")) {
+        const index = game.player.items.indexOf("trap_shield");
+        game.player.items.splice(index, 1);
+        this.type = "normal";
+        game.calculateNumbers();
+        game.revealFrom(game.player.r, game.player.c);
+        game.uiEffect = "flash_red";
+        game.lastActionMessage = {
+          ja: "鉄の心臓が身代わりになった！",
+          en: "The Iron Heart has taken its place!",
+        };
+      } else {
+        this.isRevealed = true;
+        game.gameState = "gameover";
+        game.lastActionMessage = {
+          ja: "罠を踏んでしまった！",
+          en: "I stepped into a trap!",
+        };
+      }
+    }
+    if (this.itemId) {
+      const itemId = this.itemId;
+      game.player.items.push(itemId);
+      this.itemId = undefined;
+      game.justAcquiredItem = itemId;
+    }
+    if (game.gameState !== "gameover") {
+      game.revealFrom(game.player.r, game.player.c);
+    }
+  }
+}
+
 export class Game implements GameI {
   grid: GameI["grid"] = [];
   rows: GameI["rows"] = 8;
@@ -110,7 +165,7 @@ export class Game implements GameI {
       const validCells: { r: number; c: number }[] = [];
       forEachCell(this.grid, (cell, r, c) => {
         if (
-          !cell.isTrap && cell.adjacentTraps === 0 &&
+          cell.type != "trap" && cell.adjacentTraps === 0 &&
           !(r === this.player.r && c === this.player.c)
         ) {
           validCells.push({ r, c });
@@ -126,6 +181,7 @@ export class Game implements GameI {
       const exitPos = validCells.splice(exitIndex, 1)[0];
       this.exit.r = exitPos.r;
       this.exit.c = exitPos.c;
+      this.grid[exitPos.r][exitPos.c].setType("exit");
 
       const allPlaceableAvailable = this.getAvailableItems();
       const placeableItems = allPlaceableAvailable.filter((
@@ -169,13 +225,7 @@ export class Game implements GameI {
   generateGrid() {
     this.grid = Array.from(
       { length: this.rows },
-      () =>
-        Array.from({ length: this.cols }, () => ({
-          isTrap: false,
-          isRevealed: false,
-          adjacentTraps: 0,
-          isFlagged: false,
-        })),
+      () => Array.from({ length: this.cols }, () => new Cell()),
     );
   }
 
@@ -198,8 +248,8 @@ export class Game implements GameI {
       );
       const isExit = r === this.exit.r && c === this.exit.c;
 
-      if (!this.grid[r][c].isTrap && !isExit && !isForbidden) {
-        this.grid[r][c].isTrap = true;
+      if (this.grid[r][c].type != "trap" && !isExit && !isForbidden) {
+        this.grid[r][c].setType("trap");
         trapsPlaced++;
       }
     }
@@ -207,12 +257,12 @@ export class Game implements GameI {
 
   calculateNumbers() {
     forEachCell(this.grid, (cell, r, c) => {
-      if (cell.isTrap) return;
+      if (cell.type == "trap") return;
       let trapCount = 0;
       const neighbors = getEightDirectionsNeighbors(r, c, this.rows, this.cols);
 
       for (const neighbor of neighbors) {
-        if (this.grid[neighbor.r][neighbor.c].isTrap) {
+        if (this.grid[neighbor.r][neighbor.c].type == "trap") {
           trapCount++;
         }
       }
@@ -230,7 +280,7 @@ export class Game implements GameI {
     cell.isFlagged = false;
 
     // 罠のマスでは再帰しない、かつ、隣接する罠が0のマスでのみ再帰する
-    if (!cell.isTrap && cell.adjacentTraps === 0) {
+    if (cell.type != "trap" && cell.adjacentTraps === 0) {
       const neighbors = getEightDirectionsNeighbors(r, c, this.rows, this.cols);
 
       for (const neighbor of neighbors) {
@@ -347,7 +397,7 @@ export class Game implements GameI {
           c += dc;
           if (!isValidCell(r, c, this.rows, this.cols)) break;
           const cell = this.grid[r][c];
-          if (cell.isTrap) {
+          if (cell.type == "trap") {
             cell.isRevealed = true;
             cell.isFlagged = true;
             break;
@@ -460,39 +510,7 @@ export class Game implements GameI {
 
   processPlayerLocation() {
     const currentCell = this.grid[this.player.r][this.player.c];
-    if (this.player.r === this.exit.r && this.player.c === this.exit.c) {
-      this.gameState = "confirm_next_floor";
-    }
-    if (currentCell.isTrap) {
-      if (this.hasItem("trap_shield")) {
-        const index = this.player.items.indexOf("trap_shield");
-        this.player.items.splice(index, 1);
-        currentCell.isTrap = false;
-        this.calculateNumbers();
-        this.revealFrom(this.player.r, this.player.c);
-        this.uiEffect = "flash_red";
-        this.lastActionMessage = {
-          ja: "鉄の心臓が身代わりになった！",
-          en: "The Iron Heart has taken its place!",
-        };
-      } else {
-        currentCell.isRevealed = true;
-        this.gameState = "gameover";
-        this.lastActionMessage = {
-          ja: "罠を踏んでしまった！",
-          en: "I stepped into a trap!",
-        };
-      }
-    }
-    if (currentCell.itemId) {
-      const itemId = currentCell.itemId;
-      this.player.items.push(itemId);
-      currentCell.itemId = undefined;
-      this.justAcquiredItem = itemId;
-    }
-    if (this.gameState !== "gameover") {
-      this.revealFrom(this.player.r, this.player.c);
-    }
+    currentCell.enterPlayer(this);
   }
 
   showItemChoiceScreen() {

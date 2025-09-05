@@ -4,7 +4,8 @@ import {
   getLineCells,
   isValidCell,
 } from "./utils.ts";
-import { Cell, Item } from "./interfaces.ts";
+import { Item } from "./interfaces.ts";
+import { Cell } from "./game.ts";
 
 export function getItem(itemId: string): Item {
   if (ITEMS[itemId]) {
@@ -55,7 +56,7 @@ const ITEMS: Items = {
       for (const neighbor of neighborsToReveal) {
         const cell = game.grid[neighbor.r][neighbor.c];
         if (!cell.isRevealed) cellRevealed = true;
-        if (cell.isTrap) {
+        if (cell.type == "trap") {
           cell.isRevealed = true;
           cell.isFlagged = true; // Mark revealed trap
         } else {
@@ -97,14 +98,14 @@ const ITEMS: Items = {
         game.cols,
       );
       const trapsInVicinity = neighborsForTrapCheck.filter((cellPos) =>
-        game.grid[cellPos.r][cellPos.c].isTrap
+        game.grid[cellPos.r][cellPos.c].type == "trap"
       );
 
       if (trapsInVicinity.length > 0) {
         const trapToDemolish =
           trapsInVicinity[Math.floor(Math.random() * trapsInVicinity.length)];
         const cellToClear = game.grid[trapToDemolish.r][trapToDemolish.c];
-        cellToClear.isTrap = false;
+        cellToClear.type == "normal";
         cellToClear.isFlagged = false; // 罠と同時にフラグも解除
         game.calculateNumbers();
         return { consumed: true };
@@ -196,7 +197,7 @@ const ITEMS: Items = {
         path.forEach((pos) => {
           const cell = game.grid[pos.r][pos.c];
           cell.isRevealed = true;
-          if (cell.isTrap) {
+          if (cell.type == "trap") {
             cell.isFlagged = true; // Mark revealed trap
           } else {
             cell.isFlagged = false;
@@ -278,7 +279,7 @@ const ITEMS: Items = {
           ) {
             const cell = game.grid[nR][nC];
             if (!cell.isRevealed) cellRevealed = true;
-            if (cell.isTrap) {
+            if (cell.type == "trap") {
               cell.isRevealed = true;
               cell.isFlagged = true; // Mark revealed trap
             } else {
@@ -337,9 +338,9 @@ const ITEMS: Items = {
           !forbiddenZones.has(`${r},${c}`)
         ) {
           shufflableCells.push(cell);
-          if (cell.isTrap) {
+          if (cell.type == "trap") {
             trapCountToShuffle++;
-            cell.isTrap = false; // 一旦すべての罠をクリア
+            cell.type = "normal"; // 一旦すべての罠をクリア
           }
         }
       });
@@ -355,7 +356,7 @@ const ITEMS: Items = {
 
       // 4. 新しい位置に罠を配置
       for (let i = 0; i < trapCountToShuffle; i++) {
-        shufflableCells[i].isTrap = true;
+        shufflableCells[i].type = "trap";
       }
 
       // 5. 盤面を更新

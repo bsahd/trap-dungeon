@@ -181,7 +181,7 @@ export function GameGrid(
               if (isPlayer) {
                 playerContent = "@";
 
-                if (gridCell.isTrap) {
+                if (gridCell.type == "trap") {
                   cellClasses.push("game-cell--trap");
                   numberContent = "X";
                 } else {
@@ -199,7 +199,7 @@ export function GameGrid(
                 } else if (gridCell.itemId) {
                   cellClasses.push("game-cell--item");
                   numberContent = "I";
-                } else if (gridCell.isTrap) {
+                } else if (gridCell.type == "trap") {
                   cellClasses.push("game-cell--trap");
                   numberContent = "X";
                 } else {

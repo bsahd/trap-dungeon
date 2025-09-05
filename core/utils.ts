@@ -1,4 +1,4 @@
-import { Cell } from "./interfaces.ts";
+import { Cell } from "./game.ts";
 
 export function getLineCells(r0: number, c0: number, r1: number, c1: number) {
   const cells = [];
@@ -74,10 +74,13 @@ export function isSolvable(
   const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
   const queue = [{ r: startR, c: startC }];
 
-  if (!isValidCell(startR, startC, rows, cols) || grid[startR][startC].isTrap) {
+  if (
+    !isValidCell(startR, startC, rows, cols) ||
+    grid[startR][startC].type == "trap"
+  ) {
     return false;
   }
-  if (!isValidCell(endR, endC, rows, cols) || grid[endR][endC].isTrap) {
+  if (!isValidCell(endR, endC, rows, cols) || grid[endR][endC].type == "trap") {
     return false;
   }
 
@@ -91,7 +94,7 @@ export function isSolvable(
 
     const fullSolved = grid.map((x, nr) =>
       x.map((cell, nc) => {
-        return cell.isTrap || visited[nr][nc];
+        return cell.type == "trap" || visited[nr][nc];
       })
     );
 
@@ -105,7 +108,7 @@ export function isSolvable(
 
       if (
         isValidCell(nr, nc, rows, cols) && !visited[nr][nc] &&
-        !grid[nr][nc].isTrap
+        grid[nr][nc].type != "trap"
       ) {
         visited[nr][nc] = true;
         queue.push({ r: nr, c: nc });
@@ -152,7 +155,7 @@ export function isGoalInitiallyVisible(
 
       if (
         isValidCell(nr, nc, rows, cols) && !visited[nr][nc] &&
-        !grid[nr][nc].isTrap
+        grid[nr][nc].type != "trap"
       ) {
         visited[nr][nc] = true;
         queue.push({ r: nr, c: nc });
