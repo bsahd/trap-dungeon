@@ -1,6 +1,6 @@
 import { Game } from "../core/game.ts";
 import { Fragment, h } from "preact";
-import { useEffect, useRef, useState } from "preact/hooks";
+import { MutableRef, useEffect, useRef, useState } from "preact/hooks";
 import { DisplayState, GameLoopResult } from "../core/interfaces.ts";
 import { ITEMS } from "../core/items.ts";
 import { UI_TEXT } from "../core/ui_text.ts";
@@ -221,51 +221,38 @@ export function GameGrid(
 }
 
 export function Controls(
-  { runGameLoop, message }: {
+  { runGameLoop, message, lastInputTime }: {
     runGameLoop: (key?: string) => void;
     message?: string;
+    lastInputTime: MutableRef<number>;
   },
 ) {
+  const btns = [
+    { key: "up", label: "↑" },
+    { key: "down", label: "↓" },
+    { key: "left", label: "←" },
+    { key: "right", label: "→" },
+  ];
   return (
     <>
       {message && <div class="action-prompt">{message}</div>}
       <div class="controls">
-        <button
-          class="control-btn btn-up"
-          type="button"
-          onClick={() => {
-            runGameLoop("up");
-          }}
-        >
-          ↑
-        </button>
-        <button
-          class="control-btn btn-down"
-          type="button"
-          onClick={() => {
-            runGameLoop("down");
-          }}
-        >
-          ↓
-        </button>
-        <button
-          class="control-btn btn-left"
-          type="button"
-          onClick={() => {
-            runGameLoop("left");
-          }}
-        >
-          ←
-        </button>
-        <button
-          class="control-btn btn-right"
-          type="button"
-          onClick={() => {
-            runGameLoop("right");
-          }}
-        >
-          →
-        </button>
+        {btns.map((btn) => (
+          <button
+            type="button"
+            class={`control-btn btn-${btn.key}`}
+            key={btn.key}
+            onClick={() => {
+              if (
+                lastInputTime.current + 150 > performance.now()
+              ) return;
+              lastInputTime.current = performance.now();
+              runGameLoop(btn.key);
+            }}
+          >
+            {btn.label}
+          </button>
+        ))}
       </div>
     </>
   );
@@ -314,6 +301,7 @@ export function showModalDialog(
 
 export function GameMain({ debugInterface }: { debugInterface: boolean }) {
   const { current: gameInstance } = useRef(new Game());
+  const lastInputTime = useRef(performance.now());
   useEffect(() => {
     if (debugInterface) {
       (globalThis as any).debugGame = gameInstance;
@@ -409,6 +397,8 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
   useEffect(() => {
     runGameLoop();
     const handleGlobalKeyboardInput = (event: KeyboardEvent) => {
+      if (lastInputTime.current + 150 > performance.now()) return;
+      lastInputTime.current = performance.now();
       if (event.target !== document.body) return;
       if (modalShowing || displayState?.gameState == "gameover") return;
 
@@ -527,6 +517,7 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
         <Controls
           runGameLoop={runGameLoop}
           message={latestGameResult?.message}
+          lastInputTime={lastInputTime}
         />
       )}
     </div>
