@@ -27,7 +27,17 @@ export function GameStatus(
   },
 ) {
   if (!latestGameResult) {
-    return <>Error: No DisplayState for GameStatus</>;
+    return (
+      <div class="game-status">
+        <div class="status-main">
+          <span class="floor-number">
+            Floor: {1}
+          </span>
+        </div>
+        <ul class="item-list">
+        </ul>
+      </div>
+    );
   }
   const itemCounts = (latestGameResult.displayState.items || []).reduce(
     (counts, id) => {
@@ -123,7 +133,22 @@ export function GameGrid(
   },
 ) {
   if (!displayState) {
-    return <>Error: No DisplayState for GameGrid</>;
+    return (
+      <table
+        class="game-table skeleton"
+        style={{ "--dynamic-cell-size": "32px" }}
+      >
+        <tbody>
+          {Array.from({ length: 8 }, (v, k) => k).map((r) => (
+            <tr key={r}>
+              {Array.from({ length: 8 }, (v, k) => k).map((c) => (
+                <td key={c}></td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   }
   return (
     <table class="game-table" style={{ "--dynamic-cell-size": "32px" }}>

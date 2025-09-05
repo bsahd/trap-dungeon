@@ -28,6 +28,8 @@ Deno + Preact configuration.
 1. Clone this repo.
 2. Change current directory to repo root.
 3. Bundle script for browser:
-   `deno bundle browser/main.tsx -o browser/bundled.js --minify --sourcemap=linked`
-   `deno bundle browser_classic/main.ts -o browser_classic/bundled.js --minify --sourcemap=linked`
-4. Start local server(static http server) and open local server's address.
+   1. `deno bundle browser/main.tsx -o browser/bundled.js --minify --sourcemap=linked`
+   2. `deno bundle browser_classic/main.ts -o browser_classic/bundled.js --minify --sourcemap=linked`
+4. Generate index.html:
+   - `deno run -A browser/generate-index-html.tsx`
+5. Start local server(static http server) and open local server's address.

@@ -3,7 +3,8 @@
     "dev": "deno run --watch main.ts"
   },
   "imports": {
-    "preact": "npm:preact@10"
+    "preact": "npm:preact@10",
+    "preact-render-to-string": "npm:preact-render-to-string@^6.6.1"
   },
   "compilerOptions": {
     "jsxFactory": "h",

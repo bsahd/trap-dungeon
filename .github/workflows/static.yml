@@ -37,6 +37,8 @@ jobs:
         uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
+      - name: Generate index.html
+        run: deno run -A browser/generate-index-html.tsx
       - name: Run Bundle
         run: deno bundle browser/main.tsx -o browser/bundled.js --minify --sourcemap=linked
       - name: Run Bundle(Classic ver.)
