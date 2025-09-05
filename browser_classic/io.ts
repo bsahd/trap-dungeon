@@ -325,17 +325,30 @@ function handleGlobalKeyboardInput(event: KeyboardEvent) {
 
   let key = event.key.toLowerCase();
   switch (event.key) {
+    case "w":
+      key = "up";
+      break;
+    case "a":
+      key = "left";
+      break;
+    case "s":
+      key = "down";
+      break;
+    case "d":
+      key = "right";
+      break;
+
     case "ArrowUp":
-      key = "w";
+      key = "up";
       break;
     case "ArrowDown":
-      key = "s";
+      key = "down";
       break;
     case "ArrowLeft":
-      key = "a";
+      key = "left";
       break;
     case "ArrowRight":
-      key = "d";
+      key = "right";
       break;
   }
 
@@ -408,9 +421,11 @@ function handleGlobalKeyboardInput(event: KeyboardEvent) {
     const itemKeys = Object.values(ITEMS).map((item) => item.key).filter((k) =>
       k
     ).join("");
-    const validKeys = "wasd" + itemKeys;
 
-    if (validKeys.includes(key)) {
+    if (
+      itemKeys.includes(key) ||
+      ["up", "down", "left", "right"].includes(key)
+    ) {
       if (isInputDebounced(key)) return;
       processBrowserInput(key);
     } else {
@@ -700,10 +715,10 @@ function updateConfirmHighlight() {
 function setupControlButtons() {
   dom.controls.innerHTML = "";
   const controls = [
-    { id: "btn-up", key: "w", text: "&uarr;" },
-    { id: "btn-left", key: "a", text: "&larr;" },
-    { id: "btn-down", key: "s", text: "&darr;" },
-    { id: "btn-right", key: "d", text: "&rarr;" },
+    { id: "btn-up", key: "up", text: "&uarr;" },
+    { id: "btn-left", key: "left", text: "&larr;" },
+    { id: "btn-down", key: "down", text: "&darr;" },
+    { id: "btn-right", key: "right", text: "&rarr;" },
     { id: "btn-inventory", key: null, text: "Item" },
   ];
 
