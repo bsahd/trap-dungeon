@@ -144,7 +144,7 @@ const ITEMS: Items = {
       };
     },
   },
-  long_jump: {
+  jumping_boots: {
     name: { ja: "跳躍のブーツ", en: "Jumping Boots" },
     description: {
       ja: "指定した方向に1マス飛び越えて、2マス先に進む。",

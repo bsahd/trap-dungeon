@@ -424,7 +424,7 @@ export class Game {
           return this.gameLoop();
       }
       if (jumped && isValidCell(jumpRow, jumpCol, this.rows, this.cols)) {
-        const itemIndex = this.player.items.indexOf("long_jump");
+        const itemIndex = this.player.items.indexOf("jumping_boots");
         if (itemIndex > -1) this.player.items.splice(itemIndex, 1);
         this.player.r = jumpRow;
         this.player.c = jumpCol;
