@@ -1,4 +1,4 @@
-import { GameI, GameLoopResult, MultilingualText } from "./interfaces.ts";
+import { GameLoopResult, MultilingualText } from "./interfaces.ts";
 import { getItem, getItemList } from "./items.ts";
 import {
   forEachCell,
@@ -32,10 +32,11 @@ export class Cell {
     this.type = type;
   }
   enterPlayer(game: Game) {
-    if (this.type == "exit") {
+    if (this.isFlagged) {
+      return false;
+    } else if (this.type == "exit") {
       game.gameState = "confirm_next_floor";
-    }
-    if (this.type == "trap") {
+    } else if (this.type == "trap") {
       if (game.hasItem("trap_shield")) {
         const index = game.player.items.indexOf("trap_shield");
         game.player.items.splice(index, 1);
@@ -54,16 +55,15 @@ export class Cell {
           en: "I stepped into a trap!",
         };
       }
-    }
-    if (this.itemId) {
+    } else if (this.itemId) {
       const itemId = this.itemId;
       game.player.items.push(itemId);
       this.itemId = undefined;
       game.justAcquiredItem = itemId;
-    }
-    if (game.gameState !== "gameover") {
+    } else if (game.gameState !== "gameover") {
       this.reveal();
     }
+    return true;
   }
   reveal() {
     if (
@@ -78,22 +78,29 @@ export class Cell {
   }
 }
 
-export class Game implements GameI {
-  grid: GameI["grid"] = [];
-  rows: GameI["rows"] = 8;
-  cols: GameI["cols"] = 8;
-  player: GameI["player"] = { r: 0, c: 0, items: [] };
-  exit: GameI["exit"] = { r: 0, c: 0 };
-  floorNumber: GameI["floorNumber"] = 1;
-  turn: GameI["turn"] = 0;
-  gameState: GameI["gameState"] = "playing"; // playing, confirm_next_floor, choosing_item, jumping_direction, recon_direction, gameover
-  REVELATION_THRESHOLD = 0.5; // 開示率のしきい値 (50%)
+export class Game {
+  grid: Cell[][] = [];
+  rows = 8;
+  cols = 8;
+  player: { r: number; c: number; items: string[] } = { r: 0, c: 0, items: [] };
+  exit = { r: 0, c: 0 };
+  floorNumber = 1;
+  turn = 0;
+  gameState:
+    | "playing"
+    | "gameover"
+    | "confirm_next_floor"
+    | "choosing_item"
+    | "recon_direction"
+    | "jumping_direction" = "playing";
+  REVELATION_THRESHOLD = 0.5;
   uiEffect: string | null = null;
-  justAcquiredItem: GameI["justAcquiredItem"] = null;
-
-  currentItemChoices: GameI["currentItemChoices"] = [];
-
-  floorRevelationRates: GameI["floorRevelationRates"] = [];
+  justAcquiredItem: string | null = null;
+  currentItemChoices: string[] = [];
+  floorRevelationRates: {
+    floor: number;
+    rate: number;
+  }[] = [];
   lastActionMessage?: MultilingualText;
   tutorialToShow: { title: string; content: string } | null = null;
 
@@ -475,23 +482,19 @@ export class Game implements GameI {
         }
       }
       if (moved) {
-        if (isValidCell(newRow, newCol, this.rows, this.cols)) {
-          if (this.grid[newRow][newCol].isFlagged) {
-            this.lastActionMessage = {
-              ja: "チェックしたマスには移動できません。",
-              en: "You cannot move to a checked square.",
-            };
-            return this.gameLoop();
-          }
+        const unchecked = this.grid[newRow][newCol].enterPlayer(this);
+        if (!unchecked) {
+          this.lastActionMessage = {
+            ja: "チェックしたマスには移動できません。",
+            en: "You cannot move to a checked square.",
+          };
+        } else {
           this.player.r = newRow;
           this.player.c = newCol;
-        } else {
-          return this.gameLoop();
         }
       }
       if (moved || (itemUsed && this.gameState === "playing")) {
         this.turn++;
-        this.processPlayerLocation();
       }
     }
     return this.gameLoop();

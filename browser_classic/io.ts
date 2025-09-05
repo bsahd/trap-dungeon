@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 import { Game } from "../core/game.ts";
-import { DisplayState, GameI, Item } from "../core/interfaces.ts";
+import { DisplayState, Item } from "../core/interfaces.ts";
 import { getItem, getItemList } from "../core/items.ts";
 import { UI_TEXT } from "../core/ui_text.ts";
 
@@ -604,7 +604,7 @@ function flashScreenRed() {
 }
 
 function renderResultScreen(result: {
-  floorRevelationRates: GameI["floorRevelationRates"];
+  floorRevelationRates: Game["floorRevelationRates"];
   finalFloorNumber: number;
   finalItems: { [x: string]: number };
 }) {

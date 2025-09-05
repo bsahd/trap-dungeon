@@ -60,7 +60,7 @@ const ITEMS: Items = {
           cell.isRevealed = true;
           cell.isFlagged = true; // Mark revealed trap
         } else {
-          game.grid[neighbor.r][neighbor.c].reveal()
+          game.grid[neighbor.r][neighbor.c].reveal();
         }
       }
       if (cellRevealed) {
@@ -240,7 +240,7 @@ const ITEMS: Items = {
           if (
             isValidCell(pos.r, pos.c, game.rows, game.cols)
           ) {
-            game.grid[pos.r][pos.c].reveal()
+            game.grid[pos.r][pos.c].reveal();
           }
         }
         return { consumed: true };
@@ -282,7 +282,7 @@ const ITEMS: Items = {
               cell.isRevealed = true;
               cell.isFlagged = true; // Mark revealed trap
             } else {
-              game.grid[nR][nC].reveal()
+              game.grid[nR][nC].reveal();
             }
           }
         }

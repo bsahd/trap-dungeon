@@ -1,40 +1,8 @@
 import { Cell, Game } from "./game.ts";
 
-// export interface Cell {
-//   isTrap: boolean;
-//   isRevealed: boolean;
-//   isFlagged: boolean;
-//   adjacentTraps: number;
-//   itemId?: string;
-// }
-export interface GameI {
-  player: { r: number; c: number; items: string[] };
-  rows: number;
-  cols: number;
-  grid: Cell[][];
-  exit: { r: number; c: number };
-  floorNumber: number;
-  turn: number;
-  justAcquiredItem: string | null;
-  currentItemChoices: string[];
-  floorRevelationRates: {
-    floor: number;
-    rate: number;
-  }[];
-  tutorialToShow?: { title: string; content: string } | null;
-  lastActionMessage?: MultilingualText;
-  gameState:
-    | "playing"
-    | "gameover"
-    | "confirm_next_floor"
-    | "choosing_item"
-    | "recon_direction"
-    | "jumping_direction";
-}
-
 export interface DisplayState {
   grid: Cell[][];
-  gameState: GameI["gameState"];
+  gameState: Game["gameState"];
   player: { r: number; c: number };
   exit: { r: number; c: number };
   floorNumber: number;
@@ -79,7 +47,7 @@ export type GameLoopResult =
     } | {
       gameState: "gameover";
       result: {
-        floorRevelationRates: GameI["floorRevelationRates"];
+        floorRevelationRates: Game["floorRevelationRates"];
         finalFloorNumber: number;
         finalItems: { [x: string]: number };
       };
