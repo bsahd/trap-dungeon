@@ -17,7 +17,6 @@ export class Game implements GameI {
   floorNumber: GameI["floorNumber"] = 1;
   turn: GameI["turn"] = 0;
   gameState: GameI["gameState"] = "playing"; // playing, confirm_next_floor, choosing_item, jumping_direction, recon_direction, gameover
-  exitRevealedThisFloor: GameI["exitRevealedThisFloor"] = false;
   REVELATION_THRESHOLD = 0.5; // 開示率のしきい値 (50%)
   uiEffect: string | null = null;
   justAcquiredItem: GameI["justAcquiredItem"] = null;
@@ -37,7 +36,6 @@ export class Game implements GameI {
     this.floorNumber = 1;
     this.turn = 0;
     this.gameState = "playing";
-    this.exitRevealedThisFloor = false;
     this.justAcquiredItem = null;
     this.currentItemChoices = [];
     this.floorRevelationRates = [];
@@ -65,7 +63,6 @@ export class Game implements GameI {
     Object.assign(this, {
       turn: 0,
       gameState: "playing",
-      exitRevealedThisFloor: false,
     });
 
     if (this.floorNumber === 1) {
@@ -269,7 +266,6 @@ export class Game implements GameI {
       turn: this.turn,
       gameState: this.gameState,
       currentItemChoices: this.currentItemChoices,
-      exitRevealedThisFloor: this.exitRevealedThisFloor,
     };
   }
 

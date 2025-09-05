@@ -138,8 +138,7 @@ export function GameGrid(
               const isExit = r === displayState.exit.r &&
                 c === displayState.exit.c;
               const isRevealed = displayState.gameState == "gameover" ||
-                gridCell.isRevealed ||
-                (isExit && displayState.exitRevealedThisFloor);
+                gridCell.isRevealed;
 
               // 開示されていて、かつ見通しの悪いマスの場合にのみスタイルを適用
 

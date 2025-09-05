@@ -223,8 +223,7 @@ export function renderGridToDom(displayState: DisplayState) {
       const isPlayer = r === displayState.player.r &&
         c === displayState.player.c;
       const isExit = r === displayState.exit.r && c === displayState.exit.c;
-      const isRevealed = gridCell.isRevealed ||
-        (isExit && displayState.exitRevealedThisFloor);
+      const isRevealed = gridCell.isRevealed;
 
       if (!isRevealed) {
         const flagAction = (event: Event) => {

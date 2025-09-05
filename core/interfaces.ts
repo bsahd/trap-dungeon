@@ -23,7 +23,6 @@ export interface GameI {
   }[];
   tutorialToShow?: { title: string; content: string } | null;
   lastActionMessage?: MultilingualText;
-  exitRevealedThisFloor: boolean;
   gameState:
     | "playing"
     | "gameover"
@@ -42,7 +41,6 @@ export interface DisplayState {
   items: string[];
   turn: number;
   currentItemChoices: string[];
-  exitRevealedThisFloor: boolean;
 }
 
 export interface MultilingualText {

@@ -102,8 +102,8 @@ export const ITEMS: Items = {
     minFloor: 1,
     maxFloor: 8,
     use: function (game) {
-      if (!game.exitRevealedThisFloor) {
-        game.exitRevealedThisFloor = true;
+      if (!game.grid[game.exit.r][game.exit.c].isRevealed) {
+        game.grid[game.exit.r][game.exit.c].isRevealed = true;
         return { consumed: true };
       }
       return {
@@ -206,7 +206,7 @@ export const ITEMS: Items = {
       );
 
       if (hasUnrevealedCell) {
-        game.exitRevealedThisFloor = true; // 出口の位置は判明済みにする
+        game.grid[game.exit.r][game.exit.c].isRevealed = true; // 出口の位置は判明済みにする
         for (const pos of cellsToReveal) {
           // revealFromは内部でisRevealedチェックをするので、そのまま呼んでもOK
           //念のためisValidCellも実行
