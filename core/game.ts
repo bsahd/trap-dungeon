@@ -472,7 +472,7 @@ export class Game {
             break;
         }
       }
-      if (moved) {
+      if (moved && isValidCell(newRow, newCol, this.rows, this.cols)) {
         const unchecked = this.grid[newRow][newCol].enterPlayer(this);
         if (!unchecked) {
           this.lastActionMessage = {
