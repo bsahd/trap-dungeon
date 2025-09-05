@@ -60,7 +60,7 @@ const ITEMS: Items = {
           cell.isRevealed = true;
           cell.isFlagged = true; // Mark revealed trap
         } else {
-          game.revealFrom(neighbor.r, neighbor.c);
+          game.grid[neighbor.r][neighbor.c].reveal()
         }
       }
       if (cellRevealed) {
@@ -107,7 +107,6 @@ const ITEMS: Items = {
         const cellToClear = game.grid[trapToDemolish.r][trapToDemolish.c];
         cellToClear.type == "normal";
         cellToClear.isFlagged = false; // 罠と同時にフラグも解除
-        game.calculateNumbers();
         return { consumed: true };
       } else {
         return {
@@ -241,7 +240,7 @@ const ITEMS: Items = {
           if (
             isValidCell(pos.r, pos.c, game.rows, game.cols)
           ) {
-            game.revealFrom(pos.r, pos.c);
+            game.grid[pos.r][pos.c].reveal()
           }
         }
         return { consumed: true };
@@ -283,7 +282,7 @@ const ITEMS: Items = {
               cell.isRevealed = true;
               cell.isFlagged = true; // Mark revealed trap
             } else {
-              game.revealFrom(nR, nC);
+              game.grid[nR][nC].reveal()
             }
           }
         }
@@ -359,8 +358,6 @@ const ITEMS: Items = {
         shufflableCells[i].type = "trap";
       }
 
-      // 5. 盤面を更新
-      game.calculateNumbers();
       return { consumed: true };
     },
   },

@@ -12,13 +12,18 @@ export class Cell {
   type: "normal" | "trap" | "exit";
   isRevealed: boolean;
   isFlagged: boolean;
-  adjacentTraps: number;
+  get adjacentTraps() {
+    return this.neighborCells.reduce((count, cell) => {
+      return count + (cell.type == "trap" ? 1 : 0);
+    }, 0);
+  }
   itemId?: string;
+  neighborCells: Cell[];
   constructor() {
     this.type = "normal";
     this.isRevealed = false;
     this.isFlagged = false;
-    this.adjacentTraps = 0;
+    this.neighborCells = [];
   }
   setType(type: "trap" | "exit") {
     if (this.type != "normal") {
@@ -35,8 +40,7 @@ export class Cell {
         const index = game.player.items.indexOf("trap_shield");
         game.player.items.splice(index, 1);
         this.type = "normal";
-        game.calculateNumbers();
-        game.revealFrom(game.player.r, game.player.c);
+        this.reveal();
         game.uiEffect = "flash_red";
         game.lastActionMessage = {
           ja: "鉄の心臓が身代わりになった！",
@@ -58,7 +62,18 @@ export class Cell {
       game.justAcquiredItem = itemId;
     }
     if (game.gameState !== "gameover") {
-      game.revealFrom(game.player.r, game.player.c);
+      this.reveal();
+    }
+  }
+  reveal() {
+    if (
+      this.isRevealed
+    ) return;
+    this.isRevealed = true;
+    if (this.type != "trap" && this.adjacentTraps === 0) {
+      this.neighborCells.forEach((cell) => {
+        cell.reveal();
+      });
     }
   }
 }
@@ -159,8 +174,16 @@ export class Game implements GameI {
       }
 
       this.generateGrid();
+      forEachCell(this.grid, (cell, r, c) => {
+        cell.neighborCells = getEightDirectionsNeighbors(
+          r,
+          c,
+          this.rows,
+          this.cols,
+        )
+          .map((pos) => this.grid[pos.r][pos.c]);
+      });
       this.placeTraps(trapCount);
-      this.calculateNumbers();
 
       const validCells: { r: number; c: number }[] = [];
       forEachCell(this.grid, (cell, r, c) => {
@@ -216,7 +239,7 @@ export class Game implements GameI {
       );
     } while (!solvable || goalInitiallyVisible);
 
-    this.revealFrom(this.player.r, this.player.c);
+    this.grid[this.player.r][this.player.c].reveal();
     return {
       attempts,
     };
@@ -251,40 +274,6 @@ export class Game implements GameI {
       if (this.grid[r][c].type != "trap" && !isExit && !isForbidden) {
         this.grid[r][c].setType("trap");
         trapsPlaced++;
-      }
-    }
-  }
-
-  calculateNumbers() {
-    forEachCell(this.grid, (cell, r, c) => {
-      if (cell.type == "trap") return;
-      let trapCount = 0;
-      const neighbors = getEightDirectionsNeighbors(r, c, this.rows, this.cols);
-
-      for (const neighbor of neighbors) {
-        if (this.grid[neighbor.r][neighbor.c].type == "trap") {
-          trapCount++;
-        }
-      }
-      cell.adjacentTraps = trapCount;
-    });
-  }
-
-  revealFrom(r: number, c: number) {
-    if (
-      !isValidCell(r, c, this.rows, this.cols) || this.grid[r][c].isRevealed
-    ) return;
-
-    const cell = this.grid[r][c];
-    cell.isRevealed = true;
-    cell.isFlagged = false;
-
-    // 罠のマスでは再帰しない、かつ、隣接する罠が0のマスでのみ再帰する
-    if (cell.type != "trap" && cell.adjacentTraps === 0) {
-      const neighbors = getEightDirectionsNeighbors(r, c, this.rows, this.cols);
-
-      for (const neighbor of neighbors) {
-        this.revealFrom(neighbor.r, neighbor.c);
       }
     }
   }
@@ -402,7 +391,7 @@ export class Game implements GameI {
             cell.isFlagged = true;
             break;
           } else {
-            this.revealFrom(r, c);
+            this.grid[r][c].reveal();
           }
         }
         this.gameState = "playing";
