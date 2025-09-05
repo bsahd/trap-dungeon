@@ -1,9 +1,9 @@
 export const UI_TEXT = {
-  disclosureRateAchieved: {
+  revealRateAchieved: {
     ja: "開示率: 達成",
     en: "Reveal rate: Achieved",
   },
-  disclosureRateNotAchieved: {
+  revealRateNotAchieved: {
     ja: "開示率: 未達成",
     en: "Reveal rate: Not Achieved",
   },

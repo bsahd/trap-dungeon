@@ -36,11 +36,11 @@ interface Items {
 
 const ITEMS: Items = {
   // 通常アイテム (F1+)
-  reveal_one_trap: {
+  scroll_of_clairvoyance: {
     name: { ja: "千里眼の巻物", en: "Scroll of Clairvoyance" },
     description: {
-      ja: "プレイヤーの周囲8マスにある罠をすべて明らかにする。",
-      en: "Reveals all traps within 8 cells of the player.",
+      ja: "プレイヤーの周囲8マスをすべて明らかにする。",
+      en: "Reveals cells within 8 cells of the player.",
     },
     key: "r",
     minFloor: 1,
@@ -70,7 +70,7 @@ const ITEMS: Items = {
       }
     },
   },
-  trap_shield: {
+  heart_of_iron: {
     name: { ja: "鉄の心臓", en: "Heart of Iron" },
     description: {
       ja: "罠を踏んだ時に1度だけ身代わりになる。(パッシブ)",
@@ -81,7 +81,7 @@ const ITEMS: Items = {
     minFloor: 1,
     maxFloor: Infinity,
   },
-  reduce_traps: {
+  disassembly_guide: {
     name: { ja: "解体の手引き", en: "Disassembly Guide" },
     description: {
       ja: "プレイヤーから周囲8マスのランダムな罠1つを無効化する。",
@@ -119,7 +119,7 @@ const ITEMS: Items = {
       }
     },
   },
-  reveal_exit: {
+  map_of_exit: {
     name: { ja: "出口の地図", en: "Map of Exit" },
     description: {
       ja: "現在のフロアの出口(E)の位置を明らかにする。",
@@ -207,7 +207,7 @@ const ITEMS: Items = {
     },
   },
   detailed_map_of_exit: {
-    name: { ja: "詳細な出口の地図", en: "Detailed exit map" },
+    name: { ja: "詳細な出口の地図", en: "Detailed Map of Exit" },
     description: {
       ja:
         "出口の位置を明らかにすると同時に、出口に隣接する周囲8マスの状態もすべて開示する。",

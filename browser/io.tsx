@@ -59,8 +59,8 @@ export function GameStatus(
             : "status-not-achieved"}
         >
           {revelationRate > 0.5
-            ? UI_TEXT.disclosureRateAchieved[language]
-            : UI_TEXT.disclosureRateNotAchieved[language]}
+            ? UI_TEXT.revealRateAchieved[language]
+            : UI_TEXT.revealRateNotAchieved[language]}
           ({(revelationRate * 100).toFixed(0)}%)
         </span>
       </div>
