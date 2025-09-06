@@ -40,6 +40,7 @@ export class Cell {
       return false;
     } else if (this.type == "exit") {
       game.gameState = "confirm_next_floor";
+      this.reveal();
     } else if (this.type == "trap") {
       if (game.hasItem("heart_of_iron")) {
         const index = game.player.items.indexOf("heart_of_iron");
@@ -64,6 +65,7 @@ export class Cell {
       game.player.items.push(itemId);
       this.itemId = undefined;
       game.justAcquiredItem = itemId;
+      this.reveal();
     } else if (game.gameState !== "gameover") {
       this.reveal();
     }
