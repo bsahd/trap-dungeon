@@ -472,7 +472,7 @@ function updateStatusUI(displayState: DisplayState) {
         itemName += `(${item.key.toLowerCase()})`;
       }
       return `<span class="item-link" data-item-id="${id}" title="${
-        UI_TEXT.viewDetail[LANG](item.name[LANG])
+        UI_TEXT.view_detail[LANG](item.name[LANG])
       }">${itemName} x${count}</span>`;
     });
     dom.itemList.innerHTML = `<strong>Items:</strong> ${
@@ -488,13 +488,13 @@ function updateStatusUI(displayState: DisplayState) {
     "status-not-achieved",
   );
   if (currentRevelationRate >= gameInstance.REVELATION_THRESHOLD) {
-    dom.revelationStatus.textContent = `${UI_TEXT.revealRateAchieved[LANG]}(${
+    dom.revelationStatus.textContent = `${UI_TEXT.reveal_rate_achieved[LANG]}(${
       (currentRevelationRate * 100).toFixed()
     }%)`;
     dom.revelationStatus.classList.add("status-achieved");
   } else {
     dom.revelationStatus.textContent = `${
-      UI_TEXT.revealRateNotAchieved[LANG]
+      UI_TEXT.reveal_rate_not_achieved[LANG]
     }(${(currentRevelationRate * 100).toFixed()}%)`;
     dom.revelationStatus.classList.add("status-not-achieved");
   }
@@ -534,7 +534,7 @@ function runBrowserGameLoop() {
 
   if (gameResult.gameState != "gameover" && gameResult.newItemAcquired) {
     const item = gameResult.newItemAcquired;
-    const message = `${UI_TEXT.itemAcquisition[LANG]}: ${item.name[LANG]}`;
+    const message = `${UI_TEXT.item_acquisition[LANG]}: ${item.name[LANG]}`;
     showNotification(message, 3000);
     gameInstance.clearJustAcquiredItem();
   }
@@ -610,11 +610,11 @@ function renderResultScreen(result: {
   finalItems: { [x: string]: number };
 }) {
   document.getElementById("final-floor")!.textContent = `${
-    UI_TEXT.finalFloorReached[LANG]
+    UI_TEXT.final_floor_reached[LANG]
   }: ${result.finalFloorNumber}`;
 
   const finalItemsDiv = document.getElementById("final-items")!;
-  let itemsHtml = `${UI_TEXT.possessedItems[LANG]}: `;
+  let itemsHtml = `${UI_TEXT.possessed_items[LANG]}: `;
   const itemEntries = Object.entries(result.finalItems);
 
   if (itemEntries.length === 0) {
@@ -632,7 +632,7 @@ function renderResultScreen(result: {
     "floor-revelation-rates",
   )!;
   floorRevelationRatesDiv.innerHTML = `<h3>${
-    UI_TEXT.floorDisclosureRate[LANG]
+    UI_TEXT.reveal_rate_for_each_floor[LANG]
   }:</h3>`;
   if (result.floorRevelationRates.length > 0) {
     const ul = document.createElement("ul");
@@ -651,7 +651,7 @@ function renderResultScreen(result: {
 
 function renderItemSelectionScreen(choices: string[]) {
   const screen = dom.itemSelectionScreen;
-  screen.innerHTML = `<h2>${UI_TEXT.chooseReward[LANG]}:</h2>`;
+  screen.innerHTML = `<h2>${UI_TEXT.choose_reward[LANG]}:</h2>`;
   selectedChoiceIndex = 0;
 
   if (choices) {
@@ -759,7 +759,7 @@ function showInventoryScreen() {
     .filter((item) => item && item.key !== null);
 
   if (usableItems.length === 0) {
-    showNotification(UI_TEXT.noUsableItem[LANG]);
+    showNotification(UI_TEXT.no_usable_item[LANG]);
     return;
   }
 
@@ -769,7 +769,7 @@ function showInventoryScreen() {
 
 function renderInventoryScreen(usableItems: Item[]) {
   const screen = dom.inventoryScreen;
-  screen.innerHTML = `<h2>${UI_TEXT.useItem[LANG]}</h2>`;
+  screen.innerHTML = `<h2>${UI_TEXT.use_item[LANG]}</h2>`;
 
   const hideAndShowGame = (event: Event) => {
     if (event) event.stopPropagation(); // イベントの伝播を停止
@@ -844,9 +844,9 @@ export function initBrowserGame() {
   });
 
   document.querySelector(".i18n-target-gameOver")!.textContent =
-    UI_TEXT.gameOver[LANG];
+    UI_TEXT.game_over[LANG];
 
-  dom.resetButton.textContent = UI_TEXT.playAgain[LANG];
+  dom.resetButton.textContent = UI_TEXT.play_again[LANG];
   dom.resetButton.addEventListener("click", () => {
     gameInstance.resetGame();
     gameInstance.setupFloor();

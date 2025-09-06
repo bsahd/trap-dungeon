@@ -59,8 +59,8 @@ export function GameStatus(
             : "status-not-achieved"}
         >
           {revelationRate > 0.5
-            ? UI_TEXT.revealRateAchieved[language]
-            : UI_TEXT.revealRateNotAchieved[language]}
+            ? UI_TEXT.reveal_rate_achieved[language]
+            : UI_TEXT.reveal_rate_not_achieved[language]}
           ({(revelationRate * 100).toFixed(0)}%)
         </span>
       </div>
@@ -97,7 +97,7 @@ export function GameStatus(
       </ul>
       {latestGameResult.gameState == "gameover" && (
         <>
-          {UI_TEXT.floorDisclosureRate[language]}
+          {UI_TEXT.reveal_rate_for_each_floor[language]}
           <ul>
             {latestGameResult.result.floorRevelationRates.length == 0 && (
               <li>{UI_TEXT.none[language]}</li>
@@ -117,7 +117,7 @@ export function GameStatus(
               runGameLoop();
             }}
           >
-            {UI_TEXT.playAgain[language]}
+            {UI_TEXT.play_again[language]}
           </button>
         </>
       )}
@@ -340,26 +340,31 @@ export function showModalDialog(
   });
 }
 
-export function Footer() {
+export function Footer({ language }: { language: Language }) {
   return (
     <footer>
-      <a href="https://github.com/bsahd/trap-dungeon">
-        Trap Dungeon on GitHub
+      <a href="https://github.com/bsahd/trap-dungeon" target="_blank">
+        GitHub
       </a>{" "}
       |{" "}
       <button
         type="button"
+        class="app-btn"
         onClick={() => {
           if (navigator.share) {
-            navigator.share({ url: location.href });
+            navigator.share({ url: location.href, title: "Trap Dungeon" });
           } else {
-            showModalDialog("Error", "this browser not support sharing.", [
-              "OK",
-            ]);
+            showModalDialog(
+              UI_TEXT.error[language],
+              UI_TEXT.this_browser_does_not_support_sharing[language],
+              [
+                "OK",
+              ],
+            );
           }
         }}
       >
-        Share
+        {UI_TEXT.share[language]}
       </button>
     </footer>
   );
@@ -402,7 +407,7 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
 
     if (gameResult.gameState != "gameover" && gameResult.newItemAcquired) {
       const item = gameResult.newItemAcquired;
-      const message = `${UI_TEXT.itemAcquisition[language]}: ${
+      const message = `${UI_TEXT.item_acquisition[language]}: ${
         item.name[language]
       }`;
       // showNotification(message, 3000);
@@ -424,7 +429,7 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
       });
     } else if (gameState === "choosing_item") {
       showModalDialog(
-        UI_TEXT.chooseReward[language],
+        UI_TEXT.choose_reward[language],
         "",
         gameResult.displayState.currentItemChoices.map((id) =>
           getItem(id).name[language]
@@ -589,7 +594,7 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
           />
         )}
       </div>
-      <Footer></Footer>
+      <Footer language={language}></Footer>
     </>
   );
 }

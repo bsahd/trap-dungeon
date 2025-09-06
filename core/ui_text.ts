@@ -1,25 +1,25 @@
 export const UI_TEXT = {
-  revealRateAchieved: {
+  reveal_rate_achieved: {
     ja: "開示率: 達成",
     en: "Reveal rate: Achieved",
   },
-  revealRateNotAchieved: {
+  reveal_rate_not_achieved: {
     ja: "開示率: 未達成",
     en: "Reveal rate: Not Achieved",
   },
-  itemAcquisition: {
+  item_acquisition: {
     ja: "アイテム獲得",
     en: "Item Acquisition",
   },
-  finalFloorReached: {
+  final_floor_reached: {
     ja: "最終到達フロア",
     en: "Final floor reached",
   },
-  possessedItems: {
+  possessed_items: {
     ja: "所持アイテム",
     en: "Possessed items",
   },
-  floorDisclosureRate: {
+  reveal_rate_for_each_floor: {
     ja: "各フロアの開示率",
     en: "Reveal rate for each floor",
   },
@@ -27,7 +27,7 @@ export const UI_TEXT = {
     ja: "フロア",
     en: "Floor",
   },
-  chooseReward: {
+  choose_reward: {
     ja: "フロアをクリアしました!報酬を選択してください",
     en: "Floor Cleared! Choose a reward",
   },
@@ -35,11 +35,11 @@ export const UI_TEXT = {
     ja: "なし",
     en: "None",
   },
-  noUsableItem: {
+  no_usable_item: {
     ja: "使用できるアイテムがありません。",
     en: "No Usable Items.",
   },
-  useItem: {
+  use_item: {
     ja: "アイテムを使用する",
     en: "Use Item",
   },
@@ -47,7 +47,7 @@ export const UI_TEXT = {
     ja: "使用",
     en: "Use",
   },
-  viewDetail: {
+  view_detail: {
     ja: (itemName: string) => itemName + "の詳細を見る",
     en: (itemName: string) => "View details of " + itemName,
   },
@@ -63,12 +63,24 @@ export const UI_TEXT = {
     ja: "いいえ",
     en: "No",
   },
-  playAgain: {
+  play_again: {
     ja: "もう一度プレイする",
     en: "Play Again",
   },
-  gameOver: {
+  game_over: {
     ja: "ゲームオーバー",
     en: "Game Over",
   },
+  share: {
+    ja: "共有",
+    en: "Share"
+  },
+  error: {
+    ja: "エラー",
+    en: "Error"
+  },
+  this_browser_does_not_support_sharing: {
+    ja:"このブラウザは共有をサポートしていません。",
+    en:"This browser does not support sharing."
+  }
 };
