@@ -9,6 +9,7 @@ const indexHtmlContent = render(
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Trap Dungeon</title>
       <link rel="stylesheet" href="browser/style.css" />
+      <link rel="shortcut icon" href="favicon.ico" type="image/xpng" />
       <script type="module" defer src="browser/bundled.js"></script>
     </head>
     <body>

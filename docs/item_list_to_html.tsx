@@ -4,7 +4,7 @@ import { getItemList } from "../core/items.ts";
 
 const htmlContent = render(
   <dl>
-    {getItemList().map(([id, item]) => {
+    {getItemList().map(([_, item]) => {
       return (
         <>
           <dt>{item.name.ja}{item.key && `(${item.key})`}</dt>
