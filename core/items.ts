@@ -54,7 +54,7 @@ const ITEMS: Items = {
       ja: "プレイヤーの周囲8マスをすべて明らかにする。",
       en: "Reveals cells within 8 cells of the player.",
     },
-    key: "r",
+    key: "R",
     minFloor: 1,
     maxFloor: Infinity,
     use: function (game) {
@@ -101,7 +101,7 @@ const ITEMS: Items = {
       ja: "プレイヤーから周囲8マスのランダムな罠1つを無効化する。",
       en: "Disables one random trap within 8 cells of the player.",
     },
-    key: "t",
+    key: "T",
     minFloor: 1,
     maxFloor: 10,
     use: function (game) {
@@ -139,7 +139,7 @@ const ITEMS: Items = {
       ja: "現在のフロアの出口(E)の位置を明らかにする。",
       en: "Reveal the location of exit(E) on the current floor.",
     },
-    key: "e",
+    key: "E",
     minFloor: 1,
     maxFloor: 8,
     use: function (game) {
@@ -163,7 +163,7 @@ const ITEMS: Items = {
       en:
         "Jump one cell in the specified direction and move two cells forward.",
     },
-    key: "j",
+    key: "J",
     minFloor: 1,
     maxFloor: Infinity,
     use: function (game) {
@@ -180,7 +180,7 @@ const ITEMS: Items = {
       en:
         "When used, you can choose a direction: up, down, left, or right. The drone will fly in a straight line in that direction, revealing passages (cells with numbers written on them) one after another. If there is a trap in its path, it will reveal the trap and stop.",
     },
-    key: "c",
+    key: "C",
     minFloor: 5,
     maxFloor: Infinity,
     use: function (game) {
@@ -196,7 +196,7 @@ const ITEMS: Items = {
       en:
         'When used, the "shortest path" from the player to the exit is displayed on the map, revealing all cells along the path, including any traps.',
     },
-    key: "g",
+    key: "G",
     minFloor: 5,
     maxFloor: Infinity,
     use: function (game) {
@@ -228,7 +228,7 @@ const ITEMS: Items = {
       en:
         "When revealing the location of the exit, the state of all eight cells surrounding the exit is also revealed.",
     },
-    key: "x",
+    key: "X",
     minFloor: 5,
     maxFloor: Infinity,
     use: function (game) {
@@ -277,7 +277,7 @@ const ITEMS: Items = {
       ja: "使用すると、プレイヤーの周囲5x5の広大な範囲を一度に開示する。",
       en: "When used, it reveals a vast 5x5 area around the player at once.",
     },
-    key: "p",
+    key: "P",
     minFloor: 10,
     maxFloor: Infinity,
     use: function (game) {
@@ -318,7 +318,7 @@ const ITEMS: Items = {
       en:
         "When used, it shuffles (rearranges) trap placements on all cells that have not yet been revealed or flagged, but the total number of traps remains the same.",
     },
-    key: "k",
+    key: "K",
     minFloor: 10,
     maxFloor: Infinity,
     use: function (game) {
