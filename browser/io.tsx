@@ -132,11 +132,24 @@ export function GameGrid(
     gameInstance: Game;
   },
 ) {
+  const gridGap = 2;
+  const totalGridGapWidth = ((displayState?.grid[0].length ?? 8) - 1) * gridGap;
+  const availableWidth = 460;
+  const optimalWidthCellSize = (availableWidth - totalGridGapWidth) /
+    (displayState?.grid[0].length ?? 8);
+
+  const MIN_CELL_SIZE = 16;
+  const MAX_CELL_SIZE = 40;
+  const optimalCellSize = Math.floor(Math.max(
+    MIN_CELL_SIZE,
+    Math.min(MAX_CELL_SIZE, optimalWidthCellSize),
+  ));
+
   if (!displayState) {
     return (
       <table
         class="game-table skeleton"
-        style={{ "--dynamic-cell-size": "32px" }}
+        style={{ "--dynamic-cell-size": `40px` }}
       >
         <tbody>
           {Array.from({ length: 8 }, (_, k) => k).map((r) => (
@@ -151,7 +164,10 @@ export function GameGrid(
     );
   }
   return (
-    <table class="game-table" style={{ "--dynamic-cell-size": "32px" }}>
+    <table
+      class="game-table"
+      style={{ "--dynamic-cell-size": `${optimalCellSize}px` }}
+    >
       <tbody>
         {displayState.grid.map((row, r) => (
           <tr key={r}>
