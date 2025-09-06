@@ -241,7 +241,7 @@ export class Game {
       const placeableItems = allPlaceableAvailable.filter((
         id: string,
       ) => getItem(id).key !== null);
-      const numberOfItemsToPlace = 2 + this.floorNumber;
+      const numberOfItemsToPlace = Math.floor(2 + this.floorNumber / 3);
 
       for (let i = 0; i < numberOfItemsToPlace; i++) {
         if (placeableItems.length > 0 && validCells.length > 0) {
