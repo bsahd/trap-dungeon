@@ -52,7 +52,7 @@ export class Cell {
           en: "The Iron Heart has taken its place!",
         };
       } else if (game.hasItem("indomitable_spirit")) {
-        const index = game.player.items.indexOf("heart_of_iron");
+        const index = game.player.items.indexOf("indomitable_spirit");
         game.player.items.splice(index, 1);
         game.setupFloor();
         game.uiEffect = "flash_red";
@@ -474,6 +474,26 @@ export class Game {
         }
       } else {
         switch (key) {
+          case "up_left":
+            newRow--;
+            newCol--;
+            moved = true;
+            break;
+          case "up_right":
+            newRow--;
+            newCol++;
+            moved = true;
+            break;
+          case "down_left":
+            newRow++;
+            newCol--;
+            moved = true;
+            break;
+          case "down_right":
+            newRow++;
+            newCol++;
+            moved = true;
+            break;
           case "up":
             newRow--;
             moved = true;

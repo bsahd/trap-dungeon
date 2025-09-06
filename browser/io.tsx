@@ -269,6 +269,10 @@ export function Controls(
   },
 ) {
   const btns = [
+    { key: "up_left", label: "↖" },
+    { key: "up_right", label: "↗" },
+    { key: "down_left", label: "↙" },
+    { key: "down_right", label: "↘" },
     { key: "up", label: "↑" },
     { key: "down", label: "↓" },
     { key: "left", label: "←" },

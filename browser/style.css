@@ -118,6 +118,14 @@ h1 {
   background-color: #555;
 }
 
+.btn-down_left {
+  grid-column: 1;
+  grid-row: 3;
+}
+.btn-down_right {
+  grid-column: 3;
+  grid-row: 3;
+}
 .btn-up {
   grid-column: 2;
   grid-row: 1;
