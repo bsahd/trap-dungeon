@@ -1,31 +1,29 @@
+[English](README.en.md)
+
 # bsahd/trap-dungeon
 
-inajobさんの[Trap Dungeon](https://github.com/inajob/trap-dungeon)を、TypeScript+Deno+Preact構成に置き換えるプロジェクトです。
+inajobさんの[Trap Dungeon](https://github.com/inajob/trap-dungeon)をベースにモダンなTypeScript+Deno+Preact構成で開発するプロジェクトです。
 
-This project replaces inajob's
-[Trap Dungeon](https://github.com/inajob/trap-dungeon) with a TypeScript +
-Deno + Preact configuration.
+## 動作要件
 
-## Play Requirements
+- ES モジュールに対応したブラウザ
+  - 対応ブラウザの詳細については、
+    [一覧](https://caniuse.com/es6-module)を確認してください。
 
-- Browser supports ES Modules
-  - For more information on supported browsers, see
-    [JavaScript modules via script tag](https://caniuse.com/es6-module).
+## 開発要件
 
-## Development Requirements
+- Deno 2.4 または それ以降
 
-- Deno 2.4 or later
+## 遊び方
 
-## How to play
+### オンライン
 
-### Online
+- [ゲームページ](https://bsahd.github.io/trap-dungeon/)をブラウザで開いてください。
+- スクリプトはGitHub Actionsにより自動でバンドルされます。
 
-- Open [play page](https://bsahd.github.io/trap-dungeon/).
-- Script is automatic bundled by GitHub Actions.
+### ローカル(開発要件のツールが必要です)
 
-### Local
-
-1. Clone this repo.
-2. Change current directory to repo root.
+1. このリポジトリをクローンしてください。
+2. リポジトリのルートに`cd`してください。
 3. `deno task build`
-4. Start local server(static http server) and open local server's address.
+4. ローカルサーバー (静的 HTTP サーバー) を起動し、ローカルサーバーのアドレスをブラウザで開きます。
