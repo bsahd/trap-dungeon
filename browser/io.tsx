@@ -262,22 +262,30 @@ export function GameGrid(
 }
 
 export function Controls(
-  { runGameLoop, message, lastInputTime }: {
+  { runGameLoop, message, lastInputTime, gameState }: {
     runGameLoop: (key?: string) => void;
     message?: string;
     lastInputTime: MutableRef<number>;
+    gameState?: DisplayState["gameState"];
   },
 ) {
   const btns = [
-    { key: "up_left", label: "↖" },
-    { key: "up_right", label: "↗" },
-    { key: "down_left", label: "↙" },
-    { key: "down_right", label: "↘" },
     { key: "up", label: "↑" },
     { key: "down", label: "↓" },
     { key: "left", label: "←" },
     { key: "right", label: "→" },
   ];
+  if (gameState == "playing") {
+    btns.push(
+      { key: "up_left", label: "↖" },
+      { key: "up_right", label: "↗" },
+      {
+        key: "down_left",
+        label: "↙",
+      },
+      { key: "down_right", label: "↘" },
+    );
+  }
   return (
     <>
       {message && <div class="action-prompt">{message}</div>}
@@ -550,7 +558,16 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
 
         if (
           itemKeys.includes(key) ||
-          ["up", "down", "left", "right"].includes(key)
+          [
+            "up",
+            "down",
+            "left",
+            "right",
+            "up_left",
+            "up_right",
+            "down_left",
+            "down_right",
+          ].includes(key)
         ) {
           runGameLoop(key);
         } else {
@@ -612,6 +629,7 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
 
         {displayState?.gameState != "gameover" && (
           <Controls
+            gameState={displayState?.gameState}
             runGameLoop={runGameLoop}
             message={latestGameResult?.message}
             lastInputTime={lastInputTime}

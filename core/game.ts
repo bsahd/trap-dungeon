@@ -559,7 +559,8 @@ export class Game {
         },
       };
     }
-    let promptText = "Move (up/down/left/right)";
+    let promptText =
+      "Move (up/down/left/right/up_left/up_right/down_left/down_right)";
     const itemActions = this.player.items
       .map((id) => getItem(id))
       .filter((item) => item.key)
