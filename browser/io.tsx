@@ -324,6 +324,31 @@ export function showModalDialog(
   });
 }
 
+export function Footer() {
+  return (
+    <footer>
+      <a href="https://github.com/bsahd/trap-dungeon">
+        Trap Dungeon on GitHub
+      </a>{" "}
+      |{" "}
+      <button
+        type="button"
+        onClick={() => {
+          if (navigator.share) {
+            navigator.share({ url: location.href });
+          } else {
+            showModalDialog("Error", "this browser not support sharing.", [
+              "OK",
+            ]);
+          }
+        }}
+      >
+        Share
+      </button>
+    </footer>
+  );
+}
+
 export function GameMain({ debugInterface }: { debugInterface: boolean }) {
   const { current: gameInstance } = useRef(new Game());
   const lastInputTime = useRef(performance.now());
@@ -548,7 +573,7 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
           />
         )}
       </div>
-      <a href="https://github.com/bsahd/trap-dungeon">Trap Dungeon on GitHub</a>
+      <Footer></Footer>
     </>
   );
 }
