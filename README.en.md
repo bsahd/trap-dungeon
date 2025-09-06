@@ -1,6 +1,8 @@
 # bsahd/trap-dungeon
 
-This project is based on inajob's [Trap Dungeon](https://github.com/inajob/trap-dungeon) and is developed using a modern TypeScript + Deno + Preact configuration.
+This project is based on inajob's
+[Trap Dungeon](https://github.com/inajob/trap-dungeon) and is developed using a
+modern TypeScript + Deno + Preact configuration.
 
 ## Play Requirements
 

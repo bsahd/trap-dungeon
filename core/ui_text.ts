@@ -73,14 +73,14 @@ export const UI_TEXT = {
   },
   share: {
     ja: "共有",
-    en: "Share"
+    en: "Share",
   },
   error: {
     ja: "エラー",
-    en: "Error"
+    en: "Error",
   },
   this_browser_does_not_support_sharing: {
-    ja:"このブラウザは共有をサポートしていません。",
-    en:"This browser does not support sharing."
-  }
+    ja: "このブラウザは共有をサポートしていません。",
+    en: "This browser does not support sharing.",
+  },
 };
