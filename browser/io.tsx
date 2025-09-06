@@ -481,7 +481,7 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
       if (event.target !== document.body) return;
       if (modalShowing || displayState?.gameState == "gameover") return;
 
-      let key = event.key.toLowerCase();
+      let key = event.key;
       switch (event.key) {
         case "w":
           key = "up";

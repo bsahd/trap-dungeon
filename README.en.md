@@ -1,8 +1,7 @@
 # bsahd/trap-dungeon
 
-This project is based on inajob's
-[NumDun](https://github.com/inajob/numdun) and is developed using a
-modern TypeScript + Deno + Preact configuration.
+This project is based on inajob's [NumDun](https://github.com/inajob/numdun) and
+is developed using a modern TypeScript + Deno + Preact configuration.
 
 ## Play Requirements
 

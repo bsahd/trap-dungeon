@@ -323,8 +323,6 @@ export class Game {
   }
 
   handleInput(key: string) {
-    key = key.toLowerCase();
-
     if (this.gameState === "confirm_next_floor") {
       if (key === "yes") {
         const currentRevelationRate = this.calculateRevelationRate();
