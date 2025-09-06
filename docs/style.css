@@ -55,7 +55,8 @@ a:hover {
   color: #ffffff;
 }
 
-.game-cell, .skeleton td {
+.game-cell {
+  display: table-cell;
   width: 32px;
   height: 32px;
   text-align: center;
