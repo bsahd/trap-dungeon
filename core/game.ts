@@ -348,7 +348,7 @@ export class Game {
               (currentRevelationRate * 100).toFixed(0)
             }%)`,
             en:
-              `There were no item bonuses as the floor disclosure rate was less than ${
+              `There were no item bonuses as the floor reveal rate was less than ${
                 (this.REVELATION_THRESHOLD * 100).toFixed(0)
               }%.${(currentRevelationRate * 100).toFixed(0)}%)`,
           };

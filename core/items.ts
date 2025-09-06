@@ -111,15 +111,15 @@ const ITEMS: Items = {
         game.rows,
         game.cols,
       );
-      const trapsInVicinity = neighborsForTrapCheck.filter((cellPos) =>
-        game.grid[cellPos.r][cellPos.c].type == "trap"
-      );
+      const trapsInVicinity = neighborsForTrapCheck.filter((
+        cellPos,
+      ) => (game.grid[cellPos.r][cellPos.c].type == "trap"));
 
       if (trapsInVicinity.length > 0) {
         const trapToDemolish =
           trapsInVicinity[Math.floor(Math.random() * trapsInVicinity.length)];
         const cellToClear = game.grid[trapToDemolish.r][trapToDemolish.c];
-        cellToClear.type == "normal";
+        cellToClear.type = "normal";
         cellToClear.isFlagged = false; // 罠と同時にフラグも解除
         return { consumed: true };
       } else {
