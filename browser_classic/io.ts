@@ -721,6 +721,14 @@ function setupControlButtons() {
     { id: "btn-right", key: "right", text: "&rarr;" },
     { id: "btn-inventory", key: null, text: "Item" },
   ];
+  if (gameInstance.gameState == "playing") {
+    controls.push(
+      { id: "btn-up_left", key: "up_left", text: "↖" },
+      { id: "btn-up_right", key: "up_right", text: "↗" },
+      { id: "btn-down_left", key: "down_left", text: "↙" },
+      { id: "btn-down_right", key: "down_right", text: "↘" },
+    );
+  }
 
   controls.forEach((c) => {
     const button = document.createElement("button");
