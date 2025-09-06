@@ -7,7 +7,7 @@ const htmlContent = render(
     {getItemList().map(([_, item]) => {
       return (
         <>
-          <dt>{item.name.ja}{item.key && `(${item.key})`}</dt>
+          <dt>{item.name.ja}{item.key && `(${item.key})`}({item.minFloor}階以上で生成)</dt>
           <dd>{item.description.ja}</dd>
         </>
       );
