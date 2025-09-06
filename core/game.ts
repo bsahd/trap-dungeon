@@ -71,11 +71,14 @@ export class Cell {
     }
     return true;
   }
-  reveal() {
+  reveal(recursive: boolean = false) {
+    if (
+      recursive && this.isRevealed
+    ) return;
     this.isRevealed = true;
     if (this.type != "trap" && this.adjacentTraps === 0) {
       this.neighborCells.forEach((cell) => {
-        cell.reveal();
+        cell.reveal(true);
       });
     }
   }
