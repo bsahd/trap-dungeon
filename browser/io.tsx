@@ -344,7 +344,7 @@ export function Footer({ language }: { language: Language }) {
   return (
     <footer>
       <a href="./docs/index.html" target="_blank">
-        Docs
+        {language != "ja" ? "Docs(Japanese Only)" : "Docs"}
       </a>{" "}
       |{" "}
       <a href="https://github.com/bsahd/trap-dungeon" target="_blank">
