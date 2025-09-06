@@ -490,8 +490,6 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
   useEffect(() => {
     runGameLoop();
     const handleGlobalKeyboardInput = (event: KeyboardEvent) => {
-      if (lastInputTime.current + 150 > performance.now()) return;
-      lastInputTime.current = performance.now();
       if (event.target !== document.body) return;
       if (modalShowing || displayState?.gameState == "gameover") return;
 
