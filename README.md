@@ -2,7 +2,7 @@
 
 # bsahd/trap-dungeon
 
-inajobさんの[Trap Dungeon](https://github.com/inajob/trap-dungeon)をベースにモダンなTypeScript+Deno+Preact構成で開発するプロジェクトです。
+inajobさんの[NumDun](https://github.com/inajob/numdun)をベースにモダンなTypeScript+Deno+Preact構成で開発するプロジェクトです。
 
 ## 動作要件
 
