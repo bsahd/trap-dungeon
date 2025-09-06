@@ -117,7 +117,9 @@ export function GameStatus(
               runGameLoop();
             }}
           >
-            {UI_TEXT.play_again[language]}
+            {gameInstance.player.items.includes("indomitable_spirit")
+              ? UI_TEXT.play_again_with_indomitable_spirit[language]
+              : UI_TEXT.play_again[language]}
           </button>
         </>
       )}

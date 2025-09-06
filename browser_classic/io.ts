@@ -854,7 +854,11 @@ export function initBrowserGame() {
   document.querySelector(".i18n-target-gameOver")!.textContent =
     UI_TEXT.game_over[LANG];
 
-  dom.resetButton.textContent = UI_TEXT.play_again[LANG];
+  dom.resetButton.textContent =
+    gameInstance.player.items.includes("indomitable_spirit")
+      ? UI_TEXT.play_again_with_indomitable_spirit[LANG]
+      : UI_TEXT.play_again[LANG];
+
   dom.resetButton.addEventListener("click", () => {
     gameInstance.resetGame(false);
     gameInstance.setupFloor();

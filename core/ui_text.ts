@@ -63,6 +63,13 @@ export const UI_TEXT = {
     ja: "いいえ",
     en: "No",
   },
+  play_again_with_indomitable_spirit: {
+    ja:
+      "不屈の心を使用し、アイテムを維持し、同じフロア番号からもう一度プレイする",
+    en:
+      "Use Indomitable Spirit, keep the item, and play again from the same floor number",
+  },
+
   play_again: {
     ja: "もう一度プレイする",
     en: "Play Again",

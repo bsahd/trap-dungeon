@@ -117,7 +117,6 @@ export class Game {
       const index = this.player.items.indexOf("indomitable_spirit");
       this.player.items.splice(index, 1);
       this.setupFloor();
-      this.uiEffect = "flash_red";
       this.lastActionMessage = {
         ja: "不屈の心で立ち上がり直す!",
         en: "Rise again with an indomitable spirit!",
