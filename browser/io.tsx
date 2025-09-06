@@ -343,6 +343,10 @@ export function showModalDialog(
 export function Footer({ language }: { language: Language }) {
   return (
     <footer>
+      <a href="./browser_classic/index.html" target="_blank">
+        Classic
+      </a>{" "}
+      |{" "}
       <a href="./docs/index.html" target="_blank">
         {language != "ja" ? "Docs(Japanese Only)" : "Docs"}
       </a>{" "}
