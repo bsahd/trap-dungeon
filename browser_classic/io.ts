@@ -856,7 +856,7 @@ export function initBrowserGame() {
 
   dom.resetButton.textContent = UI_TEXT.play_again[LANG];
   dom.resetButton.addEventListener("click", () => {
-    gameInstance.resetGame();
+    gameInstance.resetGame(false);
     gameInstance.setupFloor();
     runBrowserGameLoop();
     document.querySelectorAll(".control-btn").forEach((b) => {

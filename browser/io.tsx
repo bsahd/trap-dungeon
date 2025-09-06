@@ -112,7 +112,7 @@ export function GameStatus(
             type="button"
             class="btn-reset"
             onClick={() => {
-              gameInstance.resetGame();
+              gameInstance.resetGame(false);
               gameInstance.setupFloor();
               runGameLoop();
             }}

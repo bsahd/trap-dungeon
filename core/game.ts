@@ -51,16 +51,6 @@ export class Cell {
           ja: "鉄の心臓が身代わりになった！",
           en: "The Iron Heart has taken its place!",
         };
-      } else if (game.hasItem("indomitable_spirit")) {
-        const index = game.player.items.indexOf("indomitable_spirit");
-        game.player.items.splice(index, 1);
-        game.setupFloor();
-        game.uiEffect = "flash_red";
-        game.lastActionMessage = {
-          ja: "不屈の心で立ち上がり直す!",
-          en: "Rise again with an indomitable spirit!",
-        };
-        return false;
       } else {
         this.isRevealed = true;
         game.gameState = "gameover";
@@ -122,24 +112,35 @@ export class Game {
   lastActionMessage?: MultilingualText;
   tutorialToShow: { title: string; content: string } | null = null;
 
-  resetGame() {
-    this.grid = [];
-    this.rows = 8;
-    this.cols = 8;
-    this.player = {
-      r: 0,
-      c: 0,
-      items: ["indomitable_spirit", "indomitable_spirit"],
-    };
-    this.exit = { r: 0, c: 0 };
-    this.floorNumber = 1;
-    this.turn = 0;
-    this.gameState = "playing";
-    this.justAcquiredItem = null;
-    this.currentItemChoices = [];
-    this.floorRevelationRates = [];
-    this.lastActionMessage = undefined;
-    this.tutorialToShow = null;
+  resetGame(force: boolean) {
+    if (!force && this.player.items.includes("indomitable_spirit")) {
+      const index = this.player.items.indexOf("indomitable_spirit");
+      this.player.items.splice(index, 1);
+      this.setupFloor();
+      this.uiEffect = "flash_red";
+      this.lastActionMessage = {
+        ja: "不屈の心で立ち上がり直す!",
+        en: "Rise again with an indomitable spirit!",
+      };
+    } else {
+      this.grid = [];
+      this.rows = 8;
+      this.cols = 8;
+      this.player = {
+        r: 0,
+        c: 0,
+        items: ["indomitable_spirit", "indomitable_spirit"],
+      };
+      this.exit = { r: 0, c: 0 };
+      this.floorNumber = 1;
+      this.turn = 0;
+      this.gameState = "playing";
+      this.justAcquiredItem = null;
+      this.currentItemChoices = [];
+      this.floorRevelationRates = [];
+      this.lastActionMessage = undefined;
+      this.tutorialToShow = null;
+    }
   }
   getAvailableItems() {
     const currentFloor = this.floorNumber;
