@@ -39,8 +39,8 @@ export class Cell {
       };
       return false;
     } else if (this.type == "exit") {
-      game.gameState = "confirm_next_floor";
       this.reveal();
+      game.gameState = "confirm_next_floor";
     } else if (this.type == "trap") {
       if (game.hasItem("heart_of_iron")) {
         const index = game.player.items.indexOf("heart_of_iron");
@@ -72,9 +72,6 @@ export class Cell {
     return true;
   }
   reveal() {
-    if (
-      this.isRevealed
-    ) return;
     this.isRevealed = true;
     if (this.type != "trap" && this.adjacentTraps === 0) {
       this.neighborCells.forEach((cell) => {
