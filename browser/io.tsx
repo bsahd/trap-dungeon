@@ -487,6 +487,18 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
 
       let key = event.key;
       switch (event.key) {
+        case "q":
+          key = "up_left";
+          break;
+        case "e":
+          key = "up_right";
+          break;
+        case "z":
+          key = "down_left";
+          break;
+        case "c":
+          key = "down_right";
+          break;
         case "w":
           key = "up";
           break;
