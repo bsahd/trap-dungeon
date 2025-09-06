@@ -96,7 +96,11 @@ export class Game {
   grid: Cell[][] = [];
   rows = 8;
   cols = 8;
-  player: { r: number; c: number; items: string[] } = { r: 0, c: 0, items: [] };
+  player: { r: number; c: number; items: string[] } = {
+    r: 0,
+    c: 0,
+    items: ["indomitable_spirit", "indomitable_spirit"],
+  };
   exit = { r: 0, c: 0 };
   floorNumber = 1;
   turn = 0;
@@ -122,7 +126,11 @@ export class Game {
     this.grid = [];
     this.rows = 8;
     this.cols = 8;
-    this.player = { r: 0, c: 0, items: [] };
+    this.player = {
+      r: 0,
+      c: 0,
+      items: ["indomitable_spirit", "indomitable_spirit"],
+    };
     this.exit = { r: 0, c: 0 };
     this.floorNumber = 1;
     this.turn = 0;
