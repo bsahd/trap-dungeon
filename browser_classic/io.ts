@@ -323,7 +323,7 @@ function handleGlobalKeyboardInput(event: KeyboardEvent) {
   }
   if (modal) return;
 
-  let key = event.key.toLowerCase();
+  let key = event.key;
   switch (event.key) {
     case "w":
       key = "up";
@@ -469,7 +469,7 @@ function updateStatusUI(displayState: DisplayState) {
 
       let itemName = item.name[LANG];
       if (item.key) {
-        itemName += `(${item.key.toLowerCase()})`;
+        itemName += `(${item.key})`;
       }
       return `<span class="item-link" data-item-id="${id}" title="${
         UI_TEXT.view_detail[LANG](item.name[LANG])
