@@ -343,6 +343,10 @@ export function showModalDialog(
 export function Footer({ language }: { language: Language }) {
   return (
     <footer>
+      <a href="./docs/index.html" target="_blank">
+        Docs
+      </a>{" "}
+      |{" "}
       <a href="https://github.com/bsahd/trap-dungeon" target="_blank">
         GitHub
       </a>{" "}
@@ -547,7 +551,7 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
   }, []);
   return (
     <>
-      <div class="game-container">
+      <main class="game-container">
         <h1>Trap Dungeon</h1>
         <div class="game-language">
           <label>
@@ -593,7 +597,7 @@ export function GameMain({ debugInterface }: { debugInterface: boolean }) {
             lastInputTime={lastInputTime}
           />
         )}
-      </div>
+      </main>
       <Footer language={language}></Footer>
     </>
   );
