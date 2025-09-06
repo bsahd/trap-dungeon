@@ -182,41 +182,6 @@ h1 {
   background-color: #f48fb1;
 } /* Light Pink */
 
-.game-cell--obscured {
-  /* ベースとなる背景色 */
-  background-color: #a1887f; /* 明るい茶色に変更 */
-
-  /* ひび割れ模様の描画 */
-  background-image: /* 細いひび（白） */
-    linear-gradient(
-      105deg,
-      transparent 49.5%,
-      rgba(255, 255, 255, 0.4) 50%,
-      transparent 50.5%
-    ),
-    linear-gradient(
-    65deg,
-    transparent 49.5%,
-    rgba(255, 255, 255, 0.4) 50%,
-    transparent 50.5%
-  ),
-     /* 太いひび（黒） */linear-gradient(
-    35deg,
-    transparent 49%,
-    rgba(0, 0, 0, 0.5) 50%,
-    transparent 51%
-  ),
-    linear-gradient(
-    -65deg,
-    transparent 48%,
-    rgba(0, 0, 0, 0.5) 50%,
-    transparent 52%
-  );
-
-  /* 数字の色も変えて見やすくする */
-  color: #ffffff;
-}
-
 /* Spans inside the cell */
 .cell-number, .cell-entity, .cell-player-icon {
   position: absolute;
