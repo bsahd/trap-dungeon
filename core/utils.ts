@@ -86,9 +86,6 @@ export function isSolvable(
 
   visited[startR][startC] = true;
 
-  const dr = [-1, 1, 0, 0]; // 上下左右
-  const dc = [0, 0, -1, 1];
-
   while (queue.length > 0) {
     const { r, c } = queue.shift() as { r: number; c: number };
 
@@ -101,11 +98,7 @@ export function isSolvable(
     if (fullSolved) {
       return true;
     }
-
-    for (let i = 0; i < 4; i++) {
-      const nr = r + dr[i];
-      const nc = c + dc[i];
-
+    getEightDirectionsNeighbors(r, c, rows, cols).map(({ r: nr, c: nc }) => {
       if (
         isValidCell(nr, nc, rows, cols) && !visited[nr][nc] &&
         (grid[nr][nc].type != "trap")
@@ -113,7 +106,7 @@ export function isSolvable(
         visited[nr][nc] = true;
         queue.push({ r: nr, c: nc });
       }
-    }
+    });
   }
   return false;
 }
@@ -134,9 +127,6 @@ export function isGoalInitiallyVisible(
 
   visited[startR][startC] = true;
 
-  const dr = [-1, -1, -1, 0, 0, 1, 1, 1]; // 8 directions
-  const dc = [-1, 0, 1, -1, 1, -1, 0, 1];
-
   while (queue.length > 0) {
     const { r, c } = queue.shift() as { r: number; c: number };
 
@@ -149,10 +139,7 @@ export function isGoalInitiallyVisible(
       continue;
     }
 
-    for (let i = 0; i < 8; i++) { // Check all 8 neighbors for cascade
-      const nr = r + dr[i];
-      const nc = c + dc[i];
-
+    getEightDirectionsNeighbors(r, c, rows, cols).map(({ r: nr, c: nc }) => {
       if (
         isValidCell(nr, nc, rows, cols) && !visited[nr][nc] &&
         grid[nr][nc].type != "trap"
@@ -160,7 +147,7 @@ export function isGoalInitiallyVisible(
         visited[nr][nc] = true;
         queue.push({ r: nr, c: nc });
       }
-    }
+    });
   }
   return false; // Exit is not visible
 }
