@@ -33,6 +33,10 @@ export class Cell {
   }
   enterPlayer(game: Game) {
     if (this.isFlagged) {
+      game.lastActionMessage = {
+        ja: "旗を立てたマスには移動できません。",
+        en: "You cannot move to a flagged cell.",
+      };
       return false;
     } else if (this.type == "exit") {
       game.gameState = "confirm_next_floor";
@@ -47,6 +51,16 @@ export class Cell {
           ja: "鉄の心臓が身代わりになった！",
           en: "The Iron Heart has taken its place!",
         };
+      } else if (game.hasItem("indomitable_spirit")) {
+        const index = game.player.items.indexOf("heart_of_iron");
+        game.player.items.splice(index, 1);
+        game.setupFloor();
+        game.uiEffect = "flash_red";
+        game.lastActionMessage = {
+          ja: "不屈の心で立ち上がり直す!",
+          en: "Rise again with an indomitable spirit!",
+        };
+        return false;
       } else {
         this.isRevealed = true;
         game.gameState = "gameover";
@@ -474,12 +488,7 @@ export class Game {
       }
       if (moved && isValidCell(newRow, newCol, this.rows, this.cols)) {
         const unchecked = this.grid[newRow][newCol].enterPlayer(this);
-        if (!unchecked) {
-          this.lastActionMessage = {
-            ja: "旗を立てたマスには移動できません。",
-            en: "You cannot move to a flagged cell.",
-          };
-        } else {
+        if (unchecked) {
           this.player.r = newRow;
           this.player.c = newCol;
         }

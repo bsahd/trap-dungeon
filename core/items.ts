@@ -36,6 +36,18 @@ interface Items {
 
 const ITEMS: Items = {
   // 通常アイテム (F1+)
+  indomitable_spirit: {
+    name: { ja: "不屈の心", en: "Indomitable Spirit" },
+    description: {
+      ja:
+        "罠を踏んだ時に1つの不屈の心につき1度だけステージ番号とアイテムを引き継いでリスタートできる。(パッシブ)",
+      en:
+        "When stepping on a trap, you can restart once per Indomitable Spirit, carrying over the stage number and items. (Passive)",
+    },
+    minFloor: 1,
+    maxFloor: Infinity,
+    key: null,
+  },
   scroll_of_clairvoyance: {
     name: { ja: "千里眼の巻物", en: "Scroll of Clairvoyance" },
     description: {
@@ -75,9 +87,9 @@ const ITEMS: Items = {
   heart_of_iron: {
     name: { ja: "鉄の心臓", en: "Heart of Iron" },
     description: {
-      ja: "罠を踏んだ時に1度だけ身代わりになる。(パッシブ)",
+      ja: "罠を踏んだ時に1つの鉄の心臓につき1度だけ身代わりになる。(パッシブ)",
       en:
-        "When stepping on a trap, you can become a substitute once. (Passive)",
+        "When stepping on a trap, you can become a substitute only once per heart of iron. (Passive)",
     },
     key: null,
     minFloor: 1,
