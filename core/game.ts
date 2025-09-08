@@ -8,17 +8,53 @@ import {
   isValidCell,
 } from "./utils.ts";
 
+interface GameJSON {
+  grid: Cell[][];
+  rows: number;
+  cols: number;
+  player: { r: number; c: number; items: string[] };
+  exit: { r: number; c: number };
+  floorNumber: number;
+  turn: number;
+  gameState:
+    | "playing"
+    | "gameover"
+    | "confirm_next_floor"
+    | "choosing_item"
+    | "recon_direction"
+    | "jumping_direction";
+  floorRevelationRates: {
+    floor: number;
+    rate: number;
+  }[];
+}
+
+interface CellJSON {
+  type: "normal" | "trap" | "exit";
+  isRevealed: boolean;
+  isFlagged: boolean;
+  itemId?: string;
+}
+
 export class Cell {
   type: "normal" | "trap" | "exit";
   isRevealed: boolean;
   isFlagged: boolean;
+  itemId?: string;
+  toJSON(): CellJSON {
+    return {
+      type: this.type,
+      isRevealed: this.isRevealed,
+      isFlagged: this.isFlagged,
+      itemId: this.itemId,
+    };
+  }
+  neighborCells: Cell[];
   get adjacentTraps() {
     return this.neighborCells.reduce((count, cell) => {
       return count + (cell.type == "trap" ? 1 : 0);
     }, 0);
   }
-  itemId?: string;
-  neighborCells: Cell[];
   constructor() {
     this.type = "normal";
     this.isRevealed = false;
@@ -113,6 +149,20 @@ export class Game {
   }[] = [];
   lastActionMessage?: MultilingualText;
   tutorialToShow: { title: string; content: string } | null = null;
+
+  toJSON(): GameJSON {
+    return {
+      grid: this.grid,
+      rows: this.rows,
+      cols: this.cols,
+      player: this.player,
+      exit: this.exit,
+      floorNumber: this.floorNumber,
+      turn: this.turn,
+      gameState: this.gameState,
+      floorRevelationRates: this.floorRevelationRates,
+    };
+  }
 
   resetGame(force: boolean) {
     if (!force && this.player.items.includes("indomitable_spirit")) {
@@ -279,7 +329,7 @@ export class Game {
         this.rows,
         this.cols,
       )
-        .map((pos) => this.grid[pos.r][pos.c]);
+        .map((pos) => this.grid![pos.r][pos.c]);
     });
   }
 
@@ -617,5 +667,16 @@ export class Game {
 
   clearTutorial() {
     this.tutorialToShow = null;
+  }
+
+  static fromJSON(JSONObject: GameJSON) {
+    const game = new Game();
+    Object.assign(game, JSONObject);
+    game.generateGrid();
+    forEachCell(
+      game.grid,
+      (cell, r, c) => Object.assign(cell, JSONObject.grid[r][c]),
+    );
+    return game;
   }
 }
