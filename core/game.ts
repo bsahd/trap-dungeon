@@ -205,15 +205,6 @@ export class Game {
       }
 
       this.generateGrid();
-      forEachCell(this.grid, (cell, r, c) => {
-        cell.neighborCells = getEightDirectionsNeighbors(
-          r,
-          c,
-          this.rows,
-          this.cols,
-        )
-          .map((pos) => this.grid[pos.r][pos.c]);
-      });
       this.placeTraps(trapCount);
 
       const validCells: { r: number; c: number }[] = [];
@@ -281,6 +272,15 @@ export class Game {
       { length: this.rows },
       () => Array.from({ length: this.cols }, () => new Cell()),
     );
+    forEachCell(this.grid, (cell, r, c) => {
+      cell.neighborCells = getEightDirectionsNeighbors(
+        r,
+        c,
+        this.rows,
+        this.cols,
+      )
+        .map((pos) => this.grid[pos.r][pos.c]);
+    });
   }
 
   placeTraps(trapCount: number) {
